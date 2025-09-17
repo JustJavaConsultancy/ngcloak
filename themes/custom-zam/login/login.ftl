@@ -133,17 +133,30 @@
           .brand-title-large {
             font-size: 2.5rem;
             font-weight: 800;
-            color: #ffffff !important;
+            color: #f8fafc !important;
             margin-bottom: 1.5rem;
-            background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%) !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            background-clip: text !important;
             animation: fadeInUp 1s ease-out 0.2s both;
+            /* Dark Reader override */
+            --darkreader-inline-color: #f8fafc !important;
+            --darkreader-inline-bgcolor: transparent !important;
           }
 
-          .omoo {
-            color: #ffffff !important;
+          /* Additional Dark Reader specific overrides */
+          [data-darkreader-scheme="dark"] .brand-title-large {
+            color: #f8fafc !important;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%) !important;
+            -webkit-text-fill-color: transparent !important;
+          }
+
+          /* Force override for Dark Reader */
+          .brand-title-large[style*="darkreader"] {
+            color: #f8fafc !important;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%) !important;
+            -webkit-text-fill-color: transparent !important;
           }
 
           .brand-subtitle {
@@ -560,7 +573,7 @@
                 <img src="${url.resourcesPath}/img/NASD Product logos.png" alt="NASD Logo" />
               </div>
 
-              <h1 class="brand-title-large omoo">NASD Communication System</h1>
+              <h1 class="brand-title-large">NASD Communication System</h1>
 
               <p class="brand-subtitle">
                 Secure, professional communication platform designed for modern financial institutions and corporate environments.
