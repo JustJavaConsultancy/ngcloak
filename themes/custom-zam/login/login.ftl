@@ -69,7 +69,7 @@
             right: 0;
             bottom: 0;
             background:
-              radial-gradient(circle at 20% 80%, rgba(236, 35, 42, 0.1) 0%, transparent 50%),
+              radial-gradient(circle at 20% 80%, rgba(30, 64, 175, 0.1) 0%, transparent 50%),
               radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
               radial-gradient(circle at 40% 40%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
             animation: backgroundShift 20s ease-in-out infinite;
@@ -195,7 +195,7 @@
           .feature-icon {
             width: 24px;
             height: 24px;
-            color: #EC232A;
+            color: #1e40af;
             flex-shrink: 0;
           }
 
@@ -293,8 +293,8 @@
 
           .form-input:focus {
             outline: none;
-            border-color: #EC232A;
-            box-shadow: 0 0 0 3px rgba(236, 35, 42, 0.1), 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-color: #1e40af;
+            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1), 0 4px 12px rgba(0, 0, 0, 0.15);
             transform: translateY(-1px);
           }
 
@@ -323,8 +323,8 @@
           }
 
           .password-toggle:hover {
-            color: #EC232A;
-            background: rgba(236, 35, 42, 0.1);
+            color: #1e40af;
+            background: rgba(30, 64, 175, 0.1);
           }
 
           .password-toggle svg {
@@ -350,7 +350,7 @@
           .remember-me input[type="checkbox"] {
             width: 1rem;
             height: 1rem;
-            accent-color: #EC232A;
+            accent-color: #1e40af;
             cursor: pointer;
           }
 
@@ -362,7 +362,7 @@
           }
 
           .forgot-password {
-            color: #EC232A;
+            color: #1e40af;
             text-decoration: none;
             font-size: 0.875rem;
             font-weight: 600;
@@ -372,15 +372,15 @@
           }
 
           .forgot-password:hover {
-            color: #dc2626;
-            background: rgba(236, 35, 42, 0.1);
+            color: #1d4ed8;
+            background: rgba(30, 64, 175, 0.1);
             text-decoration: none;
           }
 
           .submit-button {
             width: 100%;
             height: 3.5rem;
-            background: linear-gradient(135deg, #EC232A 0%, #dc2626 100%);
+            background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 100%);
             border: none;
             border-radius: 12px;
             color: #ffffff;
@@ -391,7 +391,7 @@
             margin-bottom: 1.5rem;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 4px 12px rgba(236, 35, 42, 0.3);
+            box-shadow: 0 4px 12px rgba(30, 64, 175, 0.3);
             text-transform: uppercase;
             letter-spacing: 0.05em;
           }
@@ -408,9 +408,9 @@
           }
 
           .submit-button:hover:not(:disabled) {
-            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            background: linear-gradient(135deg, #1d4ed8 0%, #1e3a8a 100%);
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(236, 35, 42, 0.4);
+            box-shadow: 0 8px 20px rgba(30, 64, 175, 0.4);
           }
 
           .submit-button:hover:not(:disabled)::before {
@@ -460,7 +460,7 @@
           }
 
           .signup-link a {
-            color: #EC232A;
+            color: #1e40af;
             text-decoration: none;
             font-weight: 600;
             transition: all 0.2s ease;
@@ -469,8 +469,8 @@
           }
 
           .signup-link a:hover {
-            color: #dc2626;
-            background: rgba(236, 35, 42, 0.1);
+            color: #1d4ed8;
+            background: rgba(30, 64, 175, 0.1);
             text-decoration: none;
           }
 
@@ -499,7 +499,7 @@
           }
 
           .terms-notice a {
-            color: #EC232A;
+            color: #1e40af;
             text-decoration: none;
             font-weight: 500;
           }
