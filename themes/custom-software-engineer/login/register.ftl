@@ -46,12 +46,12 @@
         font-family: "Inter", sans-serif;
       }
 
-      #kc-info-wrapper {
-        display: none;
-      }
-
       .textt {
         color: white !important;
+       }
+
+      #kc-info-wrapper {
+        display: none;
       }
 
       .login-pf-page .card-pf {
@@ -372,8 +372,8 @@
                     onclick="togglePasswordVisibility('password-confirm')"
                     aria-label="Toggle password confirmation visibility"
                   >
-                    <span id="password-confirm-eye-open" class="material-icons text-lg">visibility</span>
-                    <span id="password-confirm-eye-closed" class="material-icons text-lg hidden">visibility_off</span>
+                    <span id="confirm-eye-open" class="material-icons text-lg">visibility</span>
+                    <span id="confirm-eye-closed" class="material-icons text-lg hidden">visibility_off</span>
                   </button>
                 </div>
                 <#if messagesPerField.existsError('password-confirm')>
