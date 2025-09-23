@@ -1,17 +1,26 @@
 // Password visibility toggle functionality
 function togglePasswordVisibility(fieldId) {
   const passwordField = document.getElementById(fieldId);
-  const eyeOpen = document.getElementById(fieldId + '-eye-open');
-  const eyeClosed = document.getElementById(fieldId + '-eye-closed');
+  let eyeOpen, eyeClosed;
 
-  if (passwordField.type === 'password') {
-    passwordField.type = 'text';
-    eyeOpen.classList.add('hidden');
-    eyeClosed.classList.remove('hidden');
-  } else {
-    passwordField.type = 'password';
-    eyeOpen.classList.remove('hidden');
-    eyeClosed.classList.add('hidden');
+  if (fieldId === 'password') {
+    eyeOpen = document.getElementById('password-eye-open');
+    eyeClosed = document.getElementById('password-eye-closed');
+  } else if (fieldId === 'password-confirm') {
+    eyeOpen = document.getElementById('confirm-eye-open');
+    eyeClosed = document.getElementById('confirm-eye-closed');
+  }
+
+  if (passwordField && eyeOpen && eyeClosed) {
+    if (passwordField.type === 'password') {
+      passwordField.type = 'text';
+      eyeOpen.classList.add('hidden');
+      eyeClosed.classList.remove('hidden');
+    } else {
+      passwordField.type = 'password';
+      eyeOpen.classList.remove('hidden');
+      eyeClosed.classList.add('hidden');
+    }
   }
 }
 
@@ -39,6 +48,7 @@ function updateEmailValidation(isValid, email) {
     emailField.classList.remove('input-error');
     emailField.classList.add('input-success');
   } else {
+    // Show error immediately when user starts typing until email is valid
     errorMessage.classList.remove('hidden');
     successMessage.classList.add('hidden');
     emailField.classList.remove('input-success');
