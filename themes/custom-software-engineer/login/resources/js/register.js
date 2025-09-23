@@ -15,15 +15,48 @@ function togglePasswordVisibility(fieldId) {
   }
 }
 
+// Email validation functionality
+function validateEmail(email) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
+
+function updateEmailValidation(isValid, email) {
+  const emailField = document.getElementById('email');
+  const errorMessage = document.getElementById('email-validation-message');
+  const successMessage = document.getElementById('email-validation-success');
+
+  if (email === '') {
+    errorMessage.classList.add('hidden');
+    successMessage.classList.add('hidden');
+    emailField.classList.remove('input-error', 'input-success');
+    return;
+  }
+
+  if (isValid) {
+    errorMessage.classList.add('hidden');
+    successMessage.classList.remove('hidden');
+    emailField.classList.remove('input-error');
+    emailField.classList.add('input-success');
+  } else {
+    errorMessage.classList.remove('hidden');
+    successMessage.classList.add('hidden');
+    emailField.classList.remove('input-success');
+    emailField.classList.add('input-error');
+  }
+}
+
 // Password validation functionality
 function validatePassword(password) {
   const lengthRequirement = password.length >= 8;
   const mixRequirement = /^(?=.*[a-zA-Z])(?=.*\d)/.test(password);
+  const specialRequirement = /^(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])/.test(password);
 
   return {
     length: lengthRequirement,
     mix: mixRequirement,
-    valid: lengthRequirement && mixRequirement
+    special: specialRequirement,
+    valid: lengthRequirement && mixRequirement && specialRequirement
   };
 }
 
@@ -32,6 +65,8 @@ function updatePasswordRequirements(validation) {
   const lengthText = document.querySelector('#password-length span:last-child');
   const mixIcon = document.querySelector('#password-mix .requirement-icon');
   const mixText = document.querySelector('#password-mix span:last-child');
+  const specialIcon = document.querySelector('#password-special .requirement-icon');
+  const specialText = document.querySelector('#password-special span:last-child');
 
   // Update length requirement
   if (validation.length) {
@@ -53,6 +88,17 @@ function updatePasswordRequirements(validation) {
     mixIcon.textContent = '○';
     mixIcon.className = 'requirement-icon text-red-500';
     mixText.className = 'text-red-500';
+  }
+
+  // Update special character requirement
+  if (validation.special) {
+    specialIcon.textContent = '✓';
+    specialIcon.className = 'requirement-icon text-green-600';
+    specialText.className = 'text-green-600';
+  } else {
+    specialIcon.textContent = '○';
+    specialIcon.className = 'requirement-icon text-red-500';
+    specialText.className = 'text-red-500';
   }
 }
 
@@ -93,11 +139,12 @@ function validateForm() {
   const password = document.getElementById('password').value;
   const confirmPassword = document.getElementById('password-confirm').value;
 
+  const emailValidation = validateEmail(email);
   const passwordValidation = validatePassword(password);
   const passwordsMatch = validatePasswordMatch();
 
   const allFieldsFilled = firstName && lastName && email && username && password && confirmPassword;
-  const allRequirementsMet = passwordValidation.valid && passwordsMatch === true;
+  const allRequirementsMet = emailValidation && passwordValidation.valid && passwordsMatch === true;
 
   const registerButton = document.getElementById('register-button');
   registerButton.disabled = !(allFieldsFilled && allRequirementsMet);
@@ -105,9 +152,16 @@ function validateForm() {
 
 // Event listeners
 document.addEventListener('DOMContentLoaded', function() {
+  const emailField = document.getElementById('email');
   const passwordField = document.getElementById('password');
   const confirmPasswordField = document.getElementById('password-confirm');
   const allInputs = document.querySelectorAll('input[required]');
+
+  emailField.addEventListener('input', function() {
+    const isValid = validateEmail(this.value);
+    updateEmailValidation(isValid, this.value);
+    validateForm();
+  });
 
   passwordField.addEventListener('input', function() {
     const validation = validatePassword(this.value);
