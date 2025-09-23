@@ -50,6 +50,10 @@
         display: none;
       }
 
+      .textt {
+        color: white !important;
+      }
+
       .login-pf-page .card-pf {
         padding: 0px;
         margin-bottom: 0;
@@ -157,7 +161,7 @@
               Join Our Community
             </h2>
             <p
-              class="mt-3 sm:mt-4 text-center text-indigo-200 text-sm sm:text-base"
+              class="mt-3 sm:mt-4 text-center text-indigo-200 text-sm sm:text-base textt"
             >
               Start your journey with our AI-powered development platform and
               transform the way you build software.
@@ -339,6 +343,10 @@
                   <div id="password-mix" class="flex items-center gap-2">
                     <span class="requirement-icon text-slate-400">○</span>
                     <span class="text-slate-500">Mix of letters and numbers</span>
+                  </div>
+                  <div id="password-special" class="flex items-center gap-2">
+                    <span class="requirement-icon text-slate-400">○</span>
+                    <span class="text-slate-500">At least one special character</span>
                   </div>
                 </div>
               </div>
