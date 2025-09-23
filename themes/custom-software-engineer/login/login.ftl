@@ -46,6 +46,10 @@
         font-family: "Inter", sans-serif;
       }
 
+      .textt {
+        color: white !important;
+      }
+
       #kc-info-wrapper {
         display: none;
       }
@@ -140,7 +144,7 @@
               Accelerate Your Workflow
             </h2>
             <p
-              class="mt-3 sm:mt-4 text-center text-indigo-200 text-sm sm:text-base"
+              class="mt-3 sm:mt-4 text-center text-indigo-200 text-sm sm:text-base textt"
             >
               Our AI-powered assistant makes software development seamless,
               faster, and less stressful for you and your team.
