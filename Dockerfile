@@ -14,6 +14,7 @@ ENV KC_DB_PASSWORD=ZfNqijcx0TcRIopJ5f46VNYxPZBaVFtZ
 
 # Add custom theme
 COPY themes /opt/keycloak/themes
+COPY providers /opt/keycloak/providers
 
 # Start Keycloak
 ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start-dev", "--hostname-strict=false"]
