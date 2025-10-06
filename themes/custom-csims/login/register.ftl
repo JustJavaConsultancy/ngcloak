@@ -984,7 +984,7 @@
                 </header>
 
                 <div class="illustration-placeholder">
-                    <img src="img/certificate.svg" alt="Certificate illustration" class="placeholder-icon">
+                    <img src="${url.resourcesPath}/img/certificate.svg" alt="Certificate illustration" class="placeholder-icon">
                 </div>
 
                 <div class="feature-highlights">
@@ -1171,3 +1171,4 @@
     </script>
     </#if>
 </@layout.registrationLayout>
+
