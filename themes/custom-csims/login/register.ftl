@@ -537,6 +537,7 @@
           width: 250px;
           height: auto;
           max-width: 100%;
+          filter: brightness(0) invert(1);
           opacity: 0.8;
       }
 
@@ -758,39 +759,66 @@
 
                 <form id="kc-register-form" action="${url.registrationAction}" method="post" class="auth-form">
                     <div class="form-group">
-                        <label for="userType" class="form-label">Account Type</label>
+                        <label for="user.attributes.userType" class="form-label">Account Type</label>
                         <div class="select-wrapper">
-                            <select id="userType" name="userType" class="form-select" required>
+                            <select id="userType" name="user.attributes.userType" class="form-select <#if messagesPerField.existsError('user.attributes.userType')>error</#if>" required>
                                 <option value="">Select account type</option>
-                                <option value="student">Student</option>
-                                <option value="alumni">Alumni</option>
-                                <option value="external">External User</option>
-                                <option value="verifier">Third-Party Verifier</option>
+                                <option value="student" <#if (register.formData['user.attributes.userType']!'') == 'student'>selected</#if>>Student</option>
+                                <option value="alumni" <#if (register.formData['user.attributes.userType']!'') == 'alumni'>selected</#if>>Alumni</option>
+                                <option value="external" <#if (register.formData['user.attributes.userType']!'') == 'external'>selected</#if>>External User</option>
+                                <option value="verifier" <#if (register.formData['user.attributes.userType']!'') == 'verifier'>selected</#if>>Third-Party Verifier</option>
                             </select>
                             <svg class="select-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                             </svg>
                         </div>
+                        <#if messagesPerField.existsError('user.attributes.userType')>
+                          <div class="error-message">
+                            ${kcSanitize(messagesPerField.get('user.attributes.userType'))?no_esc}
+                          </div>
+                        </#if>
                     </div>
 
-                    <div class="form-group" id="matricGroup" style="display: none;">
-                        <label for="matricNumber" class="form-label">Matriculation Number</label>
+                    <div class="form-group" id="matricGroup" style="display: <#if (register.formData['user.attributes.userType']!'') == 'student'>block<#else>none</#if>;">
+                        <label for="user.attributes.matricNumber" class="form-label">Matriculation Number</label>
                         <div class="input-wrapper">
-                            <input type="text" id="matricNumber" name="matricNumber" class="form-input">
+                            <input
+                                type="text"
+                                id="matricNumber"
+                                name="user.attributes.matricNumber"
+                                value="${(register.formData['user.attributes.matricNumber']!'')}"
+                                class="form-input <#if messagesPerField.existsError('user.attributes.matricNumber')>error</#if>"
+                                placeholder="Enter your matriculation number">
                             <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Zm6-10.125a1.875 1.875 0 1 1-3.75 0 1.875 1.875 0 0 1 3.75 0Z" />
                             </svg>
                         </div>
+                        <#if messagesPerField.existsError('user.attributes.matricNumber')>
+                          <div class="error-message">
+                            ${kcSanitize(messagesPerField.get('user.attributes.matricNumber'))?no_esc}
+                          </div>
+                        </#if>
                     </div>
 
-                    <div class="form-group" id="phoneGroup" style="display: none;">
-                        <label for="phoneNumber" class="form-label">Phone Number</label>
+                    <div class="form-group" id="phoneGroup" style="display: <#if (register.formData['user.attributes.userType']!'') == 'alumni' || (register.formData['user.attributes.userType']!'') == 'external'>block<#else>none</#if>;">
+                        <label for="user.attributes.phoneNumber" class="form-label">Phone Number</label>
                         <div class="input-wrapper">
-                            <input type="tel" id="phoneNumber" name="phoneNumber" class="form-input">
+                            <input
+                                type="tel"
+                                id="phoneNumber"
+                                name="user.attributes.phoneNumber"
+                                value="${(register.formData['user.attributes.phoneNumber']!'')}"
+                                class="form-input <#if messagesPerField.existsError('user.attributes.phoneNumber')>error</#if>"
+                                placeholder="Enter your phone number">
                             <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H3.75A2.25 2.25 0 0 0 1.5 4.5v2.25Z" />
                             </svg>
                         </div>
+                        <#if messagesPerField.existsError('user.attributes.phoneNumber')>
+                          <div class="error-message">
+                            ${kcSanitize(messagesPerField.get('user.attributes.phoneNumber'))?no_esc}
+                          </div>
+                        </#if>
                     </div>
 
                     <div class="form-grid">
@@ -983,7 +1011,7 @@
                 </header>
 
                 <div class="illustration-placeholder">
-                    <img src="${url.resourcesPath}/img/certificate.svg" alt="Certificate illustration" class="placeholder-icon">
+                    <img src="${url.resourcesPath}img/certificate.svg" alt="Certificate illustration" class="placeholder-icon">
                 </div>
 
                 <div class="feature-highlights">
@@ -1097,6 +1125,12 @@
                     const matricInput = document.getElementById('matricNumber');
                     if (matricInput) {
                         matricInput.required = userType === 'student';
+                        // Clear validation errors when hiding field
+                        if (userType !== 'student') {
+                            matricInput.classList.remove('error');
+                            const errorMsg = matricInput.parentElement.parentElement.querySelector('.error-message');
+                            if (errorMsg) errorMsg.style.display = 'none';
+                        }
                     }
                 }
 
@@ -1106,8 +1140,17 @@
                     const phoneInput = document.getElementById('phoneNumber');
                     if (phoneInput) {
                         phoneInput.required = (userType === 'alumni' || userType === 'external');
+                        // Clear validation errors when hiding field
+                        if (userType !== 'alumni' && userType !== 'external') {
+                            phoneInput.classList.remove('error');
+                            const errorMsg = phoneInput.parentElement.parentElement.querySelector('.error-message');
+                            if (errorMsg) errorMsg.style.display = 'none';
+                        }
                     }
                 }
+
+                // Trigger form validation check
+                checkFormValidity();
             });
         }
 
@@ -1150,25 +1193,45 @@
             const submitButton = document.getElementById('register-button');
 
             if (form && submitButton) {
+                // Check validity on input changes
+                form.addEventListener('input', checkFormValidity);
+                form.addEventListener('change', checkFormValidity);
+
                 function checkFormValidity() {
                     const isPasswordValid = validatePassword();
                     const isPasswordMatch = validatePasswordMatch();
                     const agreeTerms = document.getElementById('agreeTerms').checked;
                     const userType = document.getElementById('userType').value;
 
-                    submitButton.disabled = !(isPasswordValid && isPasswordMatch && agreeTerms && userType);
-                }
+                    // Check conditional field requirements
+                    let conditionalFieldsValid = true;
 
-                // Check validity on input changes
-                form.addEventListener('input', checkFormValidity);
-                form.addEventListener('change', checkFormValidity);
+                    if (userType === 'student') {
+                        const matricInput = document.getElementById('matricNumber');
+                        conditionalFieldsValid = matricInput && matricInput.value.trim() !== '';
+                    } else if (userType === 'alumni' || userType === 'external') {
+                        const phoneInput = document.getElementById('phoneNumber');
+                        conditionalFieldsValid = phoneInput && phoneInput.value.trim() !== '';
+                    }
+
+                    submitButton.disabled = !(isPasswordValid && isPasswordMatch && agreeTerms && userType && conditionalFieldsValid);
+                }
+                            e.preventDefault();
+                            matricInput.classList.add('error');
+                            matricInput.focus();
+                            return false;
+                        }
+                    } else if (userType === 'alumni' || userType === 'external') {
+                        const phoneInput = document.getElementById('phoneNumber');
+                        if (!phoneInput.value.trim()) {
+                            e.preventDefault();
+                            phoneInput.classList.add('error');
+                            phoneInput.focus();
+                            return false;
+                        }
+                    }
+                });
 
                 // Initial check
                 checkFormValidity();
             }
-        });
-    </script>
-    </#if>
-</@layout.registrationLayout>
-
-
