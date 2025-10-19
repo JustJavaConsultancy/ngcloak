@@ -14,6 +14,7 @@ ENV KC_DB_PASSWORD=ZfNqijcx0TcRIopJ5f46VNYxPZBaVFtZ
 ENV KEYCLOAK_PROXY=edge
 ENV KEYCLOAK_HOSTNAME=ngcloak.onrender.com
 ENV KEYCLOAK_HOSTNAME_URL=https://ngcloak.onrender.com
+ENV KC_HTTP_ENABLED=true
 
 # Add custom theme
 COPY themes /opt/keycloak/themes
