@@ -12,10 +12,12 @@ ENV KC_DB_URL=jdbc:postgresql://dpg-cuu5ag1opnds739t6gs0-a.oregon-postgres.rende
 ENV KC_DB_USERNAME=techrunch
 ENV KC_DB_PASSWORD=ZfNqijcx0TcRIopJ5f46VNYxPZBaVFtZ
 ENV KEYCLOAK_PROXY=edge
+ENV KEYCLOAK_HOSTNAME=ngcloak.onrender.com
+ENV KEYCLOAK_HOSTNAME_URL=https://ngcloak.onrender.com
 
 # Add custom theme
 COPY themes /opt/keycloak/themes
 COPY providers /opt/keycloak/providers
 
 # Start Keycloak
-ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start-dev", "--hostname-strict=false"]
+ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start", "--hostname-strict=false"]
