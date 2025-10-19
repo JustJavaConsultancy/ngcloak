@@ -11,14 +11,10 @@ ENV KC_DB=postgres
 ENV KC_DB_URL=jdbc:postgresql://dpg-cuu5ag1opnds739t6gs0-a.oregon-postgres.render.com/bluepay_db
 ENV KC_DB_USERNAME=techrunch
 ENV KC_DB_PASSWORD=ZfNqijcx0TcRIopJ5f46VNYxPZBaVFtZ
-ENV KEYCLOAK_PROXY=edge
-ENV KEYCLOAK_HOSTNAME=ngcloak.onrender.com
-ENV KEYCLOAK_HOSTNAME_URL=https://ngcloak.onrender.com
-ENV KC_HTTP_ENABLED=true
 
 # Add custom theme
 COPY themes /opt/keycloak/themes
 COPY providers /opt/keycloak/providers
 
 # Start Keycloak
-ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start", "--hostname-strict=false"]
+ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start-dev", "--hostname-strict=false"]
