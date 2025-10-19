@@ -11,6 +11,7 @@ ENV KC_DB=postgres
 ENV KC_DB_URL=jdbc:postgresql://dpg-cuu5ag1opnds739t6gs0-a.oregon-postgres.render.com/bluepay_db
 ENV KC_DB_USERNAME=techrunch
 ENV KC_DB_PASSWORD=ZfNqijcx0TcRIopJ5f46VNYxPZBaVFtZ
+ENV KEYCLOAK_PROXY=edge
 
 # Add custom theme
 COPY themes /opt/keycloak/themes
