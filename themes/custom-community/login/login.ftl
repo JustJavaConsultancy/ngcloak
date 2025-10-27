@@ -109,12 +109,6 @@
             75% { transform: translateX(5px); }
         }
 
-        @keyframes fingerprint-pulse {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.1); opacity: 0.8; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
         /* Animation classes */
         .animate-fade-in {
             animation: fadeIn 0.6s ease-out forwards;
@@ -140,10 +134,6 @@
 
         .animate-shake {
             animation: shake 0.3s ease-in-out;
-        }
-
-        .animate-fingerprint {
-            animation: fingerprint-pulse 2s infinite ease-in-out;
         }
 
         /* Mobile-specific animations */
@@ -213,61 +203,6 @@
         .mobile-touch-target {
             min-height: 48px;
             min-width: 48px;
-        }
-
-        /* Biometric button styles */
-        .biometric-btn {
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: white;
-            border: none;
-            font-weight: 600;
-            padding: 16px 24px;
-            border-radius: 12px;
-            font-size: 16px;
-            transition: all 0.2s ease;
-            min-height: 52px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-            margin-bottom: 12px;
-        }
-
-        .biometric-btn:active {
-            transform: scale(0.95);
-        }
-
-        .biometric-btn:disabled {
-            background: #9ca3af;
-            box-shadow: none;
-            cursor: not-allowed;
-        }
-
-        .biometric-btn.authenticating {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-        }
-
-        .divider {
-            display: flex;
-            align-items: center;
-            text-align: center;
-            margin: 20px 0;
-        }
-
-        .divider::before,
-        .divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: #e5e7eb;
-        }
-
-        .divider span {
-            padding: 0 16px;
-            color: #6b7280;
-            font-size: 14px;
-            font-weight: 500;
         }
 
         /* Prevent zoom on input focus for mobile */
@@ -478,17 +413,6 @@
                 <h2 class="text-2xl font-bold text-gray-800 mb-2">Welcome back</h2>
                 <p class="text-gray-600 mb-6 text-sm">Sign in to your account to continue</p>
 
-                <!-- Biometric Login Button (Desktop) -->
-                <div id="biometric-section-desktop" style="display: none;">
-                    <button type="button" id="biometric-login-desktop" class="biometric-btn w-full">
-                        <i class="fas fa-fingerprint animate-fingerprint"></i>
-                        <span>Login with Fingerprint</span>
-                    </button>
-                    <div class="divider">
-                        <span>or continue with password</span>
-                    </div>
-                </div>
-
                 <form id="kc-form-login-desktop" class="space-y-5" action="${url.loginAction}" method="post">
                     <!-- Username/Email -->
                     <div>
@@ -588,17 +512,6 @@
     <div class="mobile-content">
         <div class="mobile-form-container">
             <div class="mobile-glass-effect mobile-form-card mobile-fade-in" style="animation-delay: 0.2s">
-                <!-- Biometric Login Button (Mobile) -->
-                <div id="biometric-section-mobile" style="display: none;">
-                    <button type="button" id="biometric-login-mobile" class="biometric-btn mobile-btn-active mobile-touch-target mobile-button w-full">
-                        <i class="fas fa-fingerprint animate-fingerprint"></i>
-                        <span>Login with Fingerprint</span>
-                    </button>
-                    <div class="divider">
-                        <span>or continue with password</span>
-                    </div>
-                </div>
-
                 <form id="kc-form-login-mobile" action="${url.loginAction}" method="post" class="space-y-6">
                     <!-- Username/Email -->
                     <div class="mobile-slide-down" style="animation-delay: 0.3s">
@@ -655,13 +568,30 @@
                         </div>
                     </#if>
 
+                    <!-- Biometric Login Button -->
+                    <div class="mobile-slide-down" style="animation-delay: 0.55s">
+                        <button type="button" id="biometric-login-btn"
+                                class="mobile-btn-active mobile-touch-target mobile-button w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white focus:outline-none focus:ring-4 focus:ring-purple-300 transition-all duration-200 flex items-center justify-center gap-2"
+                                onclick="attemptBiometricLogin()" style="display: none;">
+                            <i class="fas fa-fingerprint"></i>
+                            Login with Biometrics
+                        </button>
+                    </div>
+
+                    <!-- OR Divider -->
+                    <div class="mobile-slide-down flex items-center gap-4 my-4" id="login-divider" style="animation-delay: 0.58s; display: none;">
+                        <div class="flex-1 h-px bg-gray-300"></div>
+                        <span class="text-sm text-gray-500 font-medium">OR</span>
+                        <div class="flex-1 h-px bg-gray-300"></div>
+                    </div>
+
                     <!-- Submit Button -->
                     <div class="mobile-slide-down" style="animation-delay: 0.6s">
                         <input type="hidden" name="credentialId" id="id-hidden-input-mobile"
                                <#if auth.selectedCredential?has_content>value="${auth.selectedCredential}"</#if>/>
                         <button type="submit" id="kc-login-mobile"
                                 class="animate-gradient mobile-btn-active mobile-touch-target mobile-button w-full text-white focus:outline-none focus:ring-4 focus:ring-blue-300 transition-all duration-200">
-                            ${msg("doLogIn")}
+                            <span id="login-btn-text">${msg("doLogIn")}</span>
                         </button>
                     </div>
                 </form>
@@ -702,142 +632,6 @@
 </div>
 
 <script>
-    // Biometric authentication functionality
-    class BiometricAuth {
-        constructor() {
-            this.isSupported = false;
-            this.isAvailable = false;
-            this.credentialId = null;
-            this.init();
-        }
-
-        async init() {
-            await this.checkSupport();
-            await this.checkAvailability();
-            this.setupUI();
-        }
-
-        async checkSupport() {
-            this.isSupported = window.PublicKeyCredential &&
-                              typeof window.PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable === 'function';
-        }
-
-        async checkAvailability() {
-            if (!this.isSupported) return;
-
-            try {
-                this.isAvailable = await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
-                this.credentialId = localStorage.getItem('biometric-credential-id');
-            } catch (error) {
-                console.error('Error checking biometric availability:', error);
-                this.isAvailable = false;
-            }
-        }
-
-        setupUI() {
-            const desktopSection = document.getElementById('biometric-section-desktop');
-            const mobileSection = document.getElementById('biometric-section-mobile');
-            const desktopBtn = document.getElementById('biometric-login-desktop');
-            const mobileBtn = document.getElementById('biometric-login-mobile');
-
-            if (this.isSupported && this.isAvailable && this.credentialId) {
-                if (desktopSection) desktopSection.style.display = 'block';
-                if (mobileSection) mobileSection.style.display = 'block';
-
-                if (desktopBtn) desktopBtn.addEventListener('click', () => this.authenticate('desktop'));
-                if (mobileBtn) mobileBtn.addEventListener('click', () => this.authenticate('mobile'));
-            }
-        }
-
-        async authenticate(platform) {
-            const btn = document.getElementById(`biometric-login-${platform}`);
-            const icon = btn.querySelector('i');
-            const span = btn.querySelector('span');
-
-            try {
-                // Update UI to show authentication in progress
-                btn.classList.add('authenticating');
-                btn.disabled = true;
-                icon.classList.remove('animate-fingerprint');
-                icon.classList.add('fa-spin');
-                span.textContent = 'Authenticating...';
-
-                // Perform WebAuthn authentication
-                const credential = await navigator.credentials.get({
-                    publicKey: {
-                        challenge: new Uint8Array(32),
-                        allowCredentials: [{
-                            id: this.base64ToArrayBuffer(this.credentialId),
-                            type: 'public-key'
-                        }],
-                        userVerification: 'required',
-                        timeout: 60000
-                    }
-                });
-
-                if (credential) {
-                    // Authentication successful - submit form with biometric flag
-                    const form = document.getElementById(`kc-form-login-${platform}`);
-                    const hiddenInput = document.createElement('input');
-                    hiddenInput.type = 'hidden';
-                    hiddenInput.name = 'biometric-auth';
-                    hiddenInput.value = 'true';
-                    form.appendChild(hiddenInput);
-
-                    // Auto-fill username if available
-                    const usernameInput = document.getElementById(`username-${platform}`);
-                    const storedUsername = localStorage.getItem('biometric-username');
-                    if (usernameInput && storedUsername) {
-                        usernameInput.value = storedUsername;
-                    }
-
-                    form.submit();
-                }
-            } catch (error) {
-                console.error('Biometric authentication failed:', error);
-
-                // Reset UI
-                btn.classList.remove('authenticating');
-                btn.disabled = false;
-                icon.classList.remove('fa-spin');
-                icon.classList.add('animate-fingerprint');
-                span.textContent = 'Login with Fingerprint';
-
-                // Show error message
-                this.showError(platform, 'Biometric authentication failed. Please try again or use your password.');
-            }
-        }
-
-        base64ToArrayBuffer(base64) {
-            const binaryString = window.atob(base64);
-            const bytes = new Uint8Array(binaryString.length);
-            for (let i = 0; i < binaryString.length; i++) {
-                bytes[i] = binaryString.charCodeAt(i);
-            }
-            return bytes.buffer;
-        }
-
-        showError(platform, message) {
-            // Create or update error message
-            let errorDiv = document.getElementById(`biometric-error-${platform}`);
-            if (!errorDiv) {
-                errorDiv = document.createElement('div');
-                errorDiv.id = `biometric-error-${platform}`;
-                errorDiv.className = 'text-red-600 text-sm mt-2 font-medium';
-
-                const section = document.getElementById(`biometric-section-${platform}`);
-                section.appendChild(errorDiv);
-            }
-
-            errorDiv.textContent = message;
-
-            // Auto-hide after 5 seconds
-            setTimeout(() => {
-                if (errorDiv) errorDiv.remove();
-            }, 5000);
-        }
-    }
-
     // Password toggle functionality for desktop
     document.getElementById("togglePasswordDesktop").addEventListener("click", function () {
         const pwd = document.getElementById("password-desktop");
@@ -877,12 +671,6 @@
 
         if (form && submitBtn) {
             form.addEventListener("submit", function(e) {
-                // Store username for biometric authentication
-                const usernameInput = form.querySelector('input[name="username"]');
-                if (usernameInput && usernameInput.value) {
-                    localStorage.setItem('biometric-username', usernameInput.value);
-                }
-
                 submitBtn.disabled = true;
                 submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Signing in...';
             });
@@ -892,15 +680,135 @@
     setupFormValidation("kc-form-login-desktop", "kc-login-desktop");
     setupFormValidation("kc-form-login-mobile", "kc-login-mobile");
 
-    // Initialize biometric authentication
-    const biometricAuth = new BiometricAuth();
+    // Biometric authentication functions
+    async function attemptBiometricLogin() {
+        const biometricBtn = document.getElementById('biometric-login-btn');
+        const originalText = biometricBtn.innerHTML;
 
-    // Auto-focus first input on load
+        try {
+            biometricBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Authenticating...';
+            biometricBtn.disabled = true;
+
+            // Check if WebAuthn is supported
+            if (!window.PublicKeyCredential) {
+                throw new Error('Biometric authentication is not supported');
+            }
+
+            // Get authentication options
+            const optionsResponse = await fetch('/mobile/biometric/auth-options', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            });
+
+            if (!optionsResponse.ok) {
+                throw new Error('Failed to get authentication options');
+            }
+
+            const options = await optionsResponse.json();
+
+            // Convert base64 strings to ArrayBuffers
+            options.challenge = base64ToArrayBuffer(options.challenge);
+            if (options.allowCredentials) {
+                options.allowCredentials.forEach(cred => {
+                    cred.id = base64ToArrayBuffer(cred.id);
+                });
+            }
+
+            // Get assertion
+            const assertion = await navigator.credentials.get({
+                publicKey: options
+            });
+
+            // Verify with server
+            const verifyData = new FormData();
+            verifyData.append('id', assertion.id);
+            verifyData.append('signature', arrayBufferToBase64(assertion.response.signature));
+            verifyData.append('authenticatorData', arrayBufferToBase64(assertion.response.authenticatorData));
+            verifyData.append('clientDataJSON', arrayBufferToBase64(assertion.response.clientDataJSON));
+
+            const verifyResponse = await fetch('/mobile/biometric/authenticate', {
+                method: 'POST',
+                body: verifyData
+            });
+
+            if (verifyResponse.ok) {
+                // Successful biometric authentication - redirect to main app
+                window.location.href = '/mobile';
+            } else {
+                throw new Error('Biometric authentication failed');
+            }
+
+        } catch (error) {
+            console.error('Biometric login error:', error);
+            biometricBtn.innerHTML = originalText;
+            biometricBtn.disabled = false;
+
+            // Show error feedback
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'text-red-600 text-sm mt-2 font-medium';
+            errorDiv.textContent = 'Biometric authentication failed. Please use password login.';
+            biometricBtn.parentNode.appendChild(errorDiv);
+
+            setTimeout(() => {
+                if (errorDiv.parentNode) {
+                    errorDiv.parentNode.removeChild(errorDiv);
+                }
+            }, 3000);
+        }
+    }
+
+    // Check if user has biometric enabled and show/hide biometric button
+    async function checkBiometricAvailability() {
+        try {
+            // Only show biometric option if WebAuthn is supported and we're on mobile
+            if (window.PublicKeyCredential && window.innerWidth < 1024) {
+                // You might want to check with your backend if user has biometric enabled
+                // For now, we'll show it if WebAuthn is available
+                const biometricBtn = document.getElementById('biometric-login-btn');
+                const divider = document.getElementById('login-divider');
+                const loginBtnText = document.getElementById('login-btn-text');
+
+                if (biometricBtn && divider && loginBtnText) {
+                    biometricBtn.style.display = 'flex';
+                    divider.style.display = 'flex';
+                    loginBtnText.textContent = 'Login with Password';
+                }
+            }
+        } catch (error) {
+            console.log('Biometric check failed:', error);
+        }
+    }
+
+    // Utility functions for WebAuthn
+    function base64ToArrayBuffer(base64) {
+        const binaryString = atob(base64.replace(/-/g, '+').replace(/_/g, '/'));
+        const bytes = new Uint8Array(binaryString.length);
+        for (let i = 0; i < binaryString.length; i++) {
+            bytes[i] = binaryString.charCodeAt(i);
+        }
+        return bytes.buffer;
+    }
+
+    function arrayBufferToBase64(buffer) {
+        const bytes = new Uint8Array(buffer);
+        let binary = '';
+        for (let i = 0; i < bytes.byteLength; i++) {
+            binary += String.fromCharCode(bytes[i]);
+        }
+        return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+    }
+
+    // Auto-focus first input on load and check biometric availability
     window.addEventListener("load", function() {
         const isDesktop = window.innerWidth >= 1024;
         const usernameInput = document.getElementById(isDesktop ? "username-desktop" : "username-mobile");
         if (usernameInput) {
             usernameInput.focus();
+        }
+
+        // Check biometric availability for mobile
+        if (!isDesktop) {
+            checkBiometricAvailability();
         }
     });
 </script>
