@@ -568,30 +568,13 @@
                         </div>
                     </#if>
 
-                    <!-- Biometric Login Button -->
-                    <div class="mobile-slide-down" style="animation-delay: 0.55s">
-                        <button type="button" id="biometric-login-btn"
-                                class="mobile-btn-active mobile-touch-target mobile-button w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white focus:outline-none focus:ring-4 focus:ring-purple-300 transition-all duration-200 flex items-center justify-center gap-2"
-                                onclick="attemptBiometricLogin()" style="display: none;">
-                            <i class="fas fa-fingerprint"></i>
-                            Login with Biometrics
-                        </button>
-                    </div>
-
-                    <!-- OR Divider -->
-                    <div class="mobile-slide-down flex items-center gap-4 my-4" id="login-divider" style="animation-delay: 0.58s; display: none;">
-                        <div class="flex-1 h-px bg-gray-300"></div>
-                        <span class="text-sm text-gray-500 font-medium">OR</span>
-                        <div class="flex-1 h-px bg-gray-300"></div>
-                    </div>
-
                     <!-- Submit Button -->
                     <div class="mobile-slide-down" style="animation-delay: 0.6s">
                         <input type="hidden" name="credentialId" id="id-hidden-input-mobile"
                                <#if auth.selectedCredential?has_content>value="${auth.selectedCredential}"</#if>/>
                         <button type="submit" id="kc-login-mobile"
                                 class="animate-gradient mobile-btn-active mobile-touch-target mobile-button w-full text-white focus:outline-none focus:ring-4 focus:ring-blue-300 transition-all duration-200">
-                            <span id="login-btn-text">${msg("doLogIn")}</span>
+                            ${msg("doLogIn")}
                         </button>
                     </div>
                 </form>
@@ -680,135 +663,12 @@
     setupFormValidation("kc-form-login-desktop", "kc-login-desktop");
     setupFormValidation("kc-form-login-mobile", "kc-login-mobile");
 
-    // Biometric authentication functions
-    async function attemptBiometricLogin() {
-        const biometricBtn = document.getElementById('biometric-login-btn');
-        const originalText = biometricBtn.innerHTML;
-
-        try {
-            biometricBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Authenticating...';
-            biometricBtn.disabled = true;
-
-            // Check if WebAuthn is supported
-            if (!window.PublicKeyCredential) {
-                throw new Error('Biometric authentication is not supported');
-            }
-
-            // Get authentication options
-            const optionsResponse = await fetch('/mobile/biometric/auth-options', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' }
-            });
-
-            if (!optionsResponse.ok) {
-                throw new Error('Failed to get authentication options');
-            }
-
-            const options = await optionsResponse.json();
-
-            // Convert base64 strings to ArrayBuffers
-            options.challenge = base64ToArrayBuffer(options.challenge);
-            if (options.allowCredentials) {
-                options.allowCredentials.forEach(cred => {
-                    cred.id = base64ToArrayBuffer(cred.id);
-                });
-            }
-
-            // Get assertion
-            const assertion = await navigator.credentials.get({
-                publicKey: options
-            });
-
-            // Verify with server
-            const verifyData = new FormData();
-            verifyData.append('id', assertion.id);
-            verifyData.append('signature', arrayBufferToBase64(assertion.response.signature));
-            verifyData.append('authenticatorData', arrayBufferToBase64(assertion.response.authenticatorData));
-            verifyData.append('clientDataJSON', arrayBufferToBase64(assertion.response.clientDataJSON));
-
-            const verifyResponse = await fetch('/mobile/biometric/authenticate', {
-                method: 'POST',
-                body: verifyData
-            });
-
-            if (verifyResponse.ok) {
-                // Successful biometric authentication - redirect to main app
-                window.location.href = '/mobile';
-            } else {
-                throw new Error('Biometric authentication failed');
-            }
-
-        } catch (error) {
-            console.error('Biometric login error:', error);
-            biometricBtn.innerHTML = originalText;
-            biometricBtn.disabled = false;
-
-            // Show error feedback
-            const errorDiv = document.createElement('div');
-            errorDiv.className = 'text-red-600 text-sm mt-2 font-medium';
-            errorDiv.textContent = 'Biometric authentication failed. Please use password login.';
-            biometricBtn.parentNode.appendChild(errorDiv);
-
-            setTimeout(() => {
-                if (errorDiv.parentNode) {
-                    errorDiv.parentNode.removeChild(errorDiv);
-                }
-            }, 3000);
-        }
-    }
-
-    // Check if user has biometric enabled and show/hide biometric button
-    async function checkBiometricAvailability() {
-        try {
-            // Only show biometric option if WebAuthn is supported and we're on mobile
-            if (window.PublicKeyCredential && window.innerWidth < 1024) {
-                // You might want to check with your backend if user has biometric enabled
-                // For now, we'll show it if WebAuthn is available
-                const biometricBtn = document.getElementById('biometric-login-btn');
-                const divider = document.getElementById('login-divider');
-                const loginBtnText = document.getElementById('login-btn-text');
-
-                if (biometricBtn && divider && loginBtnText) {
-                    biometricBtn.style.display = 'flex';
-                    divider.style.display = 'flex';
-                    loginBtnText.textContent = 'Login with Password';
-                }
-            }
-        } catch (error) {
-            console.log('Biometric check failed:', error);
-        }
-    }
-
-    // Utility functions for WebAuthn
-    function base64ToArrayBuffer(base64) {
-        const binaryString = atob(base64.replace(/-/g, '+').replace(/_/g, '/'));
-        const bytes = new Uint8Array(binaryString.length);
-        for (let i = 0; i < binaryString.length; i++) {
-            bytes[i] = binaryString.charCodeAt(i);
-        }
-        return bytes.buffer;
-    }
-
-    function arrayBufferToBase64(buffer) {
-        const bytes = new Uint8Array(buffer);
-        let binary = '';
-        for (let i = 0; i < bytes.byteLength; i++) {
-            binary += String.fromCharCode(bytes[i]);
-        }
-        return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
-    }
-
-    // Auto-focus first input on load and check biometric availability
+    // Auto-focus first input on load
     window.addEventListener("load", function() {
         const isDesktop = window.innerWidth >= 1024;
         const usernameInput = document.getElementById(isDesktop ? "username-desktop" : "username-mobile");
         if (usernameInput) {
             usernameInput.focus();
-        }
-
-        // Check biometric availability for mobile
-        if (!isDesktop) {
-            checkBiometricAvailability();
         }
     });
 </script>
