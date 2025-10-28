@@ -328,6 +328,28 @@
                 font-size: 1.125rem;
             }
         }
+
+        /* Biometric button styles */
+        .biometric-btn {
+            background: linear-gradient(135deg, #8b5cf6, #6366f1);
+            transition: all 0.3s ease;
+        }
+
+        .biometric-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+        }
+
+        .biometric-btn:active {
+            transform: scale(0.98);
+        }
+
+        .biometric-btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
     </style>
 <#elseif section = "form">
 
@@ -513,8 +535,27 @@
         <div class="mobile-form-container">
             <div class="mobile-glass-effect mobile-form-card mobile-fade-in" style="animation-delay: 0.2s">
                 <form id="kc-form-login-mobile" action="${url.loginAction}" method="post" class="space-y-6">
-                    <!-- Username/Email -->
+                    <!-- Biometric Login Button (Mobile Only) -->
                     <div class="mobile-slide-down" style="animation-delay: 0.3s">
+                        <button type="button" id="biometric-login-btn-mobile"
+                                class="biometric-btn mobile-btn-active mobile-touch-target mobile-button w-full text-white focus:outline-none focus:ring-4 focus:ring-purple-300 transition-all duration-200 flex items-center justify-center gap-3"
+                                onclick="startMobileBiometricLogin()" style="display: none;">
+                            <i class="fas fa-fingerprint text-lg"></i>
+                            <span>Login with Biometrics</span>
+                        </button>
+
+                        <div id="biometric-divider" class="relative mt-4" style="display: none;">
+                            <div class="absolute inset-0 flex items-center">
+                                <div class="w-full border-t border-gray-300"></div>
+                            </div>
+                            <div class="relative flex justify-center text-sm">
+                                <span class="px-2 bg-white text-gray-500">or</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Username/Email -->
+                    <div class="mobile-slide-down" style="animation-delay: 0.4s">
                         <label for="username-mobile" class="block text-sm font-semibold text-gray-700 mb-3">
                             <#if !realm.loginWithEmailAllowed>${msg("username")}
                             <#elseif !realm.registrationEmailAsUsername>${msg("usernameOrEmail")}
@@ -537,7 +578,7 @@
                     </div>
 
                     <!-- Password -->
-                    <div class="mobile-slide-down" style="animation-delay: 0.4s">
+                    <div class="mobile-slide-down" style="animation-delay: 0.5s">
                         <div class="flex justify-between items-center mb-3">
                             <label for="password-mobile" class="block text-sm font-semibold text-gray-700">${msg("password")}</label>
                             <#if realm.resetPasswordAllowed>
@@ -560,7 +601,7 @@
 
                     <!-- Remember Me -->
                     <#if realm.rememberMe>
-                        <div class="flex items-center mobile-slide-down" style="animation-delay: 0.5s">
+                        <div class="flex items-center mobile-slide-down" style="animation-delay: 0.6s">
                             <input type="checkbox" id="rememberMe-mobile" name="rememberMe"
                                    class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                                    <#if login.rememberMe??>checked</#if>/>
@@ -569,7 +610,7 @@
                     </#if>
 
                     <!-- Submit Button -->
-                    <div class="mobile-slide-down" style="animation-delay: 0.6s">
+                    <div class="mobile-slide-down" style="animation-delay: 0.7s">
                         <input type="hidden" name="credentialId" id="id-hidden-input-mobile"
                                <#if auth.selectedCredential?has_content>value="${auth.selectedCredential}"</#if>/>
                         <button type="submit" id="kc-login-mobile"
@@ -582,7 +623,7 @@
 
             <!-- Sign up link -->
             <#if realm.password && realm.registrationAllowed && !registrationDisabled??>
-                <div class="text-center mt-8 mobile-slide-down" style="animation-delay: 0.7s">
+                <div class="text-center mt-8 mobile-slide-down" style="animation-delay: 0.8s">
                     <p class="text-gray-600">
                         Don't have an account?
                         <a href="${url.registrationUrl}" class="text-blue-600 font-semibold">Sign up</a>
@@ -591,7 +632,7 @@
             </#if>
 
             <!-- Trust indicators -->
-            <div class="mt-8 text-center mobile-slide-down" style="animation-delay: 0.8s">
+            <div class="mt-8 text-center mobile-slide-down" style="animation-delay: 0.9s">
                 <div class="flex justify-center items-center space-x-4 mb-4">
                     <div class="flex items-center space-x-1">
                         <i class="fas fa-shield-alt text-green-500"></i>
@@ -663,6 +704,60 @@
     setupFormValidation("kc-form-login-desktop", "kc-login-desktop");
     setupFormValidation("kc-form-login-mobile", "kc-login-mobile");
 
+    // Mobile biometric login function
+    async function startMobileBiometricLogin() {
+        const btn = document.getElementById('biometric-login-btn-mobile');
+        const originalText = btn.innerHTML;
+
+        try {
+            // Check if we're on mobile
+            if (window.innerWidth >= 1024) {
+                alert('Biometric login is only available on mobile devices');
+                return;
+            }
+
+            // Check WebAuthn support
+            if (!window.PublicKeyCredential) {
+                alert('Biometric authentication is not supported on this device');
+                return;
+            }
+
+            // Update button state
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin text-lg"></i><span>Authenticating...</span>';
+            btn.disabled = true;
+
+            // Redirect to biometric login page
+            window.location.href = '/biometric/login';
+
+        } catch (error) {
+            console.error('Biometric login error:', error);
+            alert('Failed to start biometric login: ' + error.message);
+
+            // Reset button
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        }
+    }
+
+    // Check if biometric login should be shown
+    function checkBiometricAvailability() {
+        const biometricBtn = document.getElementById('biometric-login-btn-mobile');
+        const biometricDivider = document.getElementById('biometric-divider');
+
+        if (biometricBtn && biometricDivider) {
+            // Only show on mobile and if WebAuthn is supported
+            if (window.innerWidth < 1024 && window.PublicKeyCredential) {
+                biometricBtn.style.display = 'flex';
+                biometricDivider.style.display = 'block';
+                console.log('Biometric login enabled for mobile');
+            } else {
+                biometricBtn.style.display = 'none';
+                biometricDivider.style.display = 'none';
+                console.log('Biometric login disabled - not mobile or WebAuthn not supported');
+            }
+        }
+    }
+
     // Auto-focus first input on load
     window.addEventListener("load", function() {
         const isDesktop = window.innerWidth >= 1024;
@@ -670,7 +765,13 @@
         if (usernameInput) {
             usernameInput.focus();
         }
+
+        // Check biometric availability
+        checkBiometricAvailability();
     });
+
+    // Check biometric availability on resize
+    window.addEventListener("resize", checkBiometricAvailability);
 </script>
 
 </#if>
