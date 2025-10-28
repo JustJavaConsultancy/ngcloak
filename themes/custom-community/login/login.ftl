@@ -745,10 +745,13 @@
             btn.innerHTML = '<i class="fas fa-spinner fa-spin text-lg"></i><span>Authenticating...</span>';
             btn.disabled = true;
 
+            const apiBaseUrl = getApiBaseUrl();
+
             // Get authentication options
-            const optionsResponse = await fetch('/biometric/auth-options', {
+            const optionsResponse = await fetch(`${apiBaseUrl}/biometric/auth-options`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' }
+                headers: { 'Content-Type': 'application/json' },
+                mode: 'cors'
             });
 
             if (!optionsResponse.ok) {
@@ -777,29 +780,55 @@
             verifyData.append('authenticatorData', arrayBufferToBase64(assertion.response.authenticatorData));
             verifyData.append('clientDataJSON', arrayBufferToBase64(assertion.response.clientDataJSON));
 
-            const verifyResponse = await fetch('/biometric/authenticate', {
+            const verifyResponse = await fetch(`${apiBaseUrl}/biometric/authenticate`, {
                 method: 'POST',
-                body: verifyData
+                body: verifyData,
+                mode: 'cors'
             });
 
             const result = await verifyResponse.json();
 
             if (result.success) {
                 btn.innerHTML = '<i class="fas fa-check text-lg"></i><span>Success! Redirecting...</span>';
-                // Redirect to the main app
-                window.location.href = result.redirectUrl || '/mobile';
+
+                // For cross-domain authentication, we need to handle the redirect differently
+                // Create a form to submit to Keycloak with the authenticated user info
+                if (apiBaseUrl) {
+                    // Cross-domain scenario - redirect to main app
+                    window.location.href = `${apiBaseUrl}${result.redirectUrl || '/mobile'}`;
+                } else {
+                    // Same domain scenario
+                    window.location.href = result.redirectUrl || '/mobile';
+                }
             } else {
                 throw new Error(result.message || 'Authentication failed');
             }
 
         } catch (error) {
             console.error('Biometric login error:', error);
-            alert('Biometric authentication failed: ' + error.message);
+
+            let errorMessage = 'Biometric authentication failed';
+            if (error.message.includes('Failed to fetch')) {
+                errorMessage = 'Unable to connect to authentication server. Please try password login.';
+            } else {
+                errorMessage += ': ' + error.message;
+            }
+
+            alert(errorMessage);
 
             // Reset button
             btn.innerHTML = originalText;
             btn.disabled = false;
         }
+    }
+
+    // Get the correct API base URL
+    function getApiBaseUrl() {
+        // If we're on the Keycloak domain, use the main app domain
+        if (window.location.hostname.includes('ngcloak.onrender.com')) {
+            return 'http://localhost:9011'; // Replace with your actual main app URL
+        }
+        return ''; // Use relative URLs if on the same domain
     }
 
     // Check if biometric login should be shown
@@ -811,10 +840,15 @@
             // Only show on mobile and if WebAuthn is supported
             if (window.innerWidth < 1024 && window.PublicKeyCredential) {
                 try {
+                    const apiBaseUrl = getApiBaseUrl();
+
                     // Check if any user has biometric credentials available
-                    const response = await fetch('/biometric/check-availability', {
+                    const response = await fetch(`${apiBaseUrl}/biometric/check-availability`, {
                         method: 'GET',
-                        headers: { 'Content-Type': 'application/json' }
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        mode: 'cors' // Enable CORS for cross-domain requests
                     });
 
                     if (response.ok) {
