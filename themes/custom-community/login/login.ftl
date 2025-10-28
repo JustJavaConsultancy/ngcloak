@@ -704,6 +704,25 @@
     setupFormValidation("kc-form-login-desktop", "kc-login-desktop");
     setupFormValidation("kc-form-login-mobile", "kc-login-mobile");
 
+    // Utility functions for WebAuthn
+    function base64ToArrayBuffer(base64) {
+        const binaryString = atob(base64.replace(/-/g, '+').replace(/_/g, '/'));
+        const bytes = new Uint8Array(binaryString.length);
+        for (let i = 0; i < binaryString.length; i++) {
+            bytes[i] = binaryString.charCodeAt(i);
+        }
+        return bytes.buffer;
+    }
+
+    function arrayBufferToBase64(buffer) {
+        const bytes = new Uint8Array(buffer);
+        let binary = '';
+        for (let i = 0; i < bytes.byteLength; i++) {
+            binary += String.fromCharCode(bytes[i]);
+        }
+        return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+    }
+
     // Mobile biometric login function
     async function startMobileBiometricLogin() {
         const btn = document.getElementById('biometric-login-btn-mobile');
@@ -726,12 +745,56 @@
             btn.innerHTML = '<i class="fas fa-spinner fa-spin text-lg"></i><span>Authenticating...</span>';
             btn.disabled = true;
 
-            // Redirect to biometric login page
-            window.location.href = '/biometric/login';
+            // Get authentication options
+            const optionsResponse = await fetch('/biometric/auth-options', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            });
+
+            if (!optionsResponse.ok) {
+                throw new Error('Failed to get authentication options');
+            }
+
+            const options = await optionsResponse.json();
+
+            // Convert base64 strings to ArrayBuffers
+            options.challenge = base64ToArrayBuffer(options.challenge);
+            if (options.allowCredentials) {
+                options.allowCredentials.forEach(cred => {
+                    cred.id = base64ToArrayBuffer(cred.id);
+                });
+            }
+
+            // Get assertion from biometric
+            const assertion = await navigator.credentials.get({
+                publicKey: options
+            });
+
+            // Verify with server
+            const verifyData = new FormData();
+            verifyData.append('id', assertion.id);
+            verifyData.append('signature', arrayBufferToBase64(assertion.response.signature));
+            verifyData.append('authenticatorData', arrayBufferToBase64(assertion.response.authenticatorData));
+            verifyData.append('clientDataJSON', arrayBufferToBase64(assertion.response.clientDataJSON));
+
+            const verifyResponse = await fetch('/biometric/authenticate', {
+                method: 'POST',
+                body: verifyData
+            });
+
+            const result = await verifyResponse.json();
+
+            if (result.success) {
+                btn.innerHTML = '<i class="fas fa-check text-lg"></i><span>Success! Redirecting...</span>';
+                // Redirect to the main app
+                window.location.href = result.redirectUrl || '/mobile';
+            } else {
+                throw new Error(result.message || 'Authentication failed');
+            }
 
         } catch (error) {
             console.error('Biometric login error:', error);
-            alert('Failed to start biometric login: ' + error.message);
+            alert('Biometric authentication failed: ' + error.message);
 
             // Reset button
             btn.innerHTML = originalText;
@@ -740,16 +803,43 @@
     }
 
     // Check if biometric login should be shown
-    function checkBiometricAvailability() {
+    async function checkBiometricAvailability() {
         const biometricBtn = document.getElementById('biometric-login-btn-mobile');
         const biometricDivider = document.getElementById('biometric-divider');
 
         if (biometricBtn && biometricDivider) {
             // Only show on mobile and if WebAuthn is supported
             if (window.innerWidth < 1024 && window.PublicKeyCredential) {
-                biometricBtn.style.display = 'flex';
-                biometricDivider.style.display = 'block';
-                console.log('Biometric login enabled for mobile');
+                try {
+                    // Check if any user has biometric credentials available
+                    const response = await fetch('/biometric/check-availability', {
+                        method: 'GET',
+                        headers: { 'Content-Type': 'application/json' }
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        if (result.available) {
+                            biometricBtn.style.display = 'flex';
+                            biometricDivider.style.display = 'block';
+                            console.log('Biometric login enabled for mobile - credentials available');
+                        } else {
+                            biometricBtn.style.display = 'none';
+                            biometricDivider.style.display = 'none';
+                            console.log('Biometric login disabled - no credentials available');
+                        }
+                    } else {
+                        // If endpoint fails, hide biometric option
+                        biometricBtn.style.display = 'none';
+                        biometricDivider.style.display = 'none';
+                        console.log('Biometric login disabled - endpoint not available');
+                    }
+                } catch (error) {
+                    // If there's an error, hide biometric option
+                    biometricBtn.style.display = 'none';
+                    biometricDivider.style.display = 'none';
+                    console.log('Biometric login disabled - error checking availability:', error);
+                }
             } else {
                 biometricBtn.style.display = 'none';
                 biometricDivider.style.display = 'none';
