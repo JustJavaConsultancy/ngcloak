@@ -1,6 +1,6 @@
 <#import "template.ftl" as layout>
-<@layout.registrationLayout displayMessage=!messagesPerField.existsError('username','password') displayInfo=(realm.password && realm.registrationAllowed && !registrationDisabled??); section>
-<#if section = "header">
+<@layout.registrationLayout displayMessage=!messagesPerField.existsError('username','password') displayInfo=realm.password && realm.registrationAllowed && !registrationDisabled??; section>
+<#if section == "header">
     <title>Connect - Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
@@ -328,10 +328,12 @@
                 font-size: 1.125rem;
             }
         }
+
+        body {
+            font-family: 'Be Vietnam Pro', 'Noto Sans', sans-serif;
+        }
     </style>
-<#elseif section = "form">
-<body class="bg-gradient-to-br from-blue-50 to-indigo-50 min-h-screen"
-      style="font-family: 'Be Vietnam Pro', 'Noto Sans', sans-serif">
+<#elseif section == "form">
 
 <!-- Desktop background -->
 <div class="desktop-background fixed top-0 left-0 w-full h-full overflow-hidden z-0">
@@ -615,9 +617,9 @@
 
 <script>
     // Password toggle functionality for desktop
-    const togglePasswordDesktop = document.getElementById("togglePasswordDesktop");
-    if (togglePasswordDesktop) {
-        togglePasswordDesktop.addEventListener("click", function () {
+    const toggleDesktop = document.getElementById("togglePasswordDesktop");
+    if (toggleDesktop) {
+        toggleDesktop.addEventListener("click", function () {
             const pwd = document.getElementById("password-desktop");
             const icon = this.querySelector("i");
 
@@ -634,9 +636,9 @@
     }
 
     // Password toggle functionality for mobile
-    const togglePasswordMobile = document.getElementById("togglePasswordMobile");
-    if (togglePasswordMobile) {
-        togglePasswordMobile.addEventListener("click", function () {
+    const toggleMobile = document.getElementById("togglePasswordMobile");
+    if (toggleMobile) {
+        toggleMobile.addEventListener("click", function () {
             const pwd = document.getElementById("password-mobile");
             const icon = this.querySelector("i");
 
@@ -677,6 +679,6 @@
         }
     });
 </script>
-</body>
+
 </#if>
 </@layout.registrationLayout>
