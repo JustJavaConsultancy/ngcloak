@@ -1,16 +1,10 @@
 <#import "template.ftl" as layout>
 <@layout.registrationLayout displayMessage=!messagesPerField.existsError('username','password') displayInfo=realm.password && realm.registrationAllowed && !registrationDisabled??; section>
 <#if section = "header">
-    <title>Connect - Login</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
-    <link rel="stylesheet" as="style" onload="this.rel='stylesheet'"
-          href="https://fonts.googleapis.com/css2?display=swap&family=Be+Vietnam+Pro:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900"/>
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
-          crossorigin="anonymous" referrerpolicy="no-referrer"/>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    ${msg("loginAccountTitle")}
+<#elseif section = "title">
+    Connect - Login
+<#elseif section = "form">
     <style>
         /* Hide default Keycloak elements */
         .login-pf-page-header,
@@ -103,18 +97,6 @@
             100% { background-position: 0% 50%; }
         }
 
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-        }
-
-        @keyframes fingerprint-pulse {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.1); opacity: 0.8; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
         /* Animation classes */
         .animate-fade-in {
             animation: fadeIn 0.6s ease-out forwards;
@@ -138,14 +120,6 @@
             animation: gradientShift 8s ease infinite;
         }
 
-        .animate-shake {
-            animation: shake 0.3s ease-in-out;
-        }
-
-        .animate-fingerprint {
-            animation: fingerprint-pulse 2s infinite ease-in-out;
-        }
-
         /* Mobile-specific animations */
         .mobile-fade-in {
             animation: fadeInUp 0.5s ease-out forwards;
@@ -165,7 +139,6 @@
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
 
-        /* Mobile button active state */
         .mobile-btn-active:active {
             transform: scale(0.98);
         }
@@ -203,8 +176,7 @@
         }
 
         /* Checkbox styling */
-        .checkbox:checked {
-            background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
+        input[type="checkbox"]:checked {
             background-color: #2a5dea;
             border-color: #2a5dea;
         }
@@ -213,61 +185,6 @@
         .mobile-touch-target {
             min-height: 48px;
             min-width: 48px;
-        }
-
-        /* Biometric button styles */
-        .biometric-btn {
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: white;
-            border: none;
-            font-weight: 600;
-            padding: 16px 24px;
-            border-radius: 12px;
-            font-size: 16px;
-            transition: all 0.2s ease;
-            min-height: 52px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-            margin-bottom: 12px;
-        }
-
-        .biometric-btn:active {
-            transform: scale(0.95);
-        }
-
-        .biometric-btn:disabled {
-            background: #9ca3af;
-            box-shadow: none;
-            cursor: not-allowed;
-        }
-
-        .biometric-btn.authenticating {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-        }
-
-        .divider {
-            display: flex;
-            align-items: center;
-            text-align: center;
-            margin: 20px 0;
-        }
-
-        .divider::before,
-        .divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: #e5e7eb;
-        }
-
-        .divider span {
-            padding: 0 16px;
-            color: #6b7280;
-            font-size: 14px;
-            font-weight: 500;
         }
 
         /* Prevent zoom on input focus for mobile */
@@ -307,7 +224,6 @@
                 width: 50% !important;
             }
 
-            /* Desktop-specific background */
             .desktop-background {
                 display: block;
             }
@@ -326,7 +242,6 @@
                 display: block !important;
             }
 
-            /* Mobile-specific background */
             .desktop-background {
                 display: none;
             }
@@ -334,7 +249,6 @@
                 display: block;
             }
 
-            /* Mobile-specific layout adjustments */
             .mobile-container {
                 min-height: 100vh;
                 display: flex;
@@ -361,7 +275,6 @@
                 margin: 0 auto;
             }
 
-            /* Mobile form styling */
             .mobile-form-card {
                 border-radius: 1.5rem;
                 padding: 2rem;
@@ -394,516 +307,368 @@
             }
         }
     </style>
-<#elseif section = "form">
 
-<body class="bg-gradient-to-br from-blue-50 to-indigo-50 min-h-screen"
-      style="font-family: 'Be Vietnam Pro', 'Noto Sans', sans-serif">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?display=swap&family=Be+Vietnam+Pro:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 
-<!-- Desktop background -->
-<div class="desktop-background fixed top-0 left-0 w-full h-full overflow-hidden z-0">
-    <div class="absolute -top-20 -left-20 w-72 h-72 bg-blue-200 rounded-full opacity-20 animate-float" style="animation-delay: 0s"></div>
-    <div class="absolute top-1/4 -right-20 w-64 h-64 bg-purple-200 rounded-full opacity-20 animate-float" style="animation-delay: 1s"></div>
-    <div class="absolute bottom-20 left-1/4 w-56 h-56 bg-indigo-200 rounded-full opacity-20 animate-float" style="animation-delay: 2s"></div>
-    <div class="absolute bottom-0 right-1/4 w-48 h-48 bg-blue-300 rounded-full opacity-20 animate-float" style="animation-delay: 3s"></div>
-</div>
+    <div style="font-family: 'Be Vietnam Pro', 'Noto Sans', sans-serif; background: linear-gradient(to bottom right, #eff6ff, #eef2ff); min-height: 100vh;">
 
-<!-- Mobile background -->
-<div class="mobile-background fixed inset-0 overflow-hidden z-0">
-    <div class="absolute -top-10 -left-10 w-40 h-40 bg-blue-200 rounded-full opacity-20"></div>
-    <div class="absolute top-1/4 -right-10 w-32 h-32 bg-purple-200 rounded-full opacity-20"></div>
-    <div class="absolute bottom-20 left-1/4 w-28 h-28 bg-indigo-200 rounded-full opacity-20"></div>
-</div>
-
-<!-- Desktop layout -->
-<div class="desktop-layout min-h-screen relative z-10">
-    <!-- Left branding panel (desktop only) -->
-    <div class="desktop-left-panel w-1/2 p-12 bg-gradient-to-br from-blue-600 to-purple-600 text-white">
-        <div class="flex items-center gap-3 mb-12 animate-fade-in">
-            <div class="size-10 animate-pulse-slow">
-                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M36.7273 44C33.9891 44 31.6043 39.8386 30.3636 33.69C29.123 39.8386 26.7382 44 24 44C21.2618 44 18.877 39.8386 17.6364 33.69C16.3957 39.8386 14.0109 44 11.2727 44C7.25611 44 4 35.0457 4 24C4 12.9543 7.25611 4 11.2727 4C14.0109 4 16.3957 8.16144 17.6364 14.31C18.877 8.16144 21.2618 4 24 4C26.7382 4 29.123 8.16144 30.3636 14.31C31.6043 8.16144 33.9891 4 36.7273 4C40.7439 4 44 12.9543 44 24C44 35.0457 40.7439 44 36.7273 44Z" fill="white"/>
-                </svg>
-            </div>
-            <h1 class="text-2xl font-bold">Connect</h1>
-        </div>
-        <div class="max-w-md animate-fade-in" style="animation-delay: 0.3s">
-            <h2 class="text-4xl font-bold mb-6">Join our community of professionals</h2>
-            <p class="text-lg opacity-90 mb-8 comtext">Connect with coaches, expand your network, and accelerate your career growth with our platform.</p>
-            <div class="space-y-6">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0 h-10 w-10 rounded-full bg-white bg-opacity-20 flex items-center justify-center mr-4">
-                        <i class="fas fa-users text-white"></i>
-                    </div>
-                    <p class="text-lg comtext">Connect with industry experts</p>
-                </div>
-                <div class="flex items-center">
-                    <div class="flex-shrink-0 h-10 w-10 rounded-full bg-white bg-opacity-20 flex items-center justify-center mr-4">
-                        <i class="fas fa-graduation-cap text-white"></i>
-                    </div>
-                    <p class="text-lg comtext">Personalized coaching sessions</p>
-                </div>
-                <div class="flex items-center">
-                    <div class="flex-shrink-0 h-10 w-10 rounded-full bg-white bg-opacity-20 flex items-center justify-center mr-4">
-                        <i class="fas fa-briefcase text-white"></i>
-                    </div>
-                    <p class="text-lg comtext">Career advancement opportunities</p>
-                </div>
-            </div>
-        </div>
-        <div class="animate-fade-in" style="animation-delay: 0.6s">
-            <div class="flex items-center space-x-2 mb-4">
-                <div class="w-8 h-8 rounded-full border-2 border-white overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=100&amp;q=80" alt="User" class="w-full h-full object-cover">
-                </div>
-                <div class="w-8 h-8 rounded-full border-2 border-white overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=100&amp;q=80" alt="User" class="w-full h-full object-cover">
-                </div>
-                <div class="w-8 h-8 rounded-full border-2 border-white overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=100&amp;q=80" alt="User" class="w-full h-full object-cover">
-                </div>
-                <div class="w-8 h-8 rounded-full border-2 border-white overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1519345182560-3f2917c472ef?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=100&amp;q=80" alt="User" class="w-full h-full object-cover">
-                </div>
-            </div>
-            <p class="text-sm opacity-80 comtext">
-                Join thousands of professionals who are already growing their careers with Connect
-            </p>
-        </div>
+    <!-- Desktop background -->
+    <div class="desktop-background" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: 0;">
+        <div style="position: absolute; top: -5rem; left: -5rem; width: 18rem; height: 18rem; background-color: #bfdbfe; border-radius: 9999px; opacity: 0.2;" class="animate-float"></div>
+        <div style="position: absolute; top: 25%; right: -5rem; width: 16rem; height: 16rem; background-color: #e9d5ff; border-radius: 9999px; opacity: 0.2; animation-delay: 1s;" class="animate-float"></div>
+        <div style="position: absolute; bottom: 5rem; left: 25%; width: 14rem; height: 14rem; background-color: #c7d2fe; border-radius: 9999px; opacity: 0.2; animation-delay: 2s;" class="animate-float"></div>
+        <div style="position: absolute; bottom: 0; right: 25%; width: 12rem; height: 12rem; background-color: #93c5fd; border-radius: 9999px; opacity: 0.2; animation-delay: 3s;" class="animate-float"></div>
     </div>
 
-    <!-- Desktop login form -->
-    <div class="responsive-right-panel w-1/2 flex items-center justify-center p-8">
-        <div class="w-full max-w-md">
-            <div class="glass-effect rounded-2xl shadow-xl p-8 animate-fade-in" style="animation-delay: 0.2s">
-                <h2 class="text-2xl font-bold text-gray-800 mb-2">Welcome back</h2>
-                <p class="text-gray-600 mb-6 text-sm">Sign in to your account to continue</p>
-
-                <!-- Biometric Login Button (Desktop) -->
-                <div id="biometric-section-desktop" style="display: none;">
-                    <button type="button" id="biometric-login-desktop" class="biometric-btn w-full">
-                        <i class="fas fa-fingerprint animate-fingerprint"></i>
-                        <span>Login with Fingerprint</span>
-                    </button>
-                    <div class="divider">
-                        <span>or continue with password</span>
-                    </div>
-                </div>
-
-                <form id="kc-form-login-desktop" class="space-y-5" action="${url.loginAction}" method="post">
-                    <!-- Username/Email -->
-                    <div>
-                        <label for="username-desktop" class="block text-sm font-medium text-gray-700 mb-1">
-                            <#if !realm.loginWithEmailAllowed>${msg("username")}
-                            <#elseif !realm.registrationEmailAsUsername>${msg("usernameOrEmail")}
-                            <#else>${msg("email")}</#if>
-                        </label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <i class="fas fa-envelope text-gray-400"></i>
-                            </div>
-                            <input type="text" id="username-desktop" name="username"
-                                   value="${(login.username!'')}"
-                                   class="input-focus pl-10 pr-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full transition-all duration-200"
-                                   autocomplete="username"
-                                   placeholder="you@example.com"
-                                   aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>"/>
-                        </div>
-                        <#if messagesPerField.existsError('username','password')>
-                            <p class="text-red-600 text-sm mt-1">${kcSanitize(messagesPerField.getFirstError('username','password'))?no_esc}</p>
-                        </#if>
-                    </div>
-
-                    <!-- Password -->
-                    <div>
-                        <div class="flex justify-between items-center mb-1">
-                            <label for="password-desktop" class="block text-sm font-medium text-gray-700">${msg("password")}</label>
-                            <#if realm.resetPasswordAllowed>
-                                <a href="${url.loginResetCredentialsUrl}" class="text-sm text-blue-600 hover:text-blue-800 transition-colors">${msg("doForgotPassword")}</a>
-                            </#if>
-                        </div>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <i class="fas fa-lock text-gray-400"></i>
-                            </div>
-                            <input type="password" id="password-desktop" name="password"
-                                   class="input-focus pl-10 pr-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full transition-all duration-200"
-                                   placeholder="••••••••"
-                                   autocomplete="current-password"/>
-                            <button type="button" id="togglePasswordDesktop" class="absolute inset-y-0 right-0 pr-3 flex items-center">
-                                <i class="fas fa-eye text-gray-400 hover:text-gray-600"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Remember Me -->
-                    <#if realm.rememberMe>
-                        <div class="flex items-center">
-                            <input type="checkbox" id="rememberMe-desktop" name="rememberMe"
-                                   class="checkbox h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                                   <#if login.rememberMe??>checked</#if>/>
-                            <label for="rememberMe-desktop" class="ml-2 block text-sm text-gray-700">${msg("rememberMe")}</label>
-                        </div>
-                    </#if>
-
-                    <!-- Submit -->
-                    <div>
-                        <input type="hidden" name="credentialId" id="id-hidden-input-desktop"
-                               <#if auth.selectedCredential?has_content>value="${auth.selectedCredential}"</#if>/>
-                        <button type="submit" id="kc-login-desktop"
-                                class="animate-gradient w-full py-3 px-4 rounded-lg text-white font-medium btn-transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                            ${msg("doLogIn")}
-                        </button>
-                    </div>
-                </form>
-            </div>
-
-            <#if realm.password && realm.registrationAllowed && !registrationDisabled??>
-                <p class="text-center text-sm text-gray-600 mt-4">
-                    Don't have an account?
-                    <a href="${url.registrationUrl}" class="text-blue-600 hover:underline">Create one</a>
-                </p>
-            </#if>
-        </div>
+    <!-- Mobile background -->
+    <div class="mobile-background" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; overflow: hidden; z-index: 0;">
+        <div style="position: absolute; top: -2.5rem; left: -2.5rem; width: 10rem; height: 10rem; background-color: #bfdbfe; border-radius: 9999px; opacity: 0.2;"></div>
+        <div style="position: absolute; top: 25%; right: -2.5rem; width: 8rem; height: 8rem; background-color: #e9d5ff; border-radius: 9999px; opacity: 0.2;"></div>
+        <div style="position: absolute; bottom: 5rem; left: 25%; width: 7rem; height: 7rem; background-color: #c7d2fe; border-radius: 9999px; opacity: 0.2;"></div>
     </div>
-</div>
 
-<!-- Mobile layout -->
-<div class="mobile-layout mobile-container relative z-10">
-    <!-- Mobile header -->
-    <div class="mobile-header">
-        <div class="text-center mobile-fade-in">
-            <div class="inline-flex items-center justify-center mb-4">
-                <div class="w-16 h-16">
+    <!-- Desktop layout -->
+    <div class="desktop-layout" style="min-height: 100vh; position: relative; z-index: 10;">
+        <!-- Left branding panel -->
+        <div class="desktop-left-panel" style="width: 50%; padding: 3rem; background: linear-gradient(to bottom right, #2563eb, #9333ea); color: white;">
+            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 3rem;" class="animate-fade-in">
+                <div style="width: 2.5rem; height: 2.5rem;" class="animate-pulse-slow">
                     <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M36.7273 44C33.9891 44 31.6043 39.8386 30.3636 33.69C29.123 39.8386 26.7382 44 24 44C21.2618 44 18.877 39.8386 17.6364 33.69C16.3957 39.8386 14.0109 44 11.2727 44C7.25611 44 4 35.0457 4 24C4 12.9543 7.25611 4 11.2727 4C14.0109 4 16.3957 8.16144 17.6364 14.31C18.877 8.16144 21.2618 4 24 4C26.7382 4 29.123 8.16144 30.3636 14.31C31.6043 8.16144 33.9891 4 36.7273 4C40.7439 4 44 12.9543 44 24C44 35.0457 40.7439 44 36.7273 44Z" fill="#2a5dea"/>
+                        <path d="M36.7273 44C33.9891 44 31.6043 39.8386 30.3636 33.69C29.123 39.8386 26.7382 44 24 44C21.2618 44 18.877 39.8386 17.6364 33.69C16.3957 39.8386 14.0109 44 11.2727 44C7.25611 44 4 35.0457 4 24C4 12.9543 7.25611 4 11.2727 4C14.0109 4 16.3957 8.16144 17.6364 14.31C18.877 8.16144 21.2618 4 24 4C26.7382 4 29.123 8.16144 30.3636 14.31C31.6043 8.16144 33.9891 4 36.7273 4C40.7439 4 44 12.9543 44 24C44 35.0457 40.7439 44 36.7273 44Z" fill="white"/>
                     </svg>
                 </div>
+                <h1 style="font-size: 1.5rem; font-weight: 700;">Connect</h1>
             </div>
-            <h1 class="text-4xl font-bold gradient-text mb-2">Connect</h1>
-            <p class="text-gray-600 text-lg">Welcome back</p>
-        </div>
-    </div>
-
-    <!-- Mobile content -->
-    <div class="mobile-content">
-        <div class="mobile-form-container">
-            <div class="mobile-glass-effect mobile-form-card mobile-fade-in" style="animation-delay: 0.2s">
-                <!-- Biometric Login Button (Mobile) -->
-                <div id="biometric-section-mobile" style="display: none;">
-                    <button type="button" id="biometric-login-mobile" class="biometric-btn mobile-btn-active mobile-touch-target mobile-button w-full">
-                        <i class="fas fa-fingerprint animate-fingerprint"></i>
-                        <span>Login with Fingerprint</span>
-                    </button>
-                    <div class="divider">
-                        <span>or continue with password</span>
+            <div style="max-width: 28rem; animation-delay: 0.3s;" class="animate-fade-in">
+                <h2 style="font-size: 2.25rem; font-weight: 700; margin-bottom: 1.5rem;">Join our community of professionals</h2>
+                <p style="font-size: 1.125rem; opacity: 0.9; margin-bottom: 2rem;" class="comtext">Connect with coaches, expand your network, and accelerate your career growth with our platform.</p>
+                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                    <div style="display: flex; align-items: center;">
+                        <div style="flex-shrink: 0; height: 2.5rem; width: 2.5rem; border-radius: 9999px; background-color: rgba(255, 255, 255, 0.2); display: flex; align-items: center; justify-content: center; margin-right: 1rem;">
+                            <i class="fas fa-users" style="color: white;"></i>
+                        </div>
+                        <p style="font-size: 1.125rem;" class="comtext">Connect with industry experts</p>
+                    </div>
+                    <div style="display: flex; align-items: center;">
+                        <div style="flex-shrink: 0; height: 2.5rem; width: 2.5rem; border-radius: 9999px; background-color: rgba(255, 255, 255, 0.2); display: flex; align-items: center; justify-content: center; margin-right: 1rem;">
+                            <i class="fas fa-graduation-cap" style="color: white;"></i>
+                        </div>
+                        <p style="font-size: 1.125rem;" class="comtext">Personalized coaching sessions</p>
+                    </div>
+                    <div style="display: flex; align-items: center;">
+                        <div style="flex-shrink: 0; height: 2.5rem; width: 2.5rem; border-radius: 9999px; background-color: rgba(255, 255, 255, 0.2); display: flex; align-items: center; justify-content: center; margin-right: 1rem;">
+                            <i class="fas fa-briefcase" style="color: white;"></i>
+                        </div>
+                        <p style="font-size: 1.125rem;" class="comtext">Career advancement opportunities</p>
                     </div>
                 </div>
-
-                <form id="kc-form-login-mobile" action="${url.loginAction}" method="post" class="space-y-6">
-                    <!-- Username/Email -->
-                    <div class="mobile-slide-down" style="animation-delay: 0.3s">
-                        <label for="username-mobile" class="block text-sm font-semibold text-gray-700 mb-3">
-                            <#if !realm.loginWithEmailAllowed>${msg("username")}
-                            <#elseif !realm.registrationEmailAsUsername>${msg("usernameOrEmail")}
-                            <#else>${msg("email")}</#if>
-                        </label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 mobile-icon-container flex items-center pointer-events-none">
-                                <i class="fas fa-envelope text-gray-400 mobile-icon"></i>
-                            </div>
-                            <input type="text" id="username-mobile" name="username"
-                                   value="${(login.username!'')}"
-                                   class="mobile-input-focus mobile-touch-target mobile-input mobile-input-with-icon border-gray-200 focus:outline-none w-full transition-all duration-200"
-                                   autocomplete="username"
-                                   placeholder="Enter your email"
-                                   aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>"/>
-                        </div>
-                        <#if messagesPerField.existsError('username','password')>
-                            <p class="text-red-600 text-sm mt-2 font-medium">${kcSanitize(messagesPerField.getFirstError('username','password'))?no_esc}</p>
-                        </#if>
-                    </div>
-
-                    <!-- Password -->
-                    <div class="mobile-slide-down" style="animation-delay: 0.4s">
-                        <div class="flex justify-between items-center mb-3">
-                            <label for="password-mobile" class="block text-sm font-semibold text-gray-700">${msg("password")}</label>
-                            <#if realm.resetPasswordAllowed>
-                                <a href="${url.loginResetCredentialsUrl}" class="text-sm text-blue-600 font-medium">Forgot?</a>
-                            </#if>
-                        </div>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 mobile-icon-container flex items-center pointer-events-none">
-                                <i class="fas fa-lock text-gray-400 mobile-icon"></i>
-                            </div>
-                            <input type="password" id="password-mobile" name="password"
-                                   class="mobile-input-focus mobile-touch-target mobile-input mobile-input-with-icon pr-14 border-gray-200 focus:outline-none w-full transition-all duration-200"
-                                   placeholder="Enter your password"
-                                   autocomplete="current-password"/>
-                            <button type="button" id="togglePasswordMobile" class="absolute inset-y-0 right-0 pr-4 flex items-center mobile-touch-target">
-                                <i class="fas fa-eye text-gray-400 mobile-icon"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Remember Me -->
-                    <#if realm.rememberMe>
-                        <div class="flex items-center mobile-slide-down" style="animation-delay: 0.5s">
-                            <input type="checkbox" id="rememberMe-mobile" name="rememberMe"
-                                   class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                                   <#if login.rememberMe??>checked</#if>/>
-                            <label for="rememberMe-mobile" class="ml-3 block text-sm text-gray-700 font-medium">${msg("rememberMe")}</label>
-                        </div>
-                    </#if>
-
-                    <!-- Submit Button -->
-                    <div class="mobile-slide-down" style="animation-delay: 0.6s">
-                        <input type="hidden" name="credentialId" id="id-hidden-input-mobile"
-                               <#if auth.selectedCredential?has_content>value="${auth.selectedCredential}"</#if>/>
-                        <button type="submit" id="kc-login-mobile"
-                                class="animate-gradient mobile-btn-active mobile-touch-target mobile-button w-full text-white focus:outline-none focus:ring-4 focus:ring-blue-300 transition-all duration-200">
-                            ${msg("doLogIn")}
-                        </button>
-                    </div>
-                </form>
             </div>
-
-            <!-- Sign up link -->
-            <#if realm.password && realm.registrationAllowed && !registrationDisabled??>
-                <div class="text-center mt-8 mobile-slide-down" style="animation-delay: 0.7s">
-                    <p class="text-gray-600">
-                        Don't have an account?
-                        <a href="${url.registrationUrl}" class="text-blue-600 font-semibold">Sign up</a>
-                    </p>
-                </div>
-            </#if>
-
-            <!-- Trust indicators -->
-            <div class="mt-8 text-center mobile-slide-down" style="animation-delay: 0.8s">
-                <div class="flex justify-center items-center space-x-4 mb-4">
-                    <div class="flex items-center space-x-1">
-                        <i class="fas fa-shield-alt text-green-500"></i>
-                        <span class="text-xs text-gray-600 font-medium">Secure</span>
+            <div style="animation-delay: 0.6s;" class="animate-fade-in">
+                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+                    <div style="width: 2rem; height: 2rem; border-radius: 9999px; border: 2px solid white; overflow: hidden;">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80" alt="User" style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
-                    <div class="flex items-center space-x-1">
-                        <i class="fas fa-lock text-blue-500"></i>
-                        <span class="text-xs text-gray-600 font-medium">Encrypted</span>
+                    <div style="width: 2rem; height: 2rem; border-radius: 9999px; border: 2px solid white; overflow: hidden;">
+                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&q=80" alt="User" style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
-                    <div class="flex items-center space-x-1">
-                        <i class="fas fa-users text-purple-500"></i>
-                        <span class="text-xs text-gray-600 font-medium">Trusted</span>
+                    <div style="width: 2rem; height: 2rem; border-radius: 9999px; border: 2px solid white; overflow: hidden;">
+                        <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&q=80" alt="User" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div style="width: 2rem; height: 2rem; border-radius: 9999px; border: 2px solid white; overflow: hidden;">
+                        <img src="https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=100&q=80" alt="User" style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
                 </div>
-                <p class="text-xs text-gray-500">
-                    Join thousands of professionals growing their careers
+                <p style="font-size: 0.875rem; opacity: 0.8;" class="comtext">
+                    Join thousands of professionals who are already growing their careers with Connect
                 </p>
             </div>
         </div>
+
+        <!-- Desktop login form -->
+        <div class="responsive-right-panel" style="width: 50%; display: flex; align-items: center; justify-content: center; padding: 2rem;">
+            <div style="width: 100%; max-width: 28rem;">
+                <div class="glass-effect animate-fade-in" style="border-radius: 1rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); padding: 2rem; animation-delay: 0.2s;">
+                    <h2 style="font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem;">Welcome back</h2>
+                    <p style="color: #4b5563; margin-bottom: 1.5rem; font-size: 0.875rem;">Sign in to your account to continue</p>
+
+                    <#if realm.password>
+                    <form id="kc-form-login" onsubmit="document.getElementById('kc-login').disabled = true; return true;" action="${url.loginAction}" method="post" style="display: flex; flex-direction: column; gap: 1.25rem;">
+                        <#if !usernameHidden??>
+                        <div>
+                            <label for="username" style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 0.25rem;">
+                                <#if !realm.loginWithEmailAllowed>${msg("username")}
+                                <#elseif !realm.registrationEmailAsUsername>${msg("usernameOrEmail")}
+                                <#else>${msg("email")}</#if>
+                            </label>
+                            <div style="position: relative;">
+                                <div style="position: absolute; top: 0; bottom: 0; left: 0; padding-left: 0.75rem; display: flex; align-items: center; pointer-events: none;">
+                                    <i class="fas fa-envelope" style="color: #9ca3af;"></i>
+                                </div>
+                                <input type="text" id="username" name="username" value="${(login.username!'')}"
+                                       class="input-focus" 
+                                       style="padding: 0.75rem 1rem 0.75rem 2.5rem; border-radius: 0.5rem; border: 1px solid #e5e7eb; outline: none; width: 100%; transition: all 0.2s;"
+                                       autocomplete="username"
+                                       placeholder="you@example.com"
+                                       autofocus
+                                       aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>"/>
+                            </div>
+                            <#if messagesPerField.existsError('username','password')>
+                                <p style="color: #dc2626; font-size: 0.875rem; margin-top: 0.25rem;">${kcSanitize(messagesPerField.getFirstError('username','password'))?no_esc}</p>
+                            </#if>
+                        </div>
+                        </#if>
+
+                        <div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+                                <label for="password" style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151;">${msg("password")}</label>
+                                <#if realm.resetPasswordAllowed>
+                                    <a href="${url.loginResetCredentialsUrl}" style="font-size: 0.875rem; color: #2563eb; transition: color 0.2s;" onmouseover="this.style.color='#1e40af'" onmouseout="this.style.color='#2563eb'">${msg("doForgotPassword")}</a>
+                                </#if>
+                            </div>
+                            <div style="position: relative;">
+                                <div style="position: absolute; top: 0; bottom: 0; left: 0; padding-left: 0.75rem; display: flex; align-items: center; pointer-events: none;">
+                                    <i class="fas fa-lock" style="color: #9ca3af;"></i>
+                                </div>
+                                <input type="password" id="password" name="password"
+                                       class="input-focus"
+                                       style="padding: 0.75rem 1rem 0.75rem 2.5rem; border-radius: 0.5rem; border: 1px solid #e5e7eb; outline: none; width: 100%; transition: all 0.2s;"
+                                       placeholder="••••••••"
+                                       autocomplete="current-password"
+                                       aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>"/>
+                                <button type="button" id="togglePassword" style="position: absolute; top: 0; bottom: 0; right: 0; padding-right: 0.75rem; display: flex; align-items: center; background: none; border: none; cursor: pointer;">
+                                    <i class="fas fa-eye" style="color: #9ca3af;"></i>
+                                </button>
+                            </div>
+                            <#if usernameHidden?? && messagesPerField.existsError('username','password')>
+                                <p style="color: #dc2626; font-size: 0.875rem; margin-top: 0.25rem;">${kcSanitize(messagesPerField.getFirstError('username','password'))?no_esc}</p>
+                            </#if>
+                        </div>
+
+                        <#if realm.rememberMe && !usernameHidden??>
+                        <div style="display: flex; align-items: center;">
+                            <input type="checkbox" id="rememberMe" name="rememberMe"
+                                   style="height: 1rem; width: 1rem; border-radius: 0.25rem; border: 1px solid #d1d5db;"
+                                   <#if login.rememberMe??>checked</#if>/>
+                            <label for="rememberMe" style="margin-left: 0.5rem; display: block; font-size: 0.875rem; color: #374151;">${msg("rememberMe")}</label>
+                        </div>
+                        </#if>
+
+                        <div>
+                            <input type="hidden" id="id-hidden-input" name="credentialId" <#if auth.selectedCredential?has_content>value="${auth.selectedCredential}"</#if>/>
+                            <button type="submit" id="kc-login"
+                                    class="animate-gradient btn-transition"
+                                    style="width: 100%; padding: 0.75rem 1rem; border-radius: 0.5rem; color: white; font-weight: 500; outline: none; border: none; cursor: pointer;">
+                                ${msg("doLogIn")}
+                            </button>
+                        </div>
+                    </form>
+                    </#if>
+                </div>
+
+                <#if realm.password && realm.registrationAllowed && !registrationDisabled??>
+                    <p style="text-align: center; font-size: 0.875rem; color: #4b5563; margin-top: 1rem;">
+                        Don't have an account?
+                        <a href="${url.registrationUrl}" style="color: #2563eb; text-decoration: underline;">Create one</a>
+                    </p>
+                </#if>
+            </div>
+        </div>
     </div>
-</div>
 
-<script>
-    // Biometric authentication functionality
-    class BiometricAuth {
-        constructor() {
-            this.isSupported = false;
-            this.isAvailable = false;
-            this.credentialId = null;
-            this.init();
-        }
+    <!-- Mobile layout -->
+    <div class="mobile-layout mobile-container" style="position: relative; z-index: 10;">
+        <!-- Mobile header -->
+        <div class="mobile-header">
+            <div class="mobile-fade-in" style="text-align: center;">
+                <div style="display: inline-flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                    <div style="width: 4rem; height: 4rem;">
+                        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M36.7273 44C33.9891 44 31.6043 39.8386 30.3636 33.69C29.123 39.8386 26.7382 44 24 44C21.2618 44 18.877 39.8386 17.6364 33.69C16.3957 39.8386 14.0109 44 11.2727 44C7.25611 44 4 35.0457 4 24C4 12.9543 7.25611 4 11.2727 4C14.0109 4 16.3957 8.16144 17.6364 14.31C18.877 8.16144 21.2618 4 24 4C26.7382 4 29.123 8.16144 30.3636 14.31C31.6043 8.16144 33.9891 4 36.7273 4C40.7439 4 44 12.9543 44 24C44 35.0457 40.7439 44 36.7273 44Z" fill="#2a5dea"/>
+                        </svg>
+                    </div>
+                </div>
+                <h1 class="gradient-text" style="font-size: 2.25rem; font-weight: 700; margin-bottom: 0.5rem;">Connect</h1>
+                <p style="color: #4b5563; font-size: 1.125rem;">Welcome back</p>
+            </div>
+        </div>
 
-        async init() {
-            await this.checkSupport();
-            await this.checkAvailability();
-            this.setupUI();
-        }
+        <!-- Mobile content -->
+        <div class="mobile-content">
+            <div class="mobile-form-container">
+                <div class="mobile-glass-effect mobile-form-card mobile-fade-in" style="animation-delay: 0.2s;">
+                    <#if realm.password>
+                    <form id="kc-form-login-mobile" onsubmit="document.getElementById('kc-login-mobile').disabled = true; return true;" action="${url.loginAction}" method="post" style="display: flex; flex-direction: column; gap: 1.5rem;">
+                        <#if !usernameHidden??>
+                        <div class="mobile-slide-down" style="animation-delay: 0.3s;">
+                            <label for="username-mobile" style="display: block; font-size: 0.875rem; font-weight: 600; color: #374151; margin-bottom: 0.75rem;">
+                                <#if !realm.loginWithEmailAllowed>${msg("username")}
+                                <#elseif !realm.registrationEmailAsUsername>${msg("usernameOrEmail")}
+                                <#else>${msg("email")}</#if>
+                            </label>
+                            <div style="position: relative;">
+                                <div class="mobile-icon-container" style="position: absolute; top: 0; bottom: 0; display: flex; align-items: center; pointer-events: none;">
+                                    <i class="fas fa-envelope mobile-icon" style="color: #9ca3af;"></i>
+                                </div>
+                                <input type="text" id="username-mobile" name="username" value="${(login.username!'')}"
+                                       class="mobile-input-focus mobile-touch-target mobile-input mobile-input-with-icon"
+                                       style="border: 2px solid #e5e7eb; outline: none; width: 100%; transition: all 0.2s;"
+                                       autocomplete="username"
+                                       placeholder="Enter your email"
+                                       aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>"/>
+                            </div>
+                            <#if messagesPerField.existsError('username','password')>
+                                <p style="color: #dc2626; font-size: 0.875rem; margin-top: 0.5rem; font-weight: 500;">${kcSanitize(messagesPerField.getFirstError('username','password'))?no_esc}</p>
+                            </#if>
+                        </div>
+                        </#if>
 
-        async checkSupport() {
-            this.isSupported = window.PublicKeyCredential &&
-                              typeof window.PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable === 'function';
-        }
+                        <div class="mobile-slide-down" style="animation-delay: 0.4s;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                                <label for="password-mobile" style="display: block; font-size: 0.875rem; font-weight: 600; color: #374151;">${msg("password")}</label>
+                                <#if realm.resetPasswordAllowed>
+                                    <a href="${url.loginResetCredentialsUrl}" style="font-size: 0.875rem; color: #2563eb; font-weight: 500;">Forgot?</a>
+                                </#if>
+                            </div>
+                            <div style="position: relative;">
+                                <div class="mobile-icon-container" style="position: absolute; top: 0; bottom: 0; display: flex; align-items: center; pointer-events: none;">
+                                    <i class="fas fa-lock mobile-icon" style="color: #9ca3af;"></i>
+                                </div>
+                                <input type="password" id="password-mobile" name="password"
+                                       class="mobile-input-focus mobile-touch-target mobile-input mobile-input-with-icon"
+                                       style="padding-right: 3.5rem; border: 2px solid #e5e7eb; outline: none; width: 100%; transition: all 0.2s;"
+                                       placeholder="Enter your password"
+                                       autocomplete="current-password"
+                                       aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>"/>
+                                <button type="button" id="togglePasswordMobile" class="mobile-touch-target" style="position: absolute; top: 0; bottom: 0; right: 0; padding-right: 1rem; display: flex; align-items: center; background: none; border: none; cursor: pointer;">
+                                    <i class="fas fa-eye mobile-icon" style="color: #9ca3af;"></i>
+                                </button>
+                            </div>
+                            <#if usernameHidden?? && messagesPerField.existsError('username','password')>
+                                <p style="color: #dc2626; font-size: 0.875rem; margin-top: 0.5rem; font-weight: 500;">${kcSanitize(messagesPerField.getFirstError('username','password'))?no_esc}</p>
+                            </#if>
+                        </div>
 
-        async checkAvailability() {
-            if (!this.isSupported) return;
+                        <#if realm.rememberMe && !usernameHidden??>
+                        <div class="mobile-slide-down" style="display: flex; align-items: center; animation-delay: 0.5s;">
+                            <input type="checkbox" id="rememberMe-mobile" name="rememberMe"
+                                   style="height: 1.25rem; width: 1.25rem; border-radius: 0.25rem; border: 1px solid #d1d5db;"
+                                   <#if login.rememberMe??>checked</#if>/>
+                            <label for="rememberMe-mobile" style="margin-left: 0.75rem; display: block; font-size: 0.875rem; color: #374151; font-weight: 500;">${msg("rememberMe")}</label>
+                        </div>
+                        </#if>
 
-            try {
-                this.isAvailable = await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
-                this.credentialId = localStorage.getItem('biometric-credential-id');
-            } catch (error) {
-                console.error('Error checking biometric availability:', error);
-                this.isAvailable = false;
-            }
-        }
+                        <div class="mobile-slide-down" style="animation-delay: 0.6s;">
+                            <input type="hidden" name="credentialId" id="id-hidden-input-mobile"
+                                   <#if auth.selectedCredential?has_content>value="${auth.selectedCredential}"</#if>/>
+                            <button type="submit" id="kc-login-mobile"
+                                    class="animate-gradient mobile-btn-active mobile-touch-target mobile-button"
+                                    style="width: 100%; color: white; outline: none; border: none; cursor: pointer; transition: all 0.2s;">
+                                ${msg("doLogIn")}
+                            </button>
+                        </div>
+                    </form>
+                    </#if>
+                </div>
 
-        setupUI() {
-            const desktopSection = document.getElementById('biometric-section-desktop');
-            const mobileSection = document.getElementById('biometric-section-mobile');
-            const desktopBtn = document.getElementById('biometric-login-desktop');
-            const mobileBtn = document.getElementById('biometric-login-mobile');
+                <#if realm.password && realm.registrationAllowed && !registrationDisabled??>
+                    <div class="mobile-slide-down" style="text-align: center; margin-top: 2rem; animation-delay: 0.7s;">
+                        <p style="color: #4b5563;">
+                            Don't have an account?
+                            <a href="${url.registrationUrl}" style="color: #2563eb; font-weight: 600;">Sign up</a>
+                        </p>
+                    </div>
+                </#if>
 
-            if (this.isSupported && this.isAvailable && this.credentialId) {
-                if (desktopSection) desktopSection.style.display = 'block';
-                if (mobileSection) mobileSection.style.display = 'block';
+                <div class="mobile-slide-down" style="margin-top: 2rem; text-align: center; animation-delay: 0.8s;">
+                    <div style="display: flex; justify-content: center; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <div style="display: flex; align-items: center; gap: 0.25rem;">
+                            <i class="fas fa-shield-alt" style="color: #10b981;"></i>
+                            <span style="font-size: 0.75rem; color: #4b5563; font-weight: 500;">Secure</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.25rem;">
+                            <i class="fas fa-lock" style="color: #2563eb;"></i>
+                            <span style="font-size: 0.75rem; color: #4b5563; font-weight: 500;">Encrypted</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.25rem;">
+                            <i class="fas fa-users" style="color: #9333ea;"></i>
+                            <span style="font-size: 0.75rem; color: #4b5563; font-weight: 500;">Trusted</span>
+                        </div>
+                    </div>
+                    <p style="font-size: 0.75rem; color: #6b7280;">
+                        Join thousands of professionals growing their careers
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                if (desktopBtn) desktopBtn.addEventListener('click', () => this.authenticate('desktop'));
-                if (mobileBtn) mobileBtn.addEventListener('click', () => this.authenticate('mobile'));
-            }
-        }
+    </div>
 
-        async authenticate(platform) {
-            const btn = document.getElementById(`biometric-login-${platform}`);
-            const icon = btn.querySelector('i');
-            const span = btn.querySelector('span');
-
-            try {
-                // Update UI to show authentication in progress
-                btn.classList.add('authenticating');
-                btn.disabled = true;
-                icon.classList.remove('animate-fingerprint');
-                icon.classList.add('fa-spin');
-                span.textContent = 'Authenticating...';
-
-                // Perform WebAuthn authentication
-                const credential = await navigator.credentials.get({
-                    publicKey: {
-                        challenge: new Uint8Array(32),
-                        allowCredentials: [{
-                            id: this.base64ToArrayBuffer(this.credentialId),
-                            type: 'public-key'
-                        }],
-                        userVerification: 'required',
-                        timeout: 60000
-                    }
-                });
-
-                if (credential) {
-                    // Authentication successful - submit form with biometric flag
-                    const form = document.getElementById(`kc-form-login-${platform}`);
-                    const hiddenInput = document.createElement('input');
-                    hiddenInput.type = 'hidden';
-                    hiddenInput.name = 'biometric-auth';
-                    hiddenInput.value = 'true';
-                    form.appendChild(hiddenInput);
-
-                    // Auto-fill username if available
-                    const usernameInput = document.getElementById(`username-${platform}`);
-                    const storedUsername = localStorage.getItem('biometric-username');
-                    if (usernameInput && storedUsername) {
-                        usernameInput.value = storedUsername;
-                    }
-
-                    form.submit();
+    <script>
+        // Password toggle functionality
+        var togglePassword = document.getElementById("togglePassword");
+        var togglePasswordMobile = document.getElementById("togglePasswordMobile");
+        
+        if (togglePassword) {
+            togglePassword.addEventListener("click", function () {
+                var pwd = document.getElementById("password");
+                var icon = this.querySelector("i");
+                
+                if (pwd.type === "password") {
+                    pwd.type = "text";
+                    icon.classList.remove("fa-eye");
+                    icon.classList.add("fa-eye-slash");
+                } else {
+                    pwd.type = "password";
+                    icon.classList.remove("fa-eye-slash");
+                    icon.classList.add("fa-eye");
                 }
-            } catch (error) {
-                console.error('Biometric authentication failed:', error);
-
-                // Reset UI
-                btn.classList.remove('authenticating');
-                btn.disabled = false;
-                icon.classList.remove('fa-spin');
-                icon.classList.add('animate-fingerprint');
-                span.textContent = 'Login with Fingerprint';
-
-                // Show error message
-                this.showError(platform, 'Biometric authentication failed. Please try again or use your password.');
-            }
-        }
-
-        base64ToArrayBuffer(base64) {
-            const binaryString = window.atob(base64);
-            const bytes = new Uint8Array(binaryString.length);
-            for (let i = 0; i < binaryString.length; i++) {
-                bytes[i] = binaryString.charCodeAt(i);
-            }
-            return bytes.buffer;
-        }
-
-        showError(platform, message) {
-            // Create or update error message
-            let errorDiv = document.getElementById(`biometric-error-${platform}`);
-            if (!errorDiv) {
-                errorDiv = document.createElement('div');
-                errorDiv.id = `biometric-error-${platform}`;
-                errorDiv.className = 'text-red-600 text-sm mt-2 font-medium';
-
-                const section = document.getElementById(`biometric-section-${platform}`);
-                section.appendChild(errorDiv);
-            }
-
-            errorDiv.textContent = message;
-
-            // Auto-hide after 5 seconds
-            setTimeout(() => {
-                if (errorDiv) errorDiv.remove();
-            }, 5000);
-        }
-    }
-
-    // Password toggle functionality for desktop
-    document.getElementById("togglePasswordDesktop").addEventListener("click", function () {
-        const pwd = document.getElementById("password-desktop");
-        const icon = this.querySelector("i");
-
-        if (pwd.type === "password") {
-            pwd.type = "text";
-            icon.classList.remove("fa-eye");
-            icon.classList.add("fa-eye-slash");
-        } else {
-            pwd.type = "password";
-            icon.classList.remove("fa-eye-slash");
-            icon.classList.add("fa-eye");
-        }
-    });
-
-    // Password toggle functionality for mobile
-    document.getElementById("togglePasswordMobile").addEventListener("click", function () {
-        const pwd = document.getElementById("password-mobile");
-        const icon = this.querySelector("i");
-
-        if (pwd.type === "password") {
-            pwd.type = "text";
-            icon.classList.remove("fa-eye");
-            icon.classList.add("fa-eye-slash");
-        } else {
-            pwd.type = "password";
-            icon.classList.remove("fa-eye-slash");
-            icon.classList.add("fa-eye");
-        }
-    });
-
-    // Enhanced form validation for both desktop and mobile
-    function setupFormValidation(formId, submitBtnId) {
-        const form = document.getElementById(formId);
-        const submitBtn = document.getElementById(submitBtnId);
-
-        if (form && submitBtn) {
-            form.addEventListener("submit", function(e) {
-                // Store username for biometric authentication
-                const usernameInput = form.querySelector('input[name="username"]');
-                if (usernameInput && usernameInput.value) {
-                    localStorage.setItem('biometric-username', usernameInput.value);
-                }
-
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Signing in...';
             });
         }
-    }
 
-    setupFormValidation("kc-form-login-desktop", "kc-login-desktop");
-    setupFormValidation("kc-form-login-mobile", "kc-login-mobile");
-
-    // Initialize biometric authentication
-    const biometricAuth = new BiometricAuth();
-
-    // Auto-focus first input on load
-    window.addEventListener("load", function() {
-        const isDesktop = window.innerWidth >= 1024;
-        const usernameInput = document.getElementById(isDesktop ? "username-desktop" : "username-mobile");
-        if (usernameInput) {
-            usernameInput.focus();
+        if (togglePasswordMobile) {
+            togglePasswordMobile.addEventListener("click", function () {
+                var pwd = document.getElementById("password-mobile");
+                var icon = this.querySelector("i");
+                
+                if (pwd.type === "password") {
+                    pwd.type = "text";
+                    icon.classList.remove("fa-eye");
+                    icon.classList.add("fa-eye-slash");
+                } else {
+                    pwd.type = "password";
+                    icon.classList.remove("fa-eye-slash");
+                    icon.classList.add("fa-eye");
+                }
+            });
         }
-    });
-</script>
+    </script>
 
+<#elseif section = "info" >
+    <#if realm.password && social?? && social.providers?has_content>
+        <div id="kc-social-providers" style="margin-top: 1.5rem;">
+            <hr style="margin: 1.5rem 0;"/>
+            <h2 style="font-size: 1rem; font-weight: 600; color: #374151; margin-bottom: 1rem;">Or continue with</h2>
+            <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.75rem;">
+                <#list social.providers as p>
+                    <li>
+                        <a href="${p.loginUrl}" 
+                           style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1rem; border: 1px solid #e5e7eb; border-radius: 0.5rem; text-decoration: none; color: #374151; font-weight: 500; transition: all 0.2s;"
+                           onmouseover="this.style.backgroundColor='#f9fafb'"
+                           onmouseout="this.style.backgroundColor='transparent'">
+                            <#if p.iconClasses?has_content>
+                                <i class="${p.iconClasses!}" aria-hidden="true"></i>
+                            </#if>
+                            <span>${p.displayName!}</span>
+                        </a>
+                    </li>
+                </#list>
+            </ul>
+        </div>
+    </#if>
 </#if>
+
 </@layout.registrationLayout>
