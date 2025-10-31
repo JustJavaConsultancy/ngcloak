@@ -1,6 +1,6 @@
 <#import "template.ftl" as layout>
 <@layout.registrationLayout displayMessage=!messagesPerField.existsError('username','password') displayInfo=realm.password && realm.registrationAllowed && !registrationDisabled??; section>
-<#if section == "header">
+<#if section = "header">
     <title>Connect - Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
@@ -23,6 +23,8 @@
         .login-pf-page {
             padding-top: 0;
             border: none;
+            background: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 100%);
+            font-family: 'Be Vietnam Pro', 'Noto Sans', sans-serif;
         }
 
         .login-pf-page .card-pf {
@@ -30,6 +32,7 @@
             margin-bottom: 0;
             border: none;
             max-width: none;
+            background: transparent;
         }
 
         #kc-content-wrapper {
@@ -210,7 +213,7 @@
             input[type="text"],
             input[type="email"],
             input[type="password"] {
-                font-size: 16px;
+                font-size: 1rem;
             }
         }
 
@@ -328,12 +331,8 @@
                 font-size: 1.125rem;
             }
         }
-
-        body {
-            font-family: 'Be Vietnam Pro', 'Noto Sans', sans-serif;
-        }
     </style>
-<#elseif section == "form">
+<#elseif section = "form">
 
 <!-- Desktop background -->
 <div class="desktop-background fixed top-0 left-0 w-full h-full overflow-hidden z-0">
@@ -355,7 +354,7 @@
     <!-- Left branding panel (desktop only) -->
     <div class="desktop-left-panel w-1/2 p-12 bg-gradient-to-br from-blue-600 to-purple-600 text-white">
         <div class="flex items-center gap-3 mb-12 animate-fade-in">
-            <div class="size-10 animate-pulse-slow">
+            <div class="w-10 h-10 animate-pulse-slow">
                 <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M36.7273 44C33.9891 44 31.6043 39.8386 30.3636 33.69C29.123 39.8386 26.7382 44 24 44C21.2618 44 18.877 39.8386 17.6364 33.69C16.3957 39.8386 14.0109 44 11.2727 44C7.25611 44 4 35.0457 4 24C4 12.9543 7.25611 4 11.2727 4C14.0109 4 16.3957 8.16144 17.6364 14.31C18.877 8.16144 21.2618 4 24 4C26.7382 4 29.123 8.16144 30.3636 14.31C31.6043 8.16144 33.9891 4 36.7273 4C40.7439 4 44 12.9543 44 24C44 35.0457 40.7439 44 36.7273 44Z" fill="white"/>
                 </svg>
@@ -414,80 +413,76 @@
                 <h2 class="text-2xl font-bold text-gray-800 mb-2">Welcome back</h2>
                 <p class="text-gray-600 mb-6 text-sm">Sign in to your account to continue</p>
 
-                <form id="kc-form-login-desktop" class="space-y-5" action="${url.loginAction}" method="post">
-                    <!-- Username/Email -->
-                    <div>
-                        <label for="username-desktop" class="block text-sm font-medium text-gray-700 mb-1">
-                            <#if !realm.loginWithEmailAllowed>${msg("username")}
-                            <#elseif !realm.registrationEmailAsUsername>${msg("usernameOrEmail")}
-                            <#else>${msg("email")}</#if>
-                        </label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <i class="fas fa-envelope text-gray-400"></i>
+                <#if realm.password>
+                    <form id="kc-form-login" class="space-y-5" action="${url.loginAction}" method="post" onsubmit="login.disabled = true; return true;">
+                        <!-- Username/Email -->
+                        <div>
+                            <label for="username" class="block text-sm font-medium text-gray-700 mb-1">
+                                <#if !realm.loginWithEmailAllowed>${msg("username")}
+                                <#elseif !realm.registrationEmailAsUsername>${msg("usernameOrEmail")}
+                                <#else>${msg("email")}</#if>
+                            </label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="fas fa-envelope text-gray-400"></i>
+                                </div>
+                                <input type="text" id="username" name="username"
+                                       value="${(login.username!'')}"
+                                       class="input-focus pl-10 pr-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full transition-all duration-200"
+                                       autocomplete="username"
+                                       placeholder="you@example.com"
+                                       autofocus
+                                       aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>"/>
                             </div>
-                            <input type="text" id="username-desktop" name="username"
-                                   value="${(login.username!'')}"
-                                   class="input-focus pl-10 pr-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full transition-all duration-200"
-                                   autocomplete="username"
-                                   placeholder="you@example.com"
-                                   aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>"/>
-                        </div>
-                        <#if messagesPerField.existsError('username','password')>
-                            <p class="text-red-600 text-sm mt-1">${kcSanitize(messagesPerField.getFirstError('username','password'))?no_esc}</p>
-                        </#if>
-                    </div>
-
-                    <!-- Password -->
-                    <div>
-                        <div class="flex justify-between items-center mb-1">
-                            <label for="password-desktop" class="block text-sm font-medium text-gray-700">${msg("password")}</label>
-                            <#if realm.resetPasswordAllowed>
-                                <a href="${url.loginResetCredentialsUrl}" class="text-sm text-blue-600 hover:text-blue-800 transition-colors">${msg("doForgotPassword")}</a>
+                            <#if messagesPerField.existsError('username','password')>
+                                <p class="text-red-600 text-sm mt-1">${kcSanitize(messagesPerField.getFirstError('username','password'))?no_esc}</p>
                             </#if>
                         </div>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <i class="fas fa-lock text-gray-400"></i>
+
+                        <!-- Password -->
+                        <div>
+                            <div class="flex justify-between items-center mb-1">
+                                <label for="password" class="block text-sm font-medium text-gray-700">${msg("password")}</label>
+                                <#if realm.resetPasswordAllowed>
+                                    <a href="${url.loginResetCredentialsUrl}" class="text-sm text-blue-600 hover:text-blue-800 transition-colors">${msg("doForgotPassword")}</a>
+                                </#if>
                             </div>
-                            <input type="password" id="password-desktop" name="password"
-                                   class="input-focus pl-10 pr-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full transition-all duration-200"
-                                   placeholder="••••••••"
-                                   autocomplete="current-password"/>
-                            <button type="button" id="togglePasswordDesktop" class="absolute inset-y-0 right-0 pr-3 flex items-center">
-                                <i class="fas fa-eye text-gray-400 hover:text-gray-600"></i>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="fas fa-lock text-gray-400"></i>
+                                </div>
+                                <input type="password" id="password" name="password"
+                                       class="input-focus pl-10 pr-12 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full transition-all duration-200"
+                                       placeholder="•••••••��"
+                                       autocomplete="current-password"/>
+                                <button type="button" id="togglePassword" class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                    <i class="fas fa-eye text-gray-400 hover:text-gray-600"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Remember Me -->
+                        <#if realm.rememberMe>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="rememberMe" name="rememberMe"
+                                       class="checkbox h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                                       <#if login.rememberMe??>checked</#if>/>
+                                <label for="rememberMe" class="ml-2 block text-sm text-gray-700">${msg("rememberMe")}</label>
+                            </div>
+                        </#if>
+
+                        <!-- Submit -->
+                        <div>
+                            <input type="hidden" name="credentialId" id="id-hidden-input"
+                                   <#if auth.selectedCredential?has_content>value="${auth.selectedCredential}"</#if>/>
+                            <button type="submit" id="kc-login" name="login"
+                                    class="animate-gradient w-full py-3 px-4 rounded-lg text-white font-medium btn-transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                ${msg("doLogIn")}
                             </button>
                         </div>
-                    </div>
-
-                    <!-- Remember Me -->
-                    <#if realm.rememberMe>
-                        <div class="flex items-center">
-                            <input type="checkbox" id="rememberMe-desktop" name="rememberMe"
-                                   class="checkbox h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                                   <#if login.rememberMe??>checked</#if>/>
-                            <label for="rememberMe-desktop" class="ml-2 block text-sm text-gray-700">${msg("rememberMe")}</label>
-                        </div>
-                    </#if>
-
-                    <!-- Submit -->
-                    <div>
-                        <input type="hidden" name="credentialId" id="id-hidden-input-desktop"
-                               <#if auth.selectedCredential?has_content>value="${auth.selectedCredential}"</#if>/>
-                        <button type="submit" id="kc-login-desktop"
-                                class="animate-gradient w-full py-3 px-4 rounded-lg text-white font-medium btn-transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                            ${msg("doLogIn")}
-                        </button>
-                    </div>
-                </form>
+                    </form>
+                </#if>
             </div>
-
-            <#if realm.password && realm.registrationAllowed && !registrationDisabled??>
-                <p class="text-center text-sm text-gray-600 mt-4">
-                    Don't have an account?
-                    <a href="${url.registrationUrl}" class="text-blue-600 hover:underline">Create one</a>
-                </p>
-            </#if>
         </div>
     </div>
 </div>
@@ -513,83 +508,75 @@
     <div class="mobile-content">
         <div class="mobile-form-container">
             <div class="mobile-glass-effect mobile-form-card mobile-fade-in" style="animation-delay: 0.2s">
-                <form id="kc-form-login-mobile" action="${url.loginAction}" method="post" class="space-y-6">
-                    <!-- Username/Email -->
-                    <div class="mobile-slide-down" style="animation-delay: 0.3s">
-                        <label for="username-mobile" class="block text-sm font-semibold text-gray-700 mb-3">
-                            <#if !realm.loginWithEmailAllowed>${msg("username")}
-                            <#elseif !realm.registrationEmailAsUsername>${msg("usernameOrEmail")}
-                            <#else>${msg("email")}</#if>
-                        </label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 mobile-icon-container flex items-center pointer-events-none">
-                                <i class="fas fa-envelope text-gray-400 mobile-icon"></i>
+                <#if realm.password>
+                    <form id="kc-form-login-mobile" action="${url.loginAction}" method="post" class="space-y-6" onsubmit="login.disabled = true; return true;">
+                        <!-- Username/Email -->
+                        <div class="mobile-slide-down" style="animation-delay: 0.3s">
+                            <label for="username-mobile" class="block text-sm font-semibold text-gray-700 mb-3">
+                                <#if !realm.loginWithEmailAllowed>${msg("username")}
+                                <#elseif !realm.registrationEmailAsUsername>${msg("usernameOrEmail")}
+                                <#else>${msg("email")}</#if>
+                            </label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 mobile-icon-container flex items-center pointer-events-none">
+                                    <i class="fas fa-envelope text-gray-400 mobile-icon"></i>
+                                </div>
+                                <input type="text" id="username-mobile" name="username"
+                                       value="${(login.username!'')}"
+                                       class="mobile-input-focus mobile-touch-target mobile-input mobile-input-with-icon border-gray-200 focus:outline-none w-full transition-all duration-200"
+                                       autocomplete="username"
+                                       placeholder="Enter your email"
+                                       aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>"/>
                             </div>
-                            <input type="text" id="username-mobile" name="username"
-                                   value="${(login.username!'')}"
-                                   class="mobile-input-focus mobile-touch-target mobile-input mobile-input-with-icon border-gray-200 focus:outline-none w-full transition-all duration-200"
-                                   autocomplete="username"
-                                   placeholder="Enter your email"
-                                   aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>"/>
-                        </div>
-                        <#if messagesPerField.existsError('username','password')>
-                            <p class="text-red-600 text-sm mt-2 font-medium">${kcSanitize(messagesPerField.getFirstError('username','password'))?no_esc}</p>
-                        </#if>
-                    </div>
-
-                    <!-- Password -->
-                    <div class="mobile-slide-down" style="animation-delay: 0.4s">
-                        <div class="flex justify-between items-center mb-3">
-                            <label for="password-mobile" class="block text-sm font-semibold text-gray-700">${msg("password")}</label>
-                            <#if realm.resetPasswordAllowed>
-                                <a href="${url.loginResetCredentialsUrl}" class="text-sm text-blue-600 font-medium">Forgot?</a>
+                            <#if messagesPerField.existsError('username','password')>
+                                <p class="text-red-600 text-sm mt-2 font-medium">${kcSanitize(messagesPerField.getFirstError('username','password'))?no_esc}</p>
                             </#if>
                         </div>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 mobile-icon-container flex items-center pointer-events-none">
-                                <i class="fas fa-lock text-gray-400 mobile-icon"></i>
+
+                        <!-- Password -->
+                        <div class="mobile-slide-down" style="animation-delay: 0.4s">
+                            <div class="flex justify-between items-center mb-3">
+                                <label for="password-mobile" class="block text-sm font-semibold text-gray-700">${msg("password")}</label>
+                                <#if realm.resetPasswordAllowed>
+                                    <a href="${url.loginResetCredentialsUrl}" class="text-sm text-blue-600 font-medium">Forgot?</a>
+                                </#if>
                             </div>
-                            <input type="password" id="password-mobile" name="password"
-                                   class="mobile-input-focus mobile-touch-target mobile-input mobile-input-with-icon pr-14 border-gray-200 focus:outline-none w-full transition-all duration-200"
-                                   placeholder="Enter your password"
-                                   autocomplete="current-password"/>
-                            <button type="button" id="togglePasswordMobile" class="absolute inset-y-0 right-0 pr-4 flex items-center mobile-touch-target">
-                                <i class="fas fa-eye text-gray-400 mobile-icon"></i>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 mobile-icon-container flex items-center pointer-events-none">
+                                    <i class="fas fa-lock text-gray-400 mobile-icon"></i>
+                                </div>
+                                <input type="password" id="password-mobile" name="password"
+                                       class="mobile-input-focus mobile-touch-target mobile-input mobile-input-with-icon pr-14 border-gray-200 focus:outline-none w-full transition-all duration-200"
+                                       placeholder="Enter your password"
+                                       autocomplete="current-password"/>
+                                <button type="button" id="togglePasswordMobile" class="absolute inset-y-0 right-0 pr-4 flex items-center mobile-touch-target">
+                                    <i class="fas fa-eye text-gray-400 mobile-icon"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Remember Me -->
+                        <#if realm.rememberMe>
+                            <div class="flex items-center mobile-slide-down" style="animation-delay: 0.5s">
+                                <input type="checkbox" id="rememberMe-mobile" name="rememberMe"
+                                       class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                                       <#if login.rememberMe??>checked</#if>/>
+                                <label for="rememberMe-mobile" class="ml-3 block text-sm text-gray-700 font-medium">${msg("rememberMe")}</label>
+                            </div>
+                        </#if>
+
+                        <!-- Submit Button -->
+                        <div class="mobile-slide-down" style="animation-delay: 0.6s">
+                            <input type="hidden" name="credentialId" id="id-hidden-input-mobile"
+                                   <#if auth.selectedCredential?has_content>value="${auth.selectedCredential}"</#if>/>
+                            <button type="submit" id="kc-login-mobile" name="login"
+                                    class="animate-gradient mobile-btn-active mobile-touch-target mobile-button w-full text-white focus:outline-none focus:ring-4 focus:ring-blue-300 transition-all duration-200">
+                                ${msg("doLogIn")}
                             </button>
                         </div>
-                    </div>
-
-                    <!-- Remember Me -->
-                    <#if realm.rememberMe>
-                        <div class="flex items-center mobile-slide-down" style="animation-delay: 0.5s">
-                            <input type="checkbox" id="rememberMe-mobile" name="rememberMe"
-                                   class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                                   <#if login.rememberMe??>checked</#if>/>
-                            <label for="rememberMe-mobile" class="ml-3 block text-sm text-gray-700 font-medium">${msg("rememberMe")}</label>
-                        </div>
-                    </#if>
-
-                    <!-- Submit Button -->
-                    <div class="mobile-slide-down" style="animation-delay: 0.6s">
-                        <input type="hidden" name="credentialId" id="id-hidden-input-mobile"
-                               <#if auth.selectedCredential?has_content>value="${auth.selectedCredential}"</#if>/>
-                        <button type="submit" id="kc-login-mobile"
-                                class="animate-gradient mobile-btn-active mobile-touch-target mobile-button w-full text-white focus:outline-none focus:ring-4 focus:ring-blue-300 transition-all duration-200">
-                            ${msg("doLogIn")}
-                        </button>
-                    </div>
-                </form>
+                    </form>
+                </#if>
             </div>
-
-            <!-- Sign up link -->
-            <#if realm.password && realm.registrationAllowed && !registrationDisabled??>
-                <div class="text-center mt-8 mobile-slide-down" style="animation-delay: 0.7s">
-                    <p class="text-gray-600">
-                        Don't have an account?
-                        <a href="${url.registrationUrl}" class="text-blue-600 font-semibold">Sign up</a>
-                    </p>
-                </div>
-            </#if>
 
             <!-- Trust indicators -->
             <div class="mt-8 text-center mobile-slide-down" style="animation-delay: 0.8s">
@@ -617,10 +604,10 @@
 
 <script>
     // Password toggle functionality for desktop
-    const toggleDesktop = document.getElementById("togglePasswordDesktop");
-    if (toggleDesktop) {
-        toggleDesktop.addEventListener("click", function () {
-            const pwd = document.getElementById("password-desktop");
+    const togglePasswordDesktop = document.getElementById("togglePassword");
+    if (togglePasswordDesktop) {
+        togglePasswordDesktop.addEventListener("click", function () {
+            const pwd = document.getElementById("password");
             const icon = this.querySelector("i");
 
             if (pwd.type === "password") {
@@ -636,9 +623,9 @@
     }
 
     // Password toggle functionality for mobile
-    const toggleMobile = document.getElementById("togglePasswordMobile");
-    if (toggleMobile) {
-        toggleMobile.addEventListener("click", function () {
+    const togglePasswordMobile = document.getElementById("togglePasswordMobile");
+    if (togglePasswordMobile) {
+        togglePasswordMobile.addEventListener("click", function () {
             const pwd = document.getElementById("password-mobile");
             const icon = this.querySelector("i");
 
@@ -667,18 +654,43 @@
         }
     }
 
-    setupFormValidation("kc-form-login-desktop", "kc-login-desktop");
+    setupFormValidation("kc-form-login", "kc-login");
     setupFormValidation("kc-form-login-mobile", "kc-login-mobile");
 
     // Auto-focus first input on load
     window.addEventListener("load", function() {
         const isDesktop = window.innerWidth >= 1024;
-        const usernameInput = document.getElementById(isDesktop ? "username-desktop" : "username-mobile");
-        if (usernameInput) {
+        const usernameInput = document.getElementById(isDesktop ? "username" : "username-mobile");
+        if (usernameInput && !usernameInput.value) {
             usernameInput.focus();
         }
     });
 </script>
 
+<#elseif section = "info">
+    <#if realm.password && realm.registrationAllowed && !registrationDisabled??>
+        <!-- Desktop registration link -->
+        <div class="desktop-layout">
+            <div class="w-1/2"></div>
+            <div class="w-1/2 flex items-center justify-center">
+                <div class="w-full max-w-md">
+                    <p class="text-center text-sm text-gray-600 mt-4">
+                        Don't have an account?
+                        <a href="${url.registrationUrl}" class="text-blue-600 hover:underline">Create one</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile registration link -->
+        <div class="mobile-layout">
+            <div class="text-center mt-8 mobile-slide-down" style="animation-delay: 0.7s">
+                <p class="text-gray-600">
+                    Don't have an account?
+                    <a href="${url.registrationUrl}" class="text-blue-600 font-semibold">Sign up</a>
+                </p>
+            </div>
+        </div>
+    </#if>
 </#if>
 </@layout.registrationLayout>
