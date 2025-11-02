@@ -41,9 +41,15 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-      - name: Deploy to test
-        uses: johnbeynon/render-deploy-action@v0.0.8
-        with:
-          service-id: srv-cv0ncpogph6c738pmtug
-          api-key: rnd_VmQJ50o6AWfdo2RB0vmrjOpur53F
-          wait-for-success: true
+      - name: Install Railway CLI
+        run: npm install -g @railway/cli
+
+      # Step 5: Deploy to Railway
+      - name: Deploy to Railway
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          RAILWAY_PROJECT_ID: 7edc707c-73e3-4b8b-915b-019e9d0b6114
+          RAILWAY_SERVICE_ID: Ngcloak
+        run: |
+          echo "Deploying QA with image: $IMAGE_NAME"
+          railway variables --set "RAILWAY_SERVICE_IMAGE=$IMAGE_NAME" --service $RAILWAY_SERVICE_ID
