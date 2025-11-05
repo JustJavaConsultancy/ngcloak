@@ -91,7 +91,7 @@
                             
                             <div class="mb-3">
                                 <label class="form-label input-small-text dark-text">${msg("Business Type")}<span class="text-danger">*</span></label>
-                                <select class="form-select select-field input-field" name="user.attributes.busninessType" required>
+                                <select class="form-select select-field input-field" name="user.attributes.businessType" required>
                                     <option value="" disabled selected hidden>${msg("Select Business Type")}</option>
                                     <option value="Business Name Registration">${msg("Business Name Registration")}</option>
                                     <option value="Co-operative Societies">${msg("Co-operative Societies")}</option>
@@ -101,8 +101,8 @@
                                     <option value="Private Limited Liability Company(Ltd)">${msg("Private Limited Liability Company (Ltd)")}</option>
                                     <option value="Public Limited Liability Company(PLC)">${msg("Public Limited Liability Company (PLC)")}</option>
                                 </select>
-                                <#if messagesPerField.exists('user.attributes.busninessType')>
-                                    <div class="text-danger">${kcSanitize(msg(messagesPerField.get('user.attributes.busninessType')))?no_esc}</div>
+                                <#if messagesPerField.exists('user.attributes.businessType')>
+                                    <div class="text-danger">${kcSanitize(msg(messagesPerField.get('user.attributes.businessType')))?no_esc}</div>
                                 </#if>
                             </div>
                             
