@@ -38,8 +38,8 @@ jobs:
         with:
           context: .                # Path to Dockerfile location (root dir)
           push: true                # Push after building
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: kazeemakinrinde/bluepayngcloak:latest
+#          labels: ${{ steps.meta.outputs.labels }}
 
       - name: Deploy to test
         uses: johnbeynon/render-deploy-action@v0.0.8
