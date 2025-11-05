@@ -5,7 +5,7 @@ on:
     branches: ["bluepay"]  # Trigger on pushes to main branch
 
 env:
-  IMAGE_NAME: kazeemakinrinde/ngcloak:bluepay  # Replace with your Docker Hub repo name
+  IMAGE_NAME: kazeemakinrinde/bluepayngcloak  # Replace with your Docker Hub repo name
 
 jobs:
   build-and-push:
