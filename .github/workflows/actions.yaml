@@ -44,6 +44,6 @@ jobs:
       - name: Deploy to test
         uses: johnbeynon/render-deploy-action@v0.0.8
         with:
-          service-id: srv-d45gn42dbo4c73ft5pg0
+          service-id: srv-d45gsg6uk2gs73chlhdg
           api-key: rnd_VmQJ50o6AWfdo2RB0vmrjOpur53F
           wait-for-success: true
