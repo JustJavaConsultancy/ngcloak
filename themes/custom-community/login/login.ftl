@@ -109,12 +109,6 @@
             75% { transform: translateX(5px); }
         }
 
-        @keyframes fingerprint-pulse {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.1); opacity: 0.8; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
         /* Animation classes */
         .animate-fade-in {
             animation: fadeIn 0.6s ease-out forwards;
@@ -140,10 +134,6 @@
 
         .animate-shake {
             animation: shake 0.3s ease-in-out;
-        }
-
-        .animate-fingerprint-pulse {
-            animation: fingerprint-pulse 2s infinite ease-in-out;
         }
 
         /* Mobile-specific animations */
@@ -338,87 +328,6 @@
                 font-size: 1.125rem;
             }
         }
-
-        /* Mobile-only biometric button styles */
-        .biometric-btn {
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: white;
-            border: none;
-            font-weight: 600;
-            padding: 14px 24px;
-            border-radius: 14px;
-            font-size: 16px;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-        }
-
-        .biometric-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
-        }
-
-        .biometric-btn:active {
-            transform: scale(0.98);
-        }
-
-        .biometric-btn:disabled {
-            background: #9ca3af;
-            box-shadow: none;
-            cursor: not-allowed;
-        }
-
-        /* Biometric status indicator */
-        .biometric-status {
-            font-size: 12px;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-weight: 500;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .biometric-status.checking {
-            background: #fef3c7;
-            color: #92400e;
-        }
-
-        .biometric-status.available {
-            background: #d1fae5;
-            color: #065f46;
-        }
-
-        .biometric-status.unavailable {
-            background: #fee2e2;
-            color: #991b1b;
-        }
-
-        /* Divider styles */
-        .divider {
-            display: flex;
-            align-items: center;
-            text-align: center;
-            margin: 20px 0;
-        }
-
-        .divider::before,
-        .divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: #e5e7eb;
-        }
-
-        .divider span {
-            padding: 0 16px;
-            color: #6b7280;
-            font-size: 14px;
-            font-weight: 500;
-        }
     </style>
 <#elseif section = "form">
 
@@ -497,7 +406,7 @@
         </div>
     </div>
 
-    <!-- Desktop login form (NO biometrics) -->
+    <!-- Desktop login form -->
     <div class="responsive-right-panel w-1/2 flex items-center justify-center p-8">
         <div class="w-full max-w-md">
             <div class="glass-effect rounded-2xl shadow-xl p-8 animate-fade-in" style="animation-delay: 0.2s">
@@ -582,7 +491,7 @@
     </div>
 </div>
 
-<!-- Mobile layout (WITH biometrics) -->
+<!-- Mobile layout -->
 <div class="mobile-layout mobile-container relative z-10">
     <!-- Mobile header -->
     <div class="mobile-header">
@@ -603,25 +512,6 @@
     <div class="mobile-content">
         <div class="mobile-form-container">
             <div class="mobile-glass-effect mobile-form-card mobile-fade-in" style="animation-delay: 0.2s">
-
-                <!-- Biometric Login Section (Mobile Only) -->
-                <div id="biometric-section-mobile" class="mb-6" style="display: none;">
-                    <div class="text-center">
-                        <div id="biometric-status-mobile" class="biometric-status checking mb-4">
-                            <i class="fas fa-spinner fa-spin"></i>
-                            <span>Checking biometric availability...</span>
-                        </div>
-                        <button type="button" id="biometric-login-mobile" class="biometric-btn mobile-btn-active mobile-touch-target w-full" disabled>
-                            <i class="fas fa-fingerprint animate-fingerprint-pulse"></i>
-                            <span>Login with Fingerprint</span>
-                        </button>
-                        <div id="biometric-feedback-mobile" class="text-sm mt-3"></div>
-                    </div>
-                    <div class="divider">
-                        <span>or continue with password</span>
-                    </div>
-                </div>
-
                 <form id="kc-form-login-mobile" action="${url.loginAction}" method="post" class="space-y-6">
                     <!-- Username/Email -->
                     <div class="mobile-slide-down" style="animation-delay: 0.3s">
@@ -725,493 +615,62 @@
 </div>
 
 <script>
-    (function() {
-        // Global variables for biometric authentication (mobile only)
-        let bridgeReady = false;
-        let biometricAuthInProgress = false;
-        let communicationMethod = 'none';
-        let isKodularWebView = false;
-        let userBiometricsEnabled = false;
-        let currentUsername = '';
+    // Password toggle functionality for desktop
+    document.getElementById("togglePasswordDesktop").addEventListener("click", function () {
+        const pwd = document.getElementById("password-desktop");
+        const icon = this.querySelector("i");
 
-        // Debug function
-        function logMessage(message) {
-            console.log(`[Biometric Login] ${message}`);
+        if (pwd.type === "password") {
+            pwd.type = "text";
+            icon.classList.remove("fa-eye");
+            icon.classList.add("fa-eye-slash");
+        } else {
+            pwd.type = "password";
+            icon.classList.remove("fa-eye-slash");
+            icon.classList.add("fa-eye");
         }
+    });
 
-        // Check if user has biometrics enabled using your existing API
-        async function checkUserBiometrics(email) {
-            if (!email || email.trim() === '') {
-                return false;
-            }
+    // Password toggle functionality for mobile
+    document.getElementById("togglePasswordMobile").addEventListener("click", function () {
+        const pwd = document.getElementById("password-mobile");
+        const icon = this.querySelector("i");
 
-            try {
-                // Using your existing mobile endpoint structure
-                const response = await fetch(`/mobile/biometric-status?email=${encodeURIComponent(email)}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    return data.biometricsEnabled === true;
-                } else {
-                    logMessage(`Failed to check biometrics status: ${response.status}`);
-                    return false;
-                }
-            } catch (error) {
-                logMessage(`Error checking biometrics status: ${error.message}`);
-                return false;
-            }
+        if (pwd.type === "password") {
+            pwd.type = "text";
+            icon.classList.remove("fa-eye");
+            icon.classList.add("fa-eye-slash");
+        } else {
+            pwd.type = "password";
+            icon.classList.remove("fa-eye-slash");
+            icon.classList.add("fa-eye");
         }
+    });
 
-        // Update biometric UI (mobile only)
-        function updateBiometricUI(status, message = '') {
-            const section = document.getElementById('biometric-section-mobile');
-            const statusEl = document.getElementById('biometric-status-mobile');
-            const button = document.getElementById('biometric-login-mobile');
-            const feedback = document.getElementById('biometric-feedback-mobile');
+    // Enhanced form validation for both desktop and mobile
+    function setupFormValidation(formId, submitBtnId) {
+        const form = document.getElementById(formId);
+        const submitBtn = document.getElementById(submitBtnId);
 
-            if (!section || !statusEl || !button) return;
-
-            // Update status indicator
-            statusEl.className = `biometric-status ${status}`;
-
-            switch (status) {
-                case 'checking':
-                    statusEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Checking biometric availability...</span>';
-                    button.disabled = true;
-                    section.style.display = 'block';
-                    break;
-                case 'available':
-                    statusEl.innerHTML = '<i class="fas fa-fingerprint"></i><span>Biometric login available</span>';
-                    button.disabled = false;
-                    section.style.display = 'block';
-                    break;
-                case 'unavailable':
-                    statusEl.innerHTML = '<i class="fas fa-times-circle"></i><span>Biometric login not available</span>';
-                    button.disabled = true;
-                    section.style.display = 'none';
-                    break;
-            }
-
-            if (feedback && message) {
-                feedback.textContent = message;
-                feedback.style.color = status === 'available' ? '#059669' : '#dc2626';
-            }
-        }
-
-        // Send message to Kodular
-        function sendToKodular(message) {
-            logMessage(`Sending to Kodular: ${message}`);
-
-            if (!isKodularWebView) {
-                logMessage("Not in Kodular WebView - message not sent");
-                return false;
-            }
-
-            try {
-                // Method 1: Try Android interface
-                if (window.Android && typeof window.Android.receiveMessage === 'function') {
-                    window.Android.receiveMessage(message);
-                    logMessage(`Message sent via Android interface`);
-                    return true;
-                }
-
-                // Method 2: AppInventor interface (most reliable for Kodular)
-                if (window.AppInventor && typeof window.AppInventor.setWebViewString === 'function') {
-                    window.AppInventor.setWebViewString(message);
-                    logMessage("Message sent via AppInventor.setWebViewString");
-                    return true;
-                }
-
-                // Method 3: Set global variable
-                window.webViewString = message;
-                logMessage(`Set window.webViewString to: ${message}`);
-
-                // Method 4: Set document title
-                const originalTitle = document.title;
-                document.title = message;
-                setTimeout(() => {
-                    document.title = originalTitle;
-                }, 200);
-                logMessage(`Set document.title to: ${message}`);
-
-                return true;
-            } catch (error) {
-                logMessage(`Failed to send message: ${error.message}`);
-                return false;
-            }
-        }
-
-        // Setup Kodular callbacks
-        function setupKodularCallbacks() {
-            window.onBiometricSuccess = function() {
-                logMessage("✅ Biometric authentication successful");
-                biometricAuthInProgress = false;
-
-                // Update UI
-                const feedback = document.getElementById('biometric-feedback-mobile');
-                if (feedback) {
-                    feedback.textContent = "✅ Authentication successful! Logging you in...";
-                    feedback.style.color = '#059669';
-                }
-
-                // Perform biometric login
-                performBiometricLogin();
-            };
-
-            window.onBiometricFailure = function() {
-                logMessage("❌ Biometric authentication failed");
-                biometricAuthInProgress = false;
-
-                const feedback = document.getElementById('biometric-feedback-mobile');
-                const button = document.getElementById('biometric-login-mobile');
-
-                if (feedback) {
-                    feedback.textContent = "❌ Authentication failed. Please try again.";
-                    feedback.style.color = '#dc2626';
-                }
-                if (button) {
-                    button.disabled = false;
-                    button.innerHTML = '<i class="fas fa-fingerprint"></i><span>Try Again</span>';
-                }
-            };
-
-            window.onBiometricError = function(error) {
-                logMessage("⚠️ Biometric authentication error: " + error);
-                biometricAuthInProgress = false;
-
-                const feedback = document.getElementById('biometric-feedback-mobile');
-                const button = document.getElementById('biometric-login-mobile');
-
-                if (feedback) {
-                    feedback.textContent = `⚠️ Error: ${error || 'Unknown error occurred'}`;
-                    feedback.style.color = '#dc2626';
-                }
-                if (button) {
-                    button.disabled = false;
-                    button.innerHTML = '<i class="fas fa-fingerprint"></i><span>Login with Fingerprint</span>';
-                }
-            };
-
-            window.onBridgeReady = function() {
-                logMessage("✅ Bridge ready signal received from Kodular");
-                bridgeReady = true;
-                communicationMethod = 'Kodular Bridge';
-            };
-
-            logMessage("Global callback functions set up");
-        }
-
-        // Detect Kodular WebView
-        function detectKodularWebView() {
-            logMessage("Starting Kodular WebView detection...");
-
-            const detectionMethods = [
-                () => navigator.userAgent.includes('wv'),
-                () => navigator.userAgent.includes('Android'),
-                () => window.Android !== undefined,
-                () => window.AppInventor !== undefined,
-                () => navigator.userAgent.includes('Kodular')
-            ];
-
-            let detected = false;
-            detectionMethods.forEach((method, index) => {
-                try {
-                    if (method()) {
-                        logMessage(`Detection method ${index + 1} succeeded`);
-                        detected = true;
-                    }
-                } catch (e) {
-                    logMessage(`Detection method ${index + 1} failed: ${e.message}`);
-                }
+        if (form && submitBtn) {
+            form.addEventListener("submit", function(e) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Signing in...';
             });
-
-            isKodularWebView = detected;
-
-            if (detected) {
-                logMessage("Kodular WebView detected!");
-                communicationMethod = 'WebView';
-                initializeKodularBridge();
-            } else {
-                logMessage("Not running in Kodular WebView");
-                communicationMethod = 'Browser';
-            }
-
-            return detected;
         }
+    }
 
-        // Initialize Kodular bridge
-        function initializeKodularBridge() {
-            logMessage("Initializing Kodular bridge...");
-            setupKodularCallbacks();
+    setupFormValidation("kc-form-login-desktop", "kc-login-desktop");
+    setupFormValidation("kc-form-login-mobile", "kc-login-mobile");
 
-            // Send page ready signal
-            setTimeout(() => {
-                sendToKodular('pageReady');
-            }, 500);
-
-            // Wait for bridge ready
-            let attempts = 0;
-            const maxAttempts = 10;
-
-            const checkBridgeReady = setInterval(() => {
-                attempts++;
-                logMessage(`Waiting for bridge ready... attempt ${attempts}`);
-
-                if (bridgeReady || attempts >= maxAttempts) {
-                    clearInterval(checkBridgeReady);
-                    if (bridgeReady) {
-                        logMessage("✅ Bridge is ready!");
-                    } else {
-                        logMessage("⏰ Bridge ready timeout - assuming ready");
-                        bridgeReady = true;
-                    }
-                }
-            }, 500);
+    // Auto-focus first input on load
+    window.addEventListener("load", function() {
+        const isDesktop = window.innerWidth >= 1024;
+        const usernameInput = document.getElementById(isDesktop ? "username-desktop" : "username-mobile");
+        if (usernameInput) {
+            usernameInput.focus();
         }
-
-        // Handle biometric login button click
-        function handleBiometricLogin() {
-            if (biometricAuthInProgress) {
-                logMessage("⏳ Biometric authentication already in progress");
-                return;
-            }
-
-            if (!isKodularWebView) {
-                logMessage("❌ Not in Kodular WebView - biometrics unavailable");
-                const feedback = document.getElementById('biometric-feedback-mobile');
-                if (feedback) {
-                    feedback.textContent = "❌ Biometric authentication only available in mobile app";
-                    feedback.style.color = '#dc2626';
-                }
-                return;
-            }
-
-            logMessage("🔄 Starting biometric authentication...");
-            biometricAuthInProgress = true;
-
-            const button = document.getElementById('biometric-login-mobile');
-            const feedback = document.getElementById('biometric-feedback-mobile');
-
-            if (button) {
-                button.disabled = true;
-                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Authenticating...</span>';
-            }
-
-            if (feedback) {
-                feedback.textContent = "📱 Please scan your fingerprint...";
-                feedback.style.color = '#2563eb';
-            }
-
-            // Send biometric auth request to Kodular
-            const messageSent = sendToKodular('startBiometricAuth');
-
-            if (!messageSent) {
-                logMessage("❌ Failed to send biometric auth request");
-                biometricAuthInProgress = false;
-                if (button) {
-                    button.disabled = false;
-                    button.innerHTML = '<i class="fas fa-fingerprint"></i><span>Login with Fingerprint</span>';
-                }
-                if (feedback) {
-                    feedback.textContent = "❌ Failed to start biometric authentication";
-                    feedback.style.color = '#dc2626';
-                }
-            } else {
-                // Set timeout for biometric authentication
-                setTimeout(() => {
-                    if (biometricAuthInProgress) {
-                        logMessage("⏰ Biometric auth timeout");
-                        biometricAuthInProgress = false;
-                        if (button) {
-                            button.disabled = false;
-                            button.innerHTML = '<i class="fas fa-fingerprint"></i><span>Login with Fingerprint</span>';
-                        }
-                        if (feedback) {
-                            feedback.textContent = "⏰ Authentication timed out. Please try again.";
-                            feedback.style.color = '#dc2626';
-                        }
-                    }
-                }, 30000);
-            }
-        }
-
-        // Perform biometric login (called after successful authentication)
-        async function performBiometricLogin() {
-            try {
-                // Call your biometric login endpoint
-                const response = await fetch('/mobile/biometric-login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        email: currentUsername,
-                        biometricAuth: true
-                    })
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data.success && data.redirectUrl) {
-                        window.location.href = data.redirectUrl;
-                    } else if (data.success && data.autoSubmit) {
-                        // Auto-submit the form with stored credentials
-                        const form = document.getElementById('kc-form-login-mobile');
-                        const usernameInput = document.getElementById('username-mobile');
-                        const passwordInput = document.getElementById('password-mobile');
-
-                        if (form && usernameInput && passwordInput && data.credentials) {
-                            usernameInput.value = data.credentials.username;
-                            passwordInput.value = data.credentials.password;
-                            form.submit();
-                        }
-                    } else {
-                        throw new Error(data.message || 'Biometric login failed');
-                    }
-                } else {
-                    throw new Error('Biometric login failed');
-                }
-            } catch (error) {
-                logMessage(`Biometric login error: ${error.message}`);
-                const feedback = document.getElementById('biometric-feedback-mobile');
-                if (feedback) {
-                    feedback.textContent = "❌ Login failed. Please try password login.";
-                    feedback.style.color = '#dc2626';
-                }
-            }
-        }
-
-        // Check biometrics when username changes (mobile only)
-        async function handleUsernameChange() {
-            const usernameInput = document.getElementById('username-mobile');
-            if (!usernameInput) return;
-
-            const username = usernameInput.value.trim();
-            currentUsername = username;
-
-            if (username === '') {
-                updateBiometricUI('unavailable');
-                return;
-            }
-
-            updateBiometricUI('checking');
-
-            // Check if user has biometrics enabled
-            const hasBiometrics = await checkUserBiometrics(username);
-            userBiometricsEnabled = hasBiometrics;
-
-            if (hasBiometrics && isKodularWebView) {
-                updateBiometricUI('available', 'Ready for fingerprint authentication');
-            } else if (hasBiometrics && !isKodularWebView) {
-                updateBiometricUI('unavailable', 'Biometric login only available in mobile app');
-            } else {
-                updateBiometricUI('unavailable', 'Biometric login not enabled for this account');
-            }
-        }
-
-        // Password toggle functionality
-        function setupPasswordToggle(toggleId, passwordId) {
-            const toggle = document.getElementById(toggleId);
-            const password = document.getElementById(passwordId);
-
-            if (toggle && password) {
-                toggle.addEventListener("click", function () {
-                    const icon = this.querySelector("i");
-                    if (password.type === "password") {
-                        password.type = "text";
-                        icon.classList.remove("fa-eye");
-                        icon.classList.add("fa-eye-slash");
-                    } else {
-                        password.type = "password";
-                        icon.classList.remove("fa-eye-slash");
-                        icon.classList.add("fa-eye");
-                    }
-                });
-            }
-        }
-
-        // Form validation
-        function setupFormValidation(formId, submitBtnId) {
-            const form = document.getElementById(formId);
-            const submitBtn = document.getElementById(submitBtnId);
-
-            if (form && submitBtn) {
-                form.addEventListener("submit", function(e) {
-                    submitBtn.disabled = true;
-                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Signing in...';
-                });
-            }
-        }
-
-        // Initialize everything
-        function initialize() {
-            // Only initialize biometrics for mobile
-            if (window.innerWidth < 1024) {
-                // Detect Kodular WebView
-                detectKodularWebView();
-
-                // Setup username change handler for mobile
-                const usernameMobile = document.getElementById("username-mobile");
-                if (usernameMobile) {
-                    usernameMobile.addEventListener("input", handleUsernameChange);
-                    usernameMobile.addEventListener("blur", handleUsernameChange);
-                    // Check on load if username is pre-filled
-                    if (usernameMobile.value.trim() !== '') {
-                        setTimeout(handleUsernameChange, 1000);
-                    }
-                }
-
-                // Setup biometric login button
-                const biometricMobile = document.getElementById("biometric-login-mobile");
-                if (biometricMobile) {
-                    biometricMobile.addEventListener("click", handleBiometricLogin);
-                }
-            }
-
-            // Setup password toggles for both desktop and mobile
-            setupPasswordToggle("togglePasswordDesktop", "password-desktop");
-            setupPasswordToggle("togglePasswordMobile", "password-mobile");
-
-            // Setup form validation for both
-            setupFormValidation("kc-form-login-desktop", "kc-login-desktop");
-            setupFormValidation("kc-form-login-mobile", "kc-login-mobile");
-
-            // Auto-focus first input
-            const isDesktop = window.innerWidth >= 1024;
-            const usernameInput = document.getElementById(isDesktop ? "username-desktop" : "username-mobile");
-            if (usernameInput) {
-                usernameInput.focus();
-            }
-        }
-
-        // Start initialization when page loads
-        window.addEventListener("load", initialize);
-
-        // Monitor for WebView string changes (mobile only)
-        if (window.innerWidth < 1024) {
-            let lastWebViewString = '';
-            setInterval(() => {
-                if (window.webViewString && window.webViewString !== lastWebViewString) {
-                    lastWebViewString = window.webViewString;
-                    logMessage(`📡 WebView string changed: ${window.webViewString}`);
-
-                    if (window.webViewString === 'bridgeReady') {
-                        window.onBridgeReady();
-                    } else if (window.webViewString === 'pageReady') {
-                        // Echo received
-                        bridgeReady = true;
-                        communicationMethod = 'Echo Bridge';
-                    }
-                }
-            }, 100);
-        }
-
-    })();
+    });
 </script>
 
 </#if>
