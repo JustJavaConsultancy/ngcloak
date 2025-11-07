@@ -736,11 +736,13 @@
         }
     });
 
-    // Biometric Authentication Bridge
+    // Enhanced Biometric Authentication Bridge
     (function(){
         let isKodular = false;
         let bridgeReady = false;
         let biometricAuthInProgress = false;
+        let authenticationTimeout = null;
+        let biometricRequestId = null;
 
         function log(message) {
             console.log('[BiometricLogin]', message);
@@ -754,33 +756,50 @@
             }
         }
 
+        function clearAuthenticationState() {
+            log('🧹 Clearing authentication state');
+            biometricAuthInProgress = false;
+            biometricRequestId = null;
+
+            if (authenticationTimeout) {
+                clearTimeout(authenticationTimeout);
+                authenticationTimeout = null;
+            }
+        }
+
         function sendToKodular(message) {
-            log('Sending to Kodular: ' + message);
+            log('📤 Sending to Kodular: ' + message);
 
             try {
+                // Generate unique request ID for tracking
+                if (message.includes('BiometricAuth')) {
+                    biometricRequestId = Date.now().toString();
+                    message += '_' + biometricRequestId;
+                    log('🆔 Added request ID: ' + biometricRequestId);
+                }
+
                 // Method 1: AppInventor interface
                 if (window.AppInventor && typeof window.AppInventor.setWebViewString === 'function') {
                     window.AppInventor.setWebViewString(message);
-                    log('Message sent via AppInventor interface');
+                    log('✅ Message sent via AppInventor interface');
                     return true;
                 }
 
                 // Method 2: Android interface
                 if (window.Android && typeof window.Android.receiveMessage === 'function') {
                     window.Android.receiveMessage(message);
-                    log('Message sent via Android interface');
+                    log('✅ Message sent via Android interface');
                     return true;
                 }
 
                 // Method 3: Global variable
                 window.webViewString = message;
-                log('Set window.webViewString to: ' + message);
+                log('✅ Set window.webViewString to: ' + message);
 
                 // Method 4: Document title
                 const originalTitle = document.title;
                 document.title = message;
-                setTimeout(() => { document.title = originalTitle; }, 200);
-                log('Set document.title to: ' + message);
+                setTimeout(() => { document.title = originalTitle; }, 500);
 
                 // Method 5: Hidden input
                 let hiddenInput = document.getElementById('kodularMessage');
@@ -791,16 +810,13 @@
                     document.body.appendChild(hiddenInput);
                 }
                 hiddenInput.value = message;
-                log('Set hidden input value to: ' + message);
 
                 // Method 6: Data attribute
                 document.body.setAttribute('data-kodular-message', message);
-                log('Set body data attribute to: ' + message);
 
                 // Method 7: PostMessage
                 if (window.parent && window.parent.postMessage) {
                     window.parent.postMessage(message, '*');
-                    log('Message sent via postMessage');
                 }
 
                 // Method 8: Console log with prefix
@@ -808,13 +824,13 @@
 
                 return true;
             } catch (error) {
-                log('Failed to send message: ' + error.message);
+                log('❌ Failed to send message: ' + error.message);
                 return false;
             }
         }
 
         function detectKodular() {
-            log('Detecting Kodular WebView...');
+            log('🔍 Detecting Kodular WebView...');
 
             const detectionMethods = [
                 () => navigator.userAgent.includes('wv'),
@@ -829,28 +845,28 @@
             detectionMethods.forEach((method, index) => {
                 try {
                     if (method()) {
-                        log('Detection method ' + (index + 1) + ' succeeded');
+                        log('✅ Detection method ' + (index + 1) + ' succeeded');
                         detected = true;
                     }
                 } catch (e) {
-                    log('Detection method ' + (index + 1) + ' failed: ' + e.message);
+                    log('❌ Detection method ' + (index + 1) + ' failed: ' + e.message);
                 }
             });
 
             isKodular = detected;
 
             if (detected) {
-                log('Kodular WebView detected!');
+                log('✅ Kodular WebView detected!');
                 initializeBiometricBridge();
             } else {
-                log('Not running in Kodular WebView');
+                log('ℹ️ Not running in Kodular WebView');
             }
 
             return detected;
         }
 
         function initializeBiometricBridge() {
-            log('Initializing biometric bridge...');
+            log('🚀 Initializing biometric bridge...');
 
             // Show biometric section on mobile
             const biometricSection = document.getElementById('biometric-section');
@@ -859,19 +875,30 @@
                 setBiometricStatus('Biometric login available', 'success');
             }
 
-            // Send page ready signal
-            sendToKodular('loginPageReady');
+            // Send page ready signal with multiple attempts
+            let attempts = 0;
+            const sendPageReady = () => {
+                attempts++;
+                log('📤 Sending loginPageReady (attempt ' + attempts + ')');
+                sendToKodular('loginPageReady');
+
+                if (attempts < 5) {
+                    setTimeout(sendPageReady, 1000);
+                }
+            };
+
+            setTimeout(sendPageReady, 500);
 
             // Set up biometric login button
             const biometricBtn = document.getElementById('biometric-login-btn');
             if (biometricBtn) {
                 biometricBtn.addEventListener('click', function() {
                     if (biometricAuthInProgress) {
-                        log('Biometric authentication already in progress');
+                        log('⏳ Biometric authentication already in progress');
                         return;
                     }
 
-                    log('Biometric login button clicked');
+                    log('🔐 Biometric login button clicked');
                     biometricAuthInProgress = true;
                     setBiometricStatus('Requesting fingerprint authentication...', 'info');
                     biometricBtn.disabled = true;
@@ -879,10 +906,10 @@
                     // Request biometric authentication from Kodular
                     sendToKodular('loginBiometricAuth');
 
-                    // Timeout after 30 seconds
-                    setTimeout(() => {
+                    // Set timeout for authentication
+                    authenticationTimeout = setTimeout(() => {
                         if (biometricAuthInProgress) {
-                            biometricAuthInProgress = false;
+                            clearAuthenticationState();
                             biometricBtn.disabled = false;
                             setBiometricStatus('Biometric authentication timed out', 'error');
                         }
@@ -891,35 +918,41 @@
             }
 
             // Wait for bridge ready response
-            let attempts = 0;
-            const maxAttempts = 10;
+            let bridgeAttempts = 0;
+            const maxBridgeAttempts = 15;
 
             const checkBridgeReady = setInterval(() => {
-                attempts++;
-                log('Waiting for bridge ready... attempt ' + attempts);
+                bridgeAttempts++;
+                log('⏳ Waiting for bridge ready... attempt ' + bridgeAttempts);
 
-                if (attempts % 3 === 0) {
-                    log('Resending loginPageReady message');
+                if (bridgeAttempts % 3 === 0) {
+                    log('🔄 Resending loginPageReady message');
                     sendToKodular('loginPageReady');
                 }
 
                 if (bridgeReady) {
-                    log('Bridge is ready!');
+                    log('✅ Bridge is ready!');
                     clearInterval(checkBridgeReady);
                     setBiometricStatus('Mobile app connected', 'success');
-                } else if (attempts >= maxAttempts) {
-                    log('Bridge ready timeout - assuming ready');
+                } else if (bridgeAttempts >= maxBridgeAttempts) {
+                    log('⏰ Bridge ready timeout - assuming ready');
                     bridgeReady = true;
                     clearInterval(checkBridgeReady);
                     setBiometricStatus('Mobile app detected', 'info');
                 }
-            }, 500);
+            }, 1000);
         }
 
-        // Global callback functions for Kodular
+        // Enhanced global callback functions for Kodular
         window.onBiometricLoginSuccess = async function(token) {
-            log('Biometric login successful with token: ' + token);
-            biometricAuthInProgress = false;
+            log('✅ Biometric login successful with token: ' + token);
+
+            if (!biometricAuthInProgress) {
+                log('⚠️ Received success but no auth in progress - ignoring');
+                return;
+            }
+
+            clearAuthenticationState();
             setBiometricStatus('Fingerprint verified! Logging in...', 'success');
 
             try {
@@ -935,19 +968,19 @@
                 if (response.ok) {
                     const redirectHeader = response.headers.get('HX-Redirect');
                     if (redirectHeader) {
-                        log('Redirecting to: ' + redirectHeader);
+                        log('✅ Redirecting to: ' + redirectHeader);
                         window.location.href = redirectHeader;
                     } else {
-                        log('Login successful, reloading page');
+                        log('✅ Login successful, reloading page');
                         window.location.reload();
                     }
                 } else {
                     const errorText = await response.text();
-                    log('Biometric login failed: ' + errorText);
+                    log('❌ Biometric login failed: ' + errorText);
                     setBiometricStatus('Biometric login failed: ' + errorText, 'error');
                 }
             } catch (error) {
-                log('Biometric login error: ' + error.message);
+                log('❌ Biometric login error: ' + error.message);
                 setBiometricStatus('Login error: ' + error.message, 'error');
             } finally {
                 const biometricBtn = document.getElementById('biometric-login-btn');
@@ -958,8 +991,14 @@
         };
 
         window.onBiometricLoginFailure = function(error) {
-            log('Biometric login failed: ' + (error || 'Unknown error'));
-            biometricAuthInProgress = false;
+            log('❌ Biometric login failed: ' + (error || 'Unknown error'));
+
+            if (!biometricAuthInProgress) {
+                log('⚠️ Received failure but no auth in progress - ignoring');
+                return;
+            }
+
+            clearAuthenticationState();
             setBiometricStatus('Fingerprint authentication failed', 'error');
 
             const biometricBtn = document.getElementById('biometric-login-btn');
@@ -969,8 +1008,14 @@
         };
 
         window.onBiometricLoginError = function(error) {
-            log('Biometric login error: ' + (error || 'Unknown error'));
-            biometricAuthInProgress = false;
+            log('⚠️ Biometric login error: ' + (error || 'Unknown error'));
+
+            if (!biometricAuthInProgress) {
+                log('⚠️ Received error but no auth in progress - ignoring');
+                return;
+            }
+
+            clearAuthenticationState();
             setBiometricStatus('Biometric error: ' + (error || 'Unknown error'), 'error');
 
             const biometricBtn = document.getElementById('biometric-login-btn');
@@ -980,7 +1025,7 @@
         };
 
         window.onLoginBridgeReady = function() {
-            log('Login bridge ready signal received from Kodular');
+            log('✅ Login bridge ready signal received from Kodular');
             bridgeReady = true;
             setBiometricStatus('Mobile app connected', 'success');
         };
@@ -992,12 +1037,12 @@
 
         // Listen for messages from Kodular
         window.addEventListener('message', function(event) {
-            log('Received message: ' + event.data);
+            log('📨 Received message: ' + event.data);
 
             if (event.data === 'loginBridgeReady') {
                 window.onLoginBridgeReady();
             } else if (event.data === 'loginPageReady') {
-                log('LoginPageReady echo received - bridge is working');
+                log('📡 LoginPageReady echo received - bridge is working');
                 bridgeReady = true;
             }
         });
@@ -1007,16 +1052,16 @@
         setInterval(() => {
             if (window.webViewString && window.webViewString !== lastWebViewString) {
                 lastWebViewString = window.webViewString;
-                log('WebView string changed: ' + window.webViewString);
+                log('📡 WebView string changed: ' + window.webViewString);
 
                 if (window.webViewString === 'loginBridgeReady') {
                     window.onLoginBridgeReady();
                 } else if (window.webViewString === 'loginPageReady') {
-                    log('LoginPageReady echo detected - Kodular is responding');
+                    log('📡 LoginPageReady echo detected - Kodular is responding');
                     bridgeReady = true;
                 }
             }
-        }, 100);
+        }, 200);
 
     })();
 </script>
