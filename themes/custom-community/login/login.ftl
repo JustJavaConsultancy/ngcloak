@@ -841,13 +841,23 @@
                     biometricBtn.disabled = true;
 
                     // Request biometric authentication from Kodular
-                    sendToKodular('startBiometricAuth');
+                    const messageSent = sendToKodular('startBiometricAuth');
+
+                    if (!messageSent) {
+                        log('Failed to send biometric request to Kodular');
+                        setBiometricStatus('Failed to communicate with mobile app', 'error');
+                        biometricBtn.disabled = false;
+                        return;
+                    }
+
+                    log('Biometric request sent to Kodular successfully');
 
                     // Timeout after 30 seconds
                     setTimeout(() => {
                         if (biometricBtn.disabled) {
                             biometricBtn.disabled = false;
                             setBiometricStatus('Biometric authentication timed out', 'error');
+                            log('Biometric authentication timed out');
                         }
                     }, 30000);
                 });
@@ -858,6 +868,15 @@
         window.onBiometricSuccess = async function(token) {
             log('Biometric authentication successful with token: ' + token);
             setBiometricStatus('Fingerprint verified! Logging in...', 'success');
+
+            // Validate token before sending
+            if (!token || token.trim() === '') {
+                log('Invalid token received from Kodular');
+                setBiometricStatus('Invalid biometric token', 'error');
+                const biometricBtn = document.getElementById('biometric-login-btn');
+                if (biometricBtn) biometricBtn.disabled = false;
+                return;
+            }
 
             try {
                 const response = await fetch('/mobile/biometric-login', {
@@ -870,14 +889,28 @@
                 });
 
                 if (response.ok) {
+                    // Check for redirect header first
                     const redirectHeader = response.headers.get('HX-Redirect');
                     if (redirectHeader) {
                         log('Redirecting to: ' + redirectHeader);
                         window.location.href = redirectHeader;
-                    } else {
-                        log('Login successful, reloading page');
-                        window.location.reload();
+                        return;
                     }
+
+                    // Check response content
+                    const responseText = await response.text();
+                    if (responseText && responseText.includes('HX-Redirect')) {
+                        // Extract redirect URL from response
+                        const match = responseText.match(/HX-Redirect['":\s]+([^'">\s]+)/);
+                        if (match && match[1]) {
+                            log('Redirecting to extracted URL: ' + match[1]);
+                            window.location.href = match[1];
+                            return;
+                        }
+                    }
+
+                    log('Login successful, redirecting to main app');
+                    window.location.href = '/mobile';
                 } else {
                     const errorText = await response.text();
                     log('Biometric login failed: ' + errorText);
