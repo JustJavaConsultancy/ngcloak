@@ -17,4 +17,4 @@ COPY themes /opt/keycloak/themes
 COPY providers /opt/keycloak/providers
 
 # Start Keycloak
-ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start", "--hostname-strict=false", "--proxy-headers=xforwarded"]
+ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start", "--hostname-strict=false", "--proxy-headers=xforwarded", "--hostname=0.0.0.0"]
