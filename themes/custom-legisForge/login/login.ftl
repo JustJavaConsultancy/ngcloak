@@ -255,6 +255,8 @@
           .form-input {
             padding-top: 1.5rem;
             padding-bottom: 0.75rem;
+            padding-left: 1rem;
+            padding-right: 3rem; /* Extra space for password toggle */
           }
 
           .form-label {
@@ -263,13 +265,41 @@
             top: 1rem;
             transition: all 0.3s ease;
             color: #6b7280;
+            pointer-events: none;
           }
 
           .form-input:focus + .form-label,
-          .form-input:not(:placeholder-shown) + .form-label {
+          .form-input:not(:placeholder-shown) + .form-label,
+          .form-label.active {
             transform: translateY(-0.75rem) scale(0.85);
             color: #9b2f2f;
             left: 0.75rem;
+          }
+
+          /* Password toggle button styling */
+          .password-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            background: none;
+            border: none;
+            color: #769ebb;
+            cursor: pointer;
+            padding: 0.25rem;
+            transition: color 0.2s ease;
+            z-index: 10;
+          }
+
+          .password-toggle:hover {
+            color: #37516d;
+          }
+
+          /* Error message styling */
+          .error-message {
+            color: #dc2626;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: block;
           }
         </style>
 
@@ -312,7 +342,7 @@
                         name="username"
                         value="${(login.username!'')}"
                         type="text"
-                        class="input-field form-input w-full px-4 rounded-lg focus:outline-none ${properties.kcInputClass!}"
+                        class="input-field form-input w-full rounded-lg focus:outline-none ${properties.kcInputClass!}"
                         placeholder=" "
                         autofocus
                         autocomplete="${(enableWebAuthnConditionalUI?has_content)?then('username webauthn', 'username')}"
@@ -326,7 +356,7 @@
                       </label>
 
                       <#if messagesPerField.existsError('username','password')>
-                        <span id="input-error" class="${properties.kcInputErrorMessageClass!}" aria-live="polite">
+                        <span class="error-message ${properties.kcInputErrorMessageClass!}" aria-live="polite">
                           ${kcSanitize(messagesPerField.getFirstError('username','password'))?no_esc}
                         </span>
                       </#if>
@@ -335,39 +365,37 @@
 
                   <!-- Password Field -->
                   <div class="form-group">
-                    <div class="${properties.kcInputGroup!}" dir="ltr">
-                      <input
-                        tabindex="3"
-                        id="password"
-                        name="password"
-                        type="password"
-                        class="input-field form-input w-full px-4 rounded-lg focus:outline-none ${properties.kcInputClass!}"
-                        placeholder=" "
-                        autocomplete="current-password"
-                        aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>"
-                        required
-                      />
-                      <label for="password" class="form-label floating-label ${properties.kcLabelClass!}">
-                        <i class="fas fa-lock mr-2"></i>${msg("password")}
-                      </label>
-                      <button
-                        class="${properties.kcFormPasswordVisibilityButtonClass!} absolute right-4 top-4 text-legal-navy-400 hover:text-legal-navy-600"
-                        type="button"
-                        aria-label="${msg("showPassword")}"
-                        aria-controls="password"
-                        data-password-toggle
-                        tabindex="4"
-                        data-icon-show="${properties.kcFormPasswordVisibilityIconShow!}"
-                        data-icon-hide="${properties.kcFormPasswordVisibilityIconHide!}"
-                        data-label-show="${msg('showPassword')}"
-                        data-label-hide="${msg('hidePassword')}"
-                      >
-                        <i class="fas fa-eye ${properties.kcFormPasswordVisibilityIconShow!}" aria-hidden="true"></i>
-                      </button>
-                    </div>
+                    <input
+                      tabindex="3"
+                      id="password"
+                      name="password"
+                      type="password"
+                      class="input-field form-input w-full rounded-lg focus:outline-none ${properties.kcInputClass!}"
+                      placeholder=" "
+                      autocomplete="current-password"
+                      aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>"
+                      required
+                    />
+                    <label for="password" class="form-label floating-label ${properties.kcLabelClass!}">
+                      <i class="fas fa-lock mr-2"></i>${msg("password")}
+                    </label>
+                    <button
+                      type="button"
+                      id="togglePassword"
+                      class="password-toggle ${properties.kcFormPasswordVisibilityButtonClass!}"
+                      aria-label="${msg("showPassword")}"
+                      aria-controls="password"
+                      tabindex="4"
+                      data-icon-show="${properties.kcFormPasswordVisibilityIconShow!}"
+                      data-icon-hide="${properties.kcFormPasswordVisibilityIconHide!}"
+                      data-label-show="${msg('showPassword')}"
+                      data-label-hide="${msg('hidePassword')}"
+                    >
+                      <i class="fas fa-eye" aria-hidden="true"></i>
+                    </button>
 
                     <#if usernameHidden?? && messagesPerField.existsError('username','password')>
-                      <span id="input-error" class="${properties.kcInputErrorMessageClass!}" aria-live="polite">
+                      <span class="error-message ${properties.kcInputErrorMessageClass!}" aria-live="polite">
                         ${kcSanitize(messagesPerField.getFirstError('username','password'))?no_esc}
                       </span>
                     </#if>
@@ -419,6 +447,22 @@
                   </div>
                 </form>
               </#if>
+
+              <!-- Sign Up Link -->
+              <#if realm.password && realm.registrationAllowed && !registrationDisabled??>
+                <div class="text-center mt-4">
+                  <p class="text-legal-navy-600">
+                    ${msg("noAccount")}
+                    <a
+                      tabindex="8"
+                      href="${url.registrationUrl}"
+                      class="text-legal-burgundy-600 hover:text-legal-burgundy-800 font-medium transition-colors duration-200"
+                    >
+                      ${msg("doRegister")}
+                    </a>
+                  </p>
+                </div>
+              </#if>
             </div>
           </div>
         </div>
@@ -428,7 +472,7 @@
 
         <script>
           document.addEventListener("DOMContentLoaded", function () {
-            const togglePassword = document.querySelector('[data-password-toggle]');
+            const togglePassword = document.getElementById("togglePassword");
             const passwordInput = document.getElementById("password");
 
             // Toggle password visibility
@@ -439,10 +483,15 @@
                     ? "text"
                     : "password";
                 passwordInput.setAttribute("type", type);
-                this.innerHTML =
-                  type === "password"
-                    ? '<i class="fas fa-eye"></i>'
-                    : '<i class="fas fa-eye-slash"></i>';
+
+                const icon = this.querySelector('i');
+                if (type === "password") {
+                  icon.classList.remove('fa-eye-slash');
+                  icon.classList.add('fa-eye');
+                } else {
+                  icon.classList.remove('fa-eye');
+                  icon.classList.add('fa-eye-slash');
+                }
               });
             }
 
@@ -461,58 +510,37 @@
             // Add floating label functionality
             const inputs = document.querySelectorAll(".form-input");
             inputs.forEach((input) => {
-              // Check if input has value on page load (for browser autofill)
-              if (input.value) {
-                input.nextElementSibling.classList.add(
-                  "transform",
-                  "-translate-y-3",
-                  "scale-85",
-                  "text-legal-burgundy-600"
-                );
+              const label = input.nextElementSibling;
+
+              // Check if input has value on page load (for browser autofill or Keycloak pre-filled values)
+              function checkInputValue() {
+                if (input.value && input.value.trim() !== '') {
+                  label.classList.add("active");
+                } else {
+                  label.classList.remove("active");
+                }
               }
 
+              // Initial check
+              checkInputValue();
+
+              // Monitor for changes (including autofill)
+              input.addEventListener("input", checkInputValue);
+              input.addEventListener("change", checkInputValue);
+
               input.addEventListener("focus", function () {
-                this.nextElementSibling.classList.add(
-                  "transform",
-                  "-translate-y-3",
-                  "scale-85",
-                  "text-legal-burgundy-600"
-                );
+                label.classList.add("active");
               });
 
               input.addEventListener("blur", function () {
-                if (!this.value) {
-                  this.nextElementSibling.classList.remove(
-                    "transform",
-                    "-translate-y-3",
-                    "scale-85",
-                    "text-legal-burgundy-600"
-                  );
-                }
+                checkInputValue();
               });
             });
           });
         </script>
 
     <#elseif section = "info">
-        <#if realm.password && realm.registrationAllowed && !registrationDisabled??>
-            <div id="kc-registration-container">
-                <div id="kc-registration">
-                    <div class="text-center mt-4">
-                        <p class="text-legal-navy-600">
-                            ${msg("noAccount")}
-                            <a
-                                tabindex="8"
-                                href="${url.registrationUrl}"
-                                class="text-legal-burgundy-600 hover:text-legal-burgundy-800 font-medium transition-colors duration-200"
-                            >
-                                ${msg("doRegister")}
-                            </a>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </#if>
+        <!-- This section is intentionally empty as registration link is now in the form section -->
     <#elseif section = "socialProviders">
         <#if realm.password && social?? && social.providers?has_content>
             <div id="kc-social-providers" class="${properties.kcFormSocialAccountSectionClass!}">
