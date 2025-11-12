@@ -347,7 +347,7 @@
                         dir="ltr"
                         required
                       />
-                      <label for="username" class="form-label floating-label ${properties.kcLabelClass!}">
+                      <label for="username" class="form-label floating-label ${properties.kcLabelClass!}" style="font-size: larger;">
                         <i class="fas fa-envelope mr-2"></i>
                         <#if !realm.loginWithEmailAllowed>${msg("username")}<#elseif !realm.registrationEmailAsUsername>${msg("usernameOrEmail")}<#else>${msg("email")}</#if>
                       </label>
@@ -373,7 +373,7 @@
                       aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>"
                       required
                     />
-                    <label for="password" class="form-label floating-label ${properties.kcLabelClass!}">
+                    <label for="password" class="form-label floating-label ${properties.kcLabelClass!}" style="font-size: larger;">
                       <i class="fas fa-lock mr-2"></i>${msg("password")}
                     </label>
                     <button
@@ -385,6 +385,7 @@
                       tabindex="4"
                       data-label-show="${msg('showPassword')}"
                       data-label-hide="${msg('hidePassword')}"
+                      style="font-size: larger;"
                     >
                       <i class="fas fa-eye"></i>
                     </button>
