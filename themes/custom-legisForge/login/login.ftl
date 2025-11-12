@@ -255,13 +255,6 @@
           .form-input {
             padding-top: 1.5rem;
             padding-bottom: 0.75rem;
-            width: 100%;
-            border: 1px solid #d0dde8;
-            border-radius: 0.5rem;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            background: white;
-            box-sizing: border-box;
           }
 
           .form-label {
@@ -270,52 +263,13 @@
             top: 1rem;
             transition: all 0.3s ease;
             color: #6b7280;
-            pointer-events: none;
           }
 
           .form-input:focus + .form-label,
-          .form-input:not(:placeholder-shown) + .form-label,
-          .form-label.active {
+          .form-input:not(:placeholder-shown) + .form-label {
             transform: translateY(-0.75rem) scale(0.85);
             color: #9b2f2f;
             left: 0.75rem;
-          }
-
-          /* Utility classes */
-          .relative {
-            position: relative;
-          }
-
-          .absolute {
-            position: absolute;
-          }
-
-          .right-4 {
-            right: 1rem;
-          }
-
-          .top-4 {
-            top: 1rem;
-          }
-
-          .text-legal-navy-400 {
-            color: #769ebb;
-          }
-
-          .text-legal-navy-600 {
-            color: #436587;
-          }
-
-          .hover\:text-legal-navy-600:hover {
-            color: #436587;
-          }
-
-          /* Error message styling */
-          .error-message {
-            color: #dc2626;
-            font-size: 0.875rem;
-            margin-top: 0.5rem;
-            display: block;
           }
         </style>
 
@@ -350,7 +304,7 @@
               <#if realm.password>
                 <form id="kc-form-login" onsubmit="login.disabled = true; return true;" action="${url.loginAction}" method="post" class="space-y-6">
                   <#if !usernameHidden??>
-                    <!-- Username/Email Field -->
+                    <!-- Email Field -->
                     <div class="form-group">
                       <input
                         tabindex="2"
@@ -358,7 +312,7 @@
                         name="username"
                         value="${(login.username!'')}"
                         type="text"
-                        class="input-field form-input w-full rounded-lg focus:outline-none ${properties.kcInputClass!}"
+                        class="input-field form-input w-full px-4 rounded-lg focus:outline-none ${properties.kcInputClass!}"
                         placeholder=" "
                         autofocus
                         autocomplete="${(enableWebAuthnConditionalUI?has_content)?then('username webauthn', 'username')}"
@@ -372,7 +326,7 @@
                       </label>
 
                       <#if messagesPerField.existsError('username','password')>
-                        <span class="error-message ${properties.kcInputErrorMessageClass!}" aria-live="polite">
+                        <span id="input-error" class="${properties.kcInputErrorMessageClass!}" aria-live="polite">
                           ${kcSanitize(messagesPerField.getFirstError('username','password'))?no_esc}
                         </span>
                       </#if>
@@ -381,39 +335,37 @@
 
                   <!-- Password Field -->
                   <div class="form-group">
-                    <div class="relative">
-                      <input
-                        tabindex="3"
-                        id="password"
-                        name="password"
-                        type="password"
-                        class="input-field form-input w-full px-4 rounded-lg focus:outline-none ${properties.kcInputClass!}"
-                        placeholder=" "
-                        autocomplete="current-password"
-                        aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>"
-                        required
-                      />
-                      <label for="password" class="form-label floating-label ${properties.kcLabelClass!}">
-                        <i class="fas fa-lock mr-2"></i>${msg("password")}
-                      </label>
-                      <button
-                        type="button"
-                        id="togglePassword"
-                        class="absolute right-4 top-4 text-legal-navy-400 hover:text-legal-navy-600 ${properties.kcFormPasswordVisibilityButtonClass!}"
-                        aria-label="${msg("showPassword")}"
-                        aria-controls="password"
-                        tabindex="4"
-                        data-icon-show="${properties.kcFormPasswordVisibilityIconShow!}"
-                        data-icon-hide="${properties.kcFormPasswordVisibilityIconHide!}"
-                        data-label-show="${msg('showPassword')}"
-                        data-label-hide="${msg('hidePassword')}"
-                      >
-                        <i class="fas fa-eye" aria-hidden="true"></i>
-                      </button>
-                    </div>
+                    <input
+                      tabindex="3"
+                      id="password"
+                      name="password"
+                      type="password"
+                      class="input-field form-input w-full px-4 rounded-lg focus:outline-none ${properties.kcInputClass!}"
+                      placeholder=" "
+                      autocomplete="current-password"
+                      aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>"
+                      required
+                    />
+                    <label for="password" class="form-label floating-label ${properties.kcLabelClass!}">
+                      <i class="fas fa-lock mr-2"></i>${msg("password")}
+                    </label>
+                    <button
+                      type="button"
+                      id="togglePassword"
+                      class="absolute right-4 top-4 text-legal-navy-400 hover:text-legal-navy-600 ${properties.kcFormPasswordVisibilityButtonClass!}"
+                      aria-label="${msg("showPassword")}"
+                      aria-controls="password"
+                      tabindex="4"
+                      data-icon-show="${properties.kcFormPasswordVisibilityIconShow!}"
+                      data-icon-hide="${properties.kcFormPasswordVisibilityIconHide!}"
+                      data-label-show="${msg('showPassword')}"
+                      data-label-hide="${msg('hidePassword')}"
+                    >
+                      <i class="fas fa-eye"></i>
+                    </button>
 
                     <#if usernameHidden?? && messagesPerField.existsError('username','password')>
-                      <span class="error-message ${properties.kcInputErrorMessageClass!}" aria-live="polite">
+                      <span id="input-error" class="${properties.kcInputErrorMessageClass!}" aria-live="polite">
                         ${kcSanitize(messagesPerField.getFirstError('username','password'))?no_esc}
                       </span>
                     </#if>
@@ -490,75 +442,81 @@
 
         <script>
           document.addEventListener("DOMContentLoaded", function () {
+            const loginForm = document.getElementById("kc-form-login");
             const togglePassword = document.getElementById("togglePassword");
             const passwordInput = document.getElementById("password");
 
             // Toggle password visibility
-            if (togglePassword && passwordInput) {
-              togglePassword.addEventListener("click", function () {
-                const type =
-                  passwordInput.getAttribute("type") === "password"
-                    ? "text"
-                    : "password";
-                passwordInput.setAttribute("type", type);
-
-                const icon = this.querySelector('i');
-                if (type === "password") {
-                  icon.classList.remove('fa-eye-slash');
-                  icon.classList.add('fa-eye');
-                } else {
-                  icon.classList.remove('fa-eye');
-                  icon.classList.add('fa-eye-slash');
-                }
-              });
-            }
+            togglePassword.addEventListener("click", function () {
+              const type =
+                passwordInput.getAttribute("type") === "password"
+                  ? "text"
+                  : "password";
+              passwordInput.setAttribute("type", type);
+              this.innerHTML =
+                type === "password"
+                  ? '<i class="fas fa-eye"></i>'
+                  : '<i class="fas fa-eye-slash"></i>';
+            });
 
             // Form submission
-            const loginForm = document.getElementById("kc-form-login");
-            if (loginForm) {
-              loginForm.addEventListener("submit", function (e) {
-                const submitButton = document.getElementById("kc-login");
-                if (submitButton) {
-                  submitButton.disabled = true;
-                  submitButton.value = "Signing you in...";
-                }
-              });
-            }
+            loginForm.addEventListener("submit", function (e) {
+              // Get form values
+              const username = document.getElementById("username").value;
+              const password = document.getElementById("password").value;
+              const remember = document.getElementById("rememberMe") ? document.getElementById("rememberMe").checked : false;
+
+              // Simple validation
+              if (!username || !password) {
+                e.preventDefault();
+                return;
+              }
+
+              const submitButton = document.getElementById("kc-login");
+              if (submitButton) {
+                submitButton.disabled = true;
+                submitButton.value = "Signing you in...";
+              }
+            });
 
             // Add floating label functionality
             const inputs = document.querySelectorAll(".form-input");
             inputs.forEach((input) => {
-              const label = input.nextElementSibling;
-
-              // Check if input has value on page load (for browser autofill or Keycloak pre-filled values)
-              function checkInputValue() {
-                if (input.value && input.value.trim() !== '') {
-                  label.classList.add("active");
-                } else {
-                  label.classList.remove("active");
-                }
+              // Check if input has value on page load (for browser autofill)
+              if (input.value) {
+                input.nextElementSibling.classList.add(
+                  "transform",
+                  "-translate-y-3",
+                  "scale-85",
+                  "text-legal-burgundy-600"
+                );
               }
 
-              // Initial check
-              checkInputValue();
-
-              // Monitor for changes (including autofill)
-              input.addEventListener("input", checkInputValue);
-              input.addEventListener("change", checkInputValue);
-
               input.addEventListener("focus", function () {
-                label.classList.add("active");
+                this.nextElementSibling.classList.add(
+                  "transform",
+                  "-translate-y-3",
+                  "scale-85",
+                  "text-legal-burgundy-600"
+                );
               });
 
               input.addEventListener("blur", function () {
-                checkInputValue();
+                if (!this.value) {
+                  this.nextElementSibling.classList.remove(
+                    "transform",
+                    "-translate-y-3",
+                    "scale-85",
+                    "text-legal-burgundy-600"
+                  );
+                }
               });
             });
           });
         </script>
 
     <#elseif section = "info">
-        <!-- This section is intentionally empty as registration link is now in the form section -->
+        <!-- Registration link is now in the form section -->
     <#elseif section = "socialProviders">
         <#if realm.password && social?? && social.providers?has_content>
             <div id="kc-social-providers" class="${properties.kcFormSocialAccountSectionClass!}">
