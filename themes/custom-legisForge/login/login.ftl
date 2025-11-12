@@ -255,8 +255,13 @@
           .form-input {
             padding-top: 1.5rem;
             padding-bottom: 0.75rem;
-            padding-left: 1rem;
-            padding-right: 3rem; /* Extra space for password toggle */
+            width: 100%;
+            border: 1px solid #d0dde8;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+            box-sizing: border-box;
           }
 
           .form-label {
@@ -276,22 +281,33 @@
             left: 0.75rem;
           }
 
-          /* Password toggle button styling */
-          .password-toggle {
-            position: absolute;
-            right: 1rem;
-            top: 1rem;
-            background: none;
-            border: none;
-            color: #769ebb;
-            cursor: pointer;
-            padding: 0.25rem;
-            transition: color 0.2s ease;
-            z-index: 10;
+          /* Utility classes */
+          .relative {
+            position: relative;
           }
 
-          .password-toggle:hover {
-            color: #37516d;
+          .absolute {
+            position: absolute;
+          }
+
+          .right-4 {
+            right: 1rem;
+          }
+
+          .top-4 {
+            top: 1rem;
+          }
+
+          .text-legal-navy-400 {
+            color: #769ebb;
+          }
+
+          .text-legal-navy-600 {
+            color: #436587;
+          }
+
+          .hover\:text-legal-navy-600:hover {
+            color: #436587;
           }
 
           /* Error message styling */
@@ -365,34 +381,36 @@
 
                   <!-- Password Field -->
                   <div class="form-group">
-                    <input
-                      tabindex="3"
-                      id="password"
-                      name="password"
-                      type="password"
-                      class="input-field form-input w-full rounded-lg focus:outline-none ${properties.kcInputClass!}"
-                      placeholder=" "
-                      autocomplete="current-password"
-                      aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>"
-                      required
-                    />
-                    <label for="password" class="form-label floating-label ${properties.kcLabelClass!}">
-                      <i class="fas fa-lock mr-2"></i>${msg("password")}
-                    </label>
-                    <button
-                      type="button"
-                      id="togglePassword"
-                      class="password-toggle ${properties.kcFormPasswordVisibilityButtonClass!}"
-                      aria-label="${msg("showPassword")}"
-                      aria-controls="password"
-                      tabindex="4"
-                      data-icon-show="${properties.kcFormPasswordVisibilityIconShow!}"
-                      data-icon-hide="${properties.kcFormPasswordVisibilityIconHide!}"
-                      data-label-show="${msg('showPassword')}"
-                      data-label-hide="${msg('hidePassword')}"
-                    >
-                      <i class="fas fa-eye" aria-hidden="true"></i>
-                    </button>
+                    <div class="relative">
+                      <input
+                        tabindex="3"
+                        id="password"
+                        name="password"
+                        type="password"
+                        class="input-field form-input w-full px-4 rounded-lg focus:outline-none ${properties.kcInputClass!}"
+                        placeholder=" "
+                        autocomplete="current-password"
+                        aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>"
+                        required
+                      />
+                      <label for="password" class="form-label floating-label ${properties.kcLabelClass!}">
+                        <i class="fas fa-lock mr-2"></i>${msg("password")}
+                      </label>
+                      <button
+                        type="button"
+                        id="togglePassword"
+                        class="absolute right-4 top-4 text-legal-navy-400 hover:text-legal-navy-600 ${properties.kcFormPasswordVisibilityButtonClass!}"
+                        aria-label="${msg("showPassword")}"
+                        aria-controls="password"
+                        tabindex="4"
+                        data-icon-show="${properties.kcFormPasswordVisibilityIconShow!}"
+                        data-icon-hide="${properties.kcFormPasswordVisibilityIconHide!}"
+                        data-label-show="${msg('showPassword')}"
+                        data-label-hide="${msg('hidePassword')}"
+                      >
+                        <i class="fas fa-eye" aria-hidden="true"></i>
+                      </button>
+                    </div>
 
                     <#if usernameHidden?? && messagesPerField.existsError('username','password')>
                       <span class="error-message ${properties.kcInputErrorMessageClass!}" aria-live="polite">
