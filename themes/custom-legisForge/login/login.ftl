@@ -139,6 +139,10 @@
             margin-top: 0;
         }
 
+         .pf-c-form-control:not(textarea) {
+            height: auto;
+         }
+
           .login-container {
             min-height: 100vh;
             display: flex;
@@ -375,12 +379,10 @@
                     <button
                       type="button"
                       id="togglePassword"
-                      class="absolute right-4 top-4 text-legal-navy-400 hover:text-legal-navy-600 ${properties.kcFormPasswordVisibilityButtonClass!}"
+                      class="absolute right-4 top-4 text-legal-navy-400 hover:text-legal-navy-600"
                       aria-label="${msg("showPassword")}"
                       aria-controls="password"
                       tabindex="4"
-                      data-icon-show="${properties.kcFormPasswordVisibilityIconShow!}"
-                      data-icon-hide="${properties.kcFormPasswordVisibilityIconHide!}"
                       data-label-show="${msg('showPassword')}"
                       data-label-hide="${msg('hidePassword')}"
                     >
