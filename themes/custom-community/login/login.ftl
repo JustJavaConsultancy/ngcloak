@@ -736,7 +736,7 @@
         }
     });
 
-    // ULTRA SIMPLE Biometric Authentication for Login
+    // FIXED Biometric Authentication for Login
     (function(){
         let isWebView = false;
         let biometricAuthInProgress = false;
@@ -791,6 +791,138 @@
             }
         }
 
+        // Function to request biometric token from mobile app
+        function requestBiometricToken() {
+            log('🔑 REQUESTING BIOMETRIC TOKEN FROM MOBILE APP');
+
+            try {
+                // Send message to mobile app to get the stored token
+                window.webViewString = 'GET_BIOMETRIC_TOKEN';
+                document.title = 'GET_BIOMETRIC_TOKEN';
+                document.body.setAttribute('data-message', 'GET_BIOMETRIC_TOKEN');
+                console.log('KODULAR_GET_BIOMETRIC_TOKEN');
+
+                setBiometricStatus('Getting authentication token...', 'info');
+
+                // Set timeout for token retrieval
+                setTimeout(() => {
+                    if (biometricAuthInProgress === false) {
+                        log('⏰ Token retrieval timeout');
+                        setBiometricStatus('Token retrieval timed out', 'error');
+                        const btn = document.getElementById('biometric-login-btn');
+                        if (btn) btn.disabled = false;
+                    }
+                }, 10000);
+
+                // Reset title after 2 seconds
+                setTimeout(() => {
+                    document.title = 'Connect - Login';
+                }, 2000);
+
+            } catch (error) {
+                log('❌ ERROR REQUESTING TOKEN: ' + error.message);
+                setBiometricStatus('Failed to get authentication token', 'error');
+                const btn = document.getElementById('biometric-login-btn');
+                if (btn) btn.disabled = false;
+            }
+        }
+
+        // Function to handle received biometric token
+        window.onBiometricTokenReceived = function(token) {
+            log('🔑 BIOMETRIC TOKEN RECEIVED: ' + (token ? token.substring(0, 10) + '...' : 'null'));
+
+            if (!token || token.trim() === '') {
+                log('❌ Invalid or empty token received');
+                setBiometricStatus('Invalid authentication token', 'error');
+                const btn = document.getElementById('biometric-login-btn');
+                if (btn) btn.disabled = false;
+                return;
+            }
+
+            setBiometricStatus('Authenticating with server...', 'info');
+
+            // Send token to backend for authentication
+            authenticateWithBiometricToken(token);
+        };
+
+        // Function to authenticate with biometric token
+        function authenticateWithBiometricToken(token) {
+            log('🔐 AUTHENTICATING WITH BIOMETRIC TOKEN');
+
+            fetch('/mobile/biometric-login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'HX-Request': 'true'
+                },
+                body: JSON.stringify({ token: token })
+            })
+            .then(response => {
+                log('📡 Server response status: ' + response.status);
+
+                // Check for redirect header
+                const redirectUrl = response.headers.get('HX-Redirect');
+                if (redirectUrl) {
+                    log('🔄 Redirecting to: ' + redirectUrl);
+                    setBiometricStatus('Login successful! Redirecting...', 'success');
+                    window.location.href = redirectUrl;
+                    return;
+                }
+
+                // Handle other responses
+                if (response.ok) {
+                    setBiometricStatus('Login successful!', 'success');
+                    // Fallback redirect if no HX-Redirect header
+                    setTimeout(() => {
+                        window.location.href = '/mobile/settings';
+                    }, 1000);
+                } else {
+                    response.text().then(errorText => {
+                        log('❌ Server error: ' + errorText);
+                        setBiometricStatus('Authentication failed: ' + errorText, 'error');
+                    });
+                }
+            })
+            .catch(error => {
+                log('❌ Network error: ' + error.message);
+                setBiometricStatus('Network error during authentication', 'error');
+            })
+            .finally(() => {
+                const btn = document.getElementById('biometric-login-btn');
+                if (btn) btn.disabled = false;
+            });
+        }
+
+        // Listen for token messages from mobile app
+        function setupTokenListener() {
+            // Check for token in URL hash
+            function checkUrlForToken() {
+                const hash = window.location.hash;
+                if (hash.startsWith('#TOKEN:')) {
+                    const token = hash.substring(7);
+                    log('🔑 TOKEN FOUND IN URL HASH: ' + token.substring(0, 10) + '...');
+                    window.onBiometricTokenReceived(token);
+                    // Clear the hash
+                    window.location.hash = '';
+                }
+            }
+
+            // Check URL hash periodically
+            setInterval(checkUrlForToken, 500);
+
+            // Also check on hash change
+            window.addEventListener('hashchange', checkUrlForToken);
+
+            // Listen for direct token messages
+            window.addEventListener('message', function(event) {
+                if (event.data && typeof event.data === 'string' && event.data.startsWith('TOKEN:')) {
+                    const token = event.data.substring(6);
+                    log('🔑 TOKEN RECEIVED VIA MESSAGE: ' + token.substring(0, 10) + '...');
+                    window.onBiometricTokenReceived(token);
+                }
+            });
+        }
+
         // Detect WebView - same as settings page
         function detectWebView() {
             const checks = [
@@ -823,14 +955,10 @@
             }
 
             biometricAuthInProgress = false;
-            setBiometricStatus('Fingerprint verified! Logging in...', 'success');
+            setBiometricStatus('Fingerprint verified! Getting token...', 'success');
 
-            // Auto-submit the login form
-            const form = document.getElementById('kc-form-login-mobile');
-            if (form) {
-                log('🔄 Auto-submitting login form');
-                form.submit();
-            }
+            // Request the biometric token from the mobile app
+            requestBiometricToken();
         };
 
         window.onSettingsBiometricFailure = function() {
@@ -886,6 +1014,7 @@
             log('🚀 INITIALIZING LOGIN BIOMETRIC SYSTEM');
 
             detectWebView();
+            setupTokenListener();
 
             const biometricBtn = document.getElementById('biometric-login-btn');
             if (biometricBtn) {
