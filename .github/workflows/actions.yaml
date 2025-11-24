@@ -47,18 +47,21 @@ jobs:
         with:
           context: .
           push: true
-          tags: kazeemakinrinde/ngcloak:${{ github.sha }}
-  
+          tags: ${{ env.IMAGE_NAME }}:${{ github.sha }}
+
+      - name: Set IMAGE_REF
+        run: echo "IMAGE_REF=${{ env.IMAGE_NAME }}:${{ github.sha }}" >> $GITHUB_ENV
 
       - name: Install Railway CLI
         run: npm install -g @railway/cli
 
-      # Step 5: Deploy to Railwayy
+      # Step 5: Deploy to Railway
       - name: Deploy to Railway
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
           RAILWAY_PROJECT_ID: 7edc707c-73e3-4b8b-915b-019e9d0b6114
           RAILWAY_SERVICE_ID: Ngcloak
+          IMAGE_REF: ${{ env.IMAGE_REF }}
         run: |
-          echo "Deploying QA with image: $IMAGE_NAME"
-          railway variables --set "RAILWAY_SERVICE_IMAGE=$IMAGE_NAME" --service $RAILWAY_SERVICE_ID
+          echo "Deploying QA with image: $IMAGE_REF"
+          railway variables --set "RAILWAY_SERVICE_IMAGE=$IMAGE_REF" --service $RAILWAY_SERVICE_ID
