@@ -50,7 +50,7 @@ jobs:
           tags: ${{ env.IMAGE_NAME }}:${{ github.sha }}
 
       - name: Set IMAGE_REF
-        run: echo "IMAGE_REF=${{ env.IMAGE_NAME }}:${{ github.sha }}" >> $GITHUB_ENV
+        run: echo "IMAGE_REF=${{ env.IMAGE_NAME }}:latest" >> $GITHUB_ENV
 
       - name: Install Railway CLI
         run: npm install -g @railway/cli
