@@ -3,6 +3,7 @@ name: Build and Push Docker Image
 on:
   push:
     branches: ["main"]  # Trigger on pushes to main branch
+  workflow_dispatch:
 
 env:
   IMAGE_NAME: kazeemakinrinde/ngcloak  # Replace with your Docker Hub repo name
