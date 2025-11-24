@@ -30,6 +30,34 @@
   box-shadow: none;
 }
 
+/* Additional Keycloak overrides */
+.login-pf-page .login-pf-signup {
+  display: none;
+}
+
+.login-pf-page .login-pf-social {
+  display: none;
+}
+
+.login-pf-page .login-pf-brand {
+  display: none;
+}
+
+.login-pf-page .login-pf-footer {
+  display: none;
+}
+
+.login-pf-page .alert {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+}
+
+.login-pf-page .feedback-aligner {
+  display: none;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -114,9 +142,6 @@ a {
 }
 
 /* Desktop Layout */
-.form-container {
-  padding: 4rem 0;
-}
 .left-panel {
   background: linear-gradient(#0c74b116, #0c74b1),
     url("../img/blueImage.png") no-repeat center center/cover;
@@ -127,11 +152,20 @@ a {
 .right-panel {
   margin-left: 25%;
   width: 75%;
+  padding: 2rem;
+  background-color: white;
 }
+
+/* Desktop Form Container - Card Style */
 .form-container {
-  margin: auto auto;
-  padding: auto;
-  width: 50%;
+  margin: auto;
+  padding: 40px 30px;
+  width: 80%;
+  max-width: 600px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f1f5f9;
 }
 
 /* Password Requirements Styling */
@@ -297,7 +331,8 @@ input[type="number"] {
     margin-bottom: 20px;
     border: 1px solid #f1f5f9;
     width: 100% !important;
-    margin: 0 !important;
+    margin: 0 auto !important;
+    max-width: none !important;
   }
 
   .darker-text {
