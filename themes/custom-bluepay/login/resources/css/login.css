@@ -11,6 +11,7 @@
 
 .login-pf-page{
     padding-top: 0;
+    overflow-y: hidden !important;
 }
 .login-pf-page-header{
     display: none;
