@@ -47,7 +47,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ env.IMAGE_NAME }}:${{ github.sha }}
+          tags: ${{ env.IMAGE_NAME }}:latest
 
       - name: Set IMAGE_REF
         run: echo "IMAGE_REF=${{ env.IMAGE_NAME }}:latest" >> $GITHUB_ENV
