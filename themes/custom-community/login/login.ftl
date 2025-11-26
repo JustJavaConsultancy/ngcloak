@@ -736,10 +736,11 @@
         }
     });
 
-    // FIXED Biometric Authentication for Login
+    // SIMPLIFIED Biometric Authentication for Login - Matches Settings Page Pattern EXACTLY
     (function(){
         let isWebView = false;
         let biometricAuthInProgress = false;
+        let storedBiometricToken = '';
 
         function log(message) {
             console.log('[LoginBiometric]', message);
@@ -753,101 +754,52 @@
             }
         }
 
-        // ULTRA SIMPLE message sending - same as settings page
+        // EXACT same message sending as settings page
         function sendBiometricMessage() {
-            log('🚀 SENDING LOGIN BIOMETRIC MESSAGE');
-
             try {
-                // Send the EXACT same message as settings page
-                window.webViewString = 'BIOMETRIC';
-                document.title = 'BIOMETRIC';
-                document.body.setAttribute('data-message', 'BIOMETRIC');
-                console.log('KODULAR_BIOMETRIC');
-
-                // Hidden input
-                let input = document.getElementById('biometric-input');
-                if (!input) {
-                    input = document.createElement('input');
-                    input.type = 'hidden';
-                    input.id = 'biometric-input';
-                    document.body.appendChild(input);
+                // Method 1: Try direct function call
+                if (window.AppInventor && window.AppInventor.setWebViewString) {
+                    window.AppInventor.setWebViewString('BIOMETRIC');
                 }
-                input.value = 'BIOMETRIC';
 
-                log('✅ LOGIN BIOMETRIC MESSAGE SENT');
-                setBiometricStatus('Waiting for fingerprint...', 'info');
+                // Method 2: Try Android interface
+                if (window.Android && window.Android.triggerBiometric) {
+                    window.Android.triggerBiometric();
+                }
 
-                // Reset title after 2 seconds
-                setTimeout(() => {
-                    document.title = 'Connect - Login';
-                }, 2000);
+                // Method 3: Traditional webViewString (fallback)
+                window.webViewString = 'BIOMETRIC';
 
-                return true;
+                // Method 4: Force multiple triggers
+                setTimeout(function() {
+                    window.webViewString = '';
+                    setTimeout(function() {
+                        window.webViewString = 'BIOMETRIC';
+                    }, 100);
+                }, 200);
 
-            } catch (error) {
-                log('❌ ERROR SENDING LOGIN BIOMETRIC MESSAGE: ' + error.message);
-                setBiometricStatus('Failed to start biometric login', 'error');
-                return false;
-            }
-        }
-
-        // Function to request biometric token from mobile app
-        function requestBiometricToken() {
-            log('🔑 REQUESTING BIOMETRIC TOKEN FROM MOBILE APP');
-
-            try {
-                // Send message to mobile app to get the stored token
-                window.webViewString = 'GET_BIOMETRIC_TOKEN';
-                document.title = 'GET_BIOMETRIC_TOKEN';
-                document.body.setAttribute('data-message', 'GET_BIOMETRIC_TOKEN');
-                console.log('KODULAR_GET_BIOMETRIC_TOKEN');
-
-                setBiometricStatus('Getting authentication token...', 'info');
-
-                // Set timeout for token retrieval
-                setTimeout(() => {
-                    if (biometricAuthInProgress === false) {
-                        log('⏰ Token retrieval timeout');
-                        setBiometricStatus('Token retrieval timed out', 'error');
-                        const btn = document.getElementById('biometric-login-btn');
-                        if (btn) btn.disabled = false;
-                    }
-                }, 10000);
-
-                // Reset title after 2 seconds
-                setTimeout(() => {
-                    document.title = 'Connect - Login';
-                }, 2000);
+                // Method 5: Try URL change (Kodular can detect this)
+                window.location.hash = '#BIOMETRIC_' + Date.now();
 
             } catch (error) {
-                log('❌ ERROR REQUESTING TOKEN: ' + error.message);
-                setBiometricStatus('Failed to get authentication token', 'error');
-                const btn = document.getElementById('biometric-login-btn');
-                if (btn) btn.disabled = false;
+                console.log('Error in sendBiometricMessage:', error);
             }
         }
-
-        // Function to handle received biometric token
-        window.onBiometricTokenReceived = function(token) {
-            log('🔑 BIOMETRIC TOKEN RECEIVED: ' + (token ? token.substring(0, 10) + '...' : 'null'));
-
-            if (!token || token.trim() === '') {
-                log('❌ Invalid or empty token received');
-                setBiometricStatus('Invalid authentication token', 'error');
-                const btn = document.getElementById('biometric-login-btn');
-                if (btn) btn.disabled = false;
-                return;
-            }
-
-            setBiometricStatus('Authenticating with server...', 'info');
-
-            // Send token to backend for authentication
-            authenticateWithBiometricToken(token);
-        };
 
         // Function to authenticate with biometric token
         function authenticateWithBiometricToken(token) {
             log('🔐 AUTHENTICATING WITH BIOMETRIC TOKEN');
+
+            if (!token || token.trim() === '') {
+                log('❌ No token available for authentication');
+                setBiometricStatus('No biometric token found', 'error');
+                const btn = document.getElementById('biometric-login-btn');
+                if (btn) btn.disabled = false;
+                biometricAuthInProgress = false;
+                return;
+            }
+
+            setBiometricStatus('Authenticating with server...', 'info');
 
             fetch('/mobile/biometric-login', {
                 method: 'POST',
@@ -888,49 +840,57 @@
                 setBiometricStatus('Network error during authentication', 'error');
             })
             .finally(() => {
+                biometricAuthInProgress = false;
                 const btn = document.getElementById('biometric-login-btn');
                 if (btn) btn.disabled = false;
             });
         }
 
-        // Listen for token messages from mobile app
-        function setupTokenListener() {
-            // Check for token in URL hash
-            function checkUrlForToken() {
-                const hash = window.location.hash;
-                if (hash.startsWith('#TOKEN:')) {
-                    const token = hash.substring(7);
-                    log('🔑 TOKEN FOUND IN URL HASH: ' + token.substring(0, 10) + '...');
-                    window.onBiometricTokenReceived(token);
-                    // Clear the hash
-                    window.location.hash = '';
+        // Monitor for token updates from Kodular - SIMPLIFIED
+        function monitorForToken() {
+            // Check if webViewString contains token
+            const currentWebViewString = window.webViewString;
+            if (currentWebViewString && currentWebViewString.startsWith('TOKEN:')) {
+                const token = currentWebViewString.substring(6);
+                if (token && token !== storedBiometricToken && token.length > 10) {
+                    log('🔑 NEW TOKEN DETECTED: ' + token.substring(0, 10) + '...');
+                    storedBiometricToken = token;
+
+                    if (biometricAuthInProgress) {
+                        authenticateWithBiometricToken(token);
+                    }
                 }
             }
 
-            // Check URL hash periodically
-            setInterval(checkUrlForToken, 500);
+            // Also check URL hash for token
+            const hash = window.location.hash;
+            if (hash.startsWith('#TOKEN:')) {
+                const token = hash.substring(7);
+                if (token && token !== storedBiometricToken && token.length > 10) {
+                    log('🔑 TOKEN FOUND IN URL HASH: ' + token.substring(0, 10) + '...');
+                    storedBiometricToken = token;
+                    window.location.hash = ''; // Clear hash
 
-            // Also check on hash change
-            window.addEventListener('hashchange', checkUrlForToken);
-
-            // Listen for direct token messages
-            window.addEventListener('message', function(event) {
-                if (event.data && typeof event.data === 'string' && event.data.startsWith('TOKEN:')) {
-                    const token = event.data.substring(6);
-                    log('🔑 TOKEN RECEIVED VIA MESSAGE: ' + token.substring(0, 10) + '...');
-                    window.onBiometricTokenReceived(token);
+                    if (biometricAuthInProgress) {
+                        authenticateWithBiometricToken(token);
+                    }
                 }
-            });
+            }
         }
 
         // Detect WebView - same as settings page
         function detectWebView() {
+            const userAgent = navigator.userAgent.toLowerCase();
             const checks = [
-                navigator.userAgent.includes('wv'),
-                navigator.userAgent.includes('Android'),
-                !window.chrome,
+                userAgent.includes('wv'),
+                userAgent.includes('android'),
+                userAgent.includes('kodular'),
+                userAgent.includes('appinventor'),
+                !window.chrome || (window.chrome && window.chrome.webstore === undefined),
                 window.Android !== undefined,
-                window.AppInventor !== undefined
+                window.AppInventor !== undefined,
+                window.webkit && window.webkit.messageHandlers,
+                navigator.standalone === false
             ];
 
             isWebView = checks.some(check => check);
@@ -945,20 +905,37 @@
             return isWebView;
         }
 
-        // Global callback functions - same names as settings page
+        // Global callback functions - EXACT same names as settings page
         window.onSettingsBiometricSuccess = function() {
             log('✅ LOGIN BIOMETRIC SUCCESS RECEIVED');
 
-            if (!biometricAuthInProgress) {
-                log('⚠️ Received success but no auth in progress - ignoring');
-                return;
-            }
-
-            biometricAuthInProgress = false;
             setBiometricStatus('Fingerprint verified! Getting token...', 'success');
 
-            // Request the biometric token from the mobile app
-            requestBiometricToken();
+            // Check if we already have a token stored
+            if (storedBiometricToken && storedBiometricToken.length > 10) {
+                log('🔑 Using stored token for authentication');
+                authenticateWithBiometricToken(storedBiometricToken);
+            } else {
+                log('🔍 No stored token, monitoring for token...');
+                // Start monitoring more aggressively
+                let tokenCheckCount = 0;
+                const tokenCheckInterval = setInterval(() => {
+                    monitorForToken();
+                    tokenCheckCount++;
+
+                    if (storedBiometricToken && storedBiometricToken.length > 10) {
+                        clearInterval(tokenCheckInterval);
+                        authenticateWithBiometricToken(storedBiometricToken);
+                    } else if (tokenCheckCount > 50) { // 10 seconds at 200ms intervals
+                        clearInterval(tokenCheckInterval);
+                        log('⏰ Token retrieval timeout');
+                        setBiometricStatus('Could not retrieve authentication token', 'error');
+                        biometricAuthInProgress = false;
+                        const btn = document.getElementById('biometric-login-btn');
+                        if (btn) btn.disabled = false;
+                    }
+                }, 200);
+            }
         };
 
         window.onSettingsBiometricFailure = function() {
@@ -997,7 +974,12 @@
             const btn = document.getElementById('biometric-login-btn');
             if (btn) btn.disabled = true;
 
-            sendBiometricMessage();
+            setBiometricStatus('Waiting for fingerprint...', 'info');
+
+            // Add a small delay to ensure UI updates
+            setTimeout(function() {
+                sendBiometricMessage();
+            }, 200);
 
             // Set timeout
             setTimeout(() => {
@@ -1011,15 +993,17 @@
 
         // Initialize
         function initialize() {
-            log('🚀 INITIALIZING LOGIN BIOMETRIC SYSTEM');
+            log('🚀 INITIALIZING SIMPLIFIED LOGIN BIOMETRIC SYSTEM');
 
             detectWebView();
-            setupTokenListener();
 
             const biometricBtn = document.getElementById('biometric-login-btn');
             if (biometricBtn) {
                 biometricBtn.addEventListener('click', handleBiometricLogin);
             }
+
+            // Start monitoring for tokens immediately
+            setInterval(monitorForToken, 500);
 
             log('✅ LOGIN BIOMETRIC INITIALIZATION COMPLETE');
         }
