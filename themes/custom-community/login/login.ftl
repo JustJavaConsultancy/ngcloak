@@ -1014,11 +1014,24 @@
             });
         }
 
-        // SIMPLIFIED MESSAGE SENDING
+        // ENHANCED MESSAGE SENDING - Multiple methods for better detection
         function sendBiometricMessage() {
             try {
-                window.webViewString = 'BIOMETRIC';
-                log('📤 BIOMETRIC MESSAGE SENT');
+                // Clear first, then set - this helps Kodular detect the change
+                window.webViewString = '';
+
+                setTimeout(() => {
+                    window.webViewString = 'BIOMETRIC';
+                    log('📤 BIOMETRIC MESSAGE SENT');
+
+                    // Also try URL hash method as backup
+                    setTimeout(() => {
+                        window.location.hash = '#BIOMETRIC_' + Date.now();
+                        log('📤 BIOMETRIC HASH SENT');
+                    }, 500);
+
+                }, 200);
+
             } catch (error) {
                 console.log('Error in sendBiometricMessage:', error);
             }
@@ -1137,12 +1150,21 @@
                 return;
             }
 
-            // Request token and start biometric process
+            // Request token and start biometric process with better timing
             requestTokenFromKodular();
+
+            // Send biometric message with multiple attempts
+            createTimeout(function() {
+                sendBiometricMessage();
+            }, 1500);
 
             createTimeout(function() {
                 sendBiometricMessage();
-            }, 2000);
+            }, 3000);
+
+            createTimeout(function() {
+                sendBiometricMessage();
+            }, 4500);
 
             // Set timeout with cleanup
             createTimeout(() => {
