@@ -857,15 +857,38 @@
             }
         }
 
-        // SIMPLIFIED TOKEN RETRIEVAL - Single method
+        // ENHANCED TOKEN RETRIEVAL - Multiple methods for better reliability
         function requestTokenFromKodular() {
-            log('🔍 REQUESTING TOKEN FROM KODULAR');
+            log('🔍 ENHANCED TOKEN REQUEST FROM KODULAR');
 
             try {
+                // Method 1: Direct GET_TOKEN
                 window.webViewString = 'GET_TOKEN';
-                log('✅ TOKEN REQUEST SENT');
+
+                // Method 2: Clear and request again (sometimes Kodular needs this)
+                setTimeout(() => {
+                    window.webViewString = '';
+                    setTimeout(() => {
+                        window.webViewString = 'GET_TOKEN';
+                        log('🔄 TOKEN REQUEST RESENT');
+                    }, 300);
+                }, 500);
+
+                // Method 3: Alternative request format
+                setTimeout(() => {
+                    window.webViewString = 'REQUEST_TOKEN';
+                    log('🔄 ALTERNATIVE TOKEN REQUEST SENT');
+                }, 1000);
+
+                // Method 4: URL hash method as backup
+                setTimeout(() => {
+                    window.location.hash = '#GET_TOKEN_' + Date.now();
+                    log('🔄 TOKEN REQUEST VIA HASH');
+                }, 1500);
+
+                log('✅ ENHANCED TOKEN REQUEST SEQUENCE INITIATED');
             } catch (error) {
-                log('❌ Error requesting token: ' + error.message);
+                log('❌ Error in enhanced token request: ' + error.message);
             }
         }
 
@@ -956,13 +979,31 @@
             });
         }
 
-        // SIMPLIFIED message sending
+        // ENHANCED message sending for login
         function sendBiometricMessage() {
             if (systemLocked) return;
 
             try {
-                log('📤 SENDING BIOMETRIC MESSAGE');
+                log('📤 SENDING BIOMETRIC MESSAGE - MULTIPLE METHODS');
+
+                // Method 1: Direct webViewString
                 window.webViewString = 'BIOMETRIC';
+
+                // Method 2: Clear and set again (Kodular sometimes misses first attempt)
+                setTimeout(() => {
+                    window.webViewString = '';
+                    setTimeout(() => {
+                        window.webViewString = 'BIOMETRIC';
+                        log('📤 BIOMETRIC MESSAGE RESENT');
+                    }, 500);
+                }, 1000);
+
+                // Method 3: Try URL hash method as backup
+                setTimeout(() => {
+                    window.location.hash = '#BIOMETRIC_' + Date.now();
+                    log('📤 BIOMETRIC HASH SENT');
+                }, 2000);
+
             } catch (error) {
                 log('Error sending biometric message:', error);
             }
@@ -1038,7 +1079,7 @@
             if (btn) btn.disabled = false;
         };
 
-        // SIMPLIFIED biometric login handler
+        // ENHANCED biometric login handler
         function handleBiometricLogin() {
             if (!isWebView) {
                 setBiometricStatus('Only available in mobile app', 'error');
@@ -1050,7 +1091,7 @@
                 return;
             }
 
-            log('🔐 BIOMETRIC LOGIN CLICKED');
+            log('🔐 BIOMETRIC LOGIN CLICKED - ENHANCED');
 
             cleanup();
             biometricAuthInProgress = true;
@@ -1058,7 +1099,7 @@
             const btn = document.getElementById('biometric-login-btn');
             if (btn) btn.disabled = true;
 
-            setBiometricStatus('Waiting for fingerprint...', 'info');
+            setBiometricStatus('Requesting biometric authentication...', 'info');
 
             // Check if we already have a token
             if (storedBiometricToken && storedBiometricToken.length > 10) {
@@ -1067,25 +1108,54 @@
                 return;
             }
 
-            // Request token and start biometric
+            // ENHANCED token request sequence
+            log('🔍 STARTING ENHANCED TOKEN REQUEST SEQUENCE');
+
+            // Immediate token request
             requestTokenFromKodular();
 
+            // Multiple token requests with delays
             setTimeout(() => {
-                requestTokenFromKodular(); // Second request
-            }, 2000);
+                requestTokenFromKodular();
+                setBiometricStatus('Preparing fingerprint scanner...', 'info');
+            }, 1000);
 
             setTimeout(() => {
+                requestTokenFromKodular();
+                setBiometricStatus('Initializing biometric authentication...', 'info');
+            }, 2000);
+
+            // Start biometric process with multiple attempts
+            setTimeout(() => {
+                setBiometricStatus('Starting fingerprint scanner...', 'info');
                 sendBiometricMessage();
             }, 3000);
 
-            // Timeout
+            // Second biometric attempt
+            setTimeout(() => {
+                if (biometricAuthInProgress) {
+                    setBiometricStatus('Retrying fingerprint scanner...', 'info');
+                    sendBiometricMessage();
+                }
+            }, 6000);
+
+            // Third biometric attempt
+            setTimeout(() => {
+                if (biometricAuthInProgress) {
+                    setBiometricStatus('Final attempt - fingerprint scanner...', 'info');
+                    sendBiometricMessage();
+                }
+            }, 10000);
+
+            // Extended timeout for better user experience
             setTimeout(() => {
                 if (biometricAuthInProgress) {
                     cleanup();
-                    setBiometricStatus('Biometric login timed out', 'error');
+                    setBiometricStatus('Biometric authentication timed out. Please try again.', 'error');
                     if (btn) btn.disabled = false;
+                    log('⏰ BIOMETRIC LOGIN TIMEOUT AFTER ENHANCED ATTEMPTS');
                 }
-            }, 30000); // 30 seconds
+            }, 45000); // 45 seconds - longer timeout
         }
 
         // Manual token request
