@@ -948,7 +948,7 @@
 
                 const redirectUrl = response.headers.get('HX-Redirect');
                 if (redirectUrl) {
-                    log('🔄 Redirecting to: ' + redirectUrl);
+                    log('���� Redirecting to: ' + redirectUrl);
                     setBiometricStatus('Login successful!', 'success');
                     cleanup();
                     window.location.href = redirectUrl;
@@ -1031,33 +1031,34 @@
             return isWebView;
         }
 
-        // SIMPLIFIED callback functions
+        // ULTRA-SIMPLIFIED callback for Kodular compatibility
         window.onSettingsBiometricSuccess = function() {
-            log('✅ LOGIN BIOMETRIC SUCCESS');
+            console.log('✅ LOGIN BIOMETRIC SUCCESS - ULTRA SIMPLE');
             setBiometricStatus('Fingerprint verified! Getting token...', 'success');
 
-            cleanup();
+            // IMMEDIATE cleanup
+            biometricAuthInProgress = false;
+            systemLocked = false;
 
-            // Start simple token monitoring
+            // SIMPLIFIED token monitoring - single check with longer delay
             let tokenCheckAttempts = 0;
-            const maxAttempts = 30; // 30 seconds
+            const maxAttempts = 20; // 20 seconds
 
             const tokenCheckInterval = setInterval(() => {
                 tokenCheckAttempts++;
 
                 if (checkForToken()) {
                     clearInterval(tokenCheckInterval);
-                    log('🔑 TOKEN RETRIEVED');
+                    console.log('🔑 TOKEN RETRIEVED FOR LOGIN');
                     authenticateWithBiometricToken(storedBiometricToken);
                 } else if (tokenCheckAttempts >= maxAttempts) {
                     clearInterval(tokenCheckInterval);
-                    log('⏰ Token retrieval timeout');
-                    setBiometricStatus('Could not retrieve token', 'error');
-                    biometricAuthInProgress = false;
+                    console.log('⏰ Login token retrieval timeout');
+                    setBiometricStatus('Could not retrieve authentication token', 'error');
                     const btn = document.getElementById('biometric-login-btn');
                     if (btn) btn.disabled = false;
-                } else if (tokenCheckAttempts % 5 === 0) {
-                    // Re-request token every 5 attempts
+                } else if (tokenCheckAttempts % 3 === 0) {
+                    // Re-request token every 3 attempts (less frequent)
                     requestTokenFromKodular();
                 }
             }, 1000);
