@@ -524,11 +524,7 @@
 <!-- Mobile header (only visible on mobile) -->
 <div class="mobile-header">
     <div class="mobile-logo-container">
-        <svg class="mobile-logo" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M24 4C35.0457 4 44 12.9543 44 24C44 35.0457 35.0457 44 24 44C12.9543 44 4 35.0457 4 24C4 12.9543 12.9543 4 24 4Z" fill="white"/>
-            <path d="M24 8C32.8366 8 40 15.1634 40 24C40 32.8366 32.8366 40 24 40C15.1634 40 8 32.8366 8 24C8 15.1634 15.1634 8 24 8Z" fill="#255bec"/>
-            <path d="M24 12C30.6274 12 36 17.3726 36 24C36 30.6274 30.6274 36 24 36C17.3726 36 12 30.6274 12 24C12 17.3726 17.3726 12 24 12Z" fill="white"/>
-        </svg>
+        <img src="${url.resourcesPath}/img/justjava-logo.svg" alt="Just Java Logo" class="mobile-logo">
         <div class="mobile-logo-text">Just Java</div>
     </div>
     <div class="mobile-subtitle">Document Management System</div>
@@ -538,11 +534,7 @@
     <div class="brand-section">
         <div>
             <div class="logo-container">
-                <svg class="logo" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M24 4C35.0457 4 44 12.9543 44 24C44 35.0457 35.0457 44 24 44C12.9543 44 4 35.0457 4 24C4 12.9543 12.9543 4 24 4Z" fill="white"/>
-                    <path d="M24 8C32.8366 8 40 15.1634 40 24C40 32.8366 32.8366 40 24 40C15.1634 40 8 32.8366 8 24C8 15.1634 15.1634 8 24 8Z" fill="#255bec"/>
-                    <path d="M24 12C30.6274 12 36 17.3726 36 24C36 30.6274 30.6274 36 24 36C17.3726 36 12 30.6274 12 24C12 17.3726 17.3726 12 24 12Z" fill="white"/>
-                </svg>
+               <img src="${url.resourcesPath}/img/justjava-logo.svg" alt="Just Java Logo" class="logo">
                 <div class="logo-text">Just Java</div>
             </div>
 
@@ -963,5 +955,6 @@
 
 </#if>
 </@layout.registrationLayout>
+
 
 
