@@ -58,6 +58,10 @@
             height: 100% !important;
         }
 
+        .comtext {
+            color: white !important;
+        }
+
         /* Custom styles */
         :root {
             --rich-black: #070f29;
@@ -957,3 +961,4 @@
 
 </#if>
 </@layout.registrationLayout>
+
