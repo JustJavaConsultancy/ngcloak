@@ -57,6 +57,10 @@
             height: 100% !important;
         }
 
+         .comtext {
+            color: white !important;
+        }
+
         /* Custom styles */
         :root {
             --rich-black: #070f29;
@@ -516,7 +520,7 @@
 
             <div class="system-description">
                 <h2>Document Management System</h2>
-                <p>
+                <p class="comtext">
                     A secure, scalable platform for organizing, storing, and
                     retrieving your digital documents with enterprise-grade security
                     and compliance.
@@ -530,7 +534,7 @@
                     </div>
                     <div class="feature-text">
                         <h3>Secure Storage</h3>
-                        <p>Enterprise-grade security for all your documents</p>
+                        <p class="comtext">Enterprise-grade security for all your documents</p>
                     </div>
                 </div>
 
@@ -540,7 +544,7 @@
                     </div>
                     <div class="feature-text">
                         <h3>Advanced Search</h3>
-                        <p>Find documents quickly with powerful search</p>
+                        <p class="comtext">Find documents quickly with powerful search</p>
                     </div>
                 </div>
 
@@ -550,7 +554,7 @@
                     </div>
                     <div class="feature-text">
                         <h3>Smart Tagging</h3>
-                        <p>Organize documents with custom tags</p>
+                        <p class="comtext">Organize documents with custom tags</p>
                     </div>
                 </div>
 
@@ -560,13 +564,13 @@
                     </div>
                     <div class="feature-text">
                         <h3>Scalable</h3>
-                        <p>Grows with your business needs</p>
+                        <p class="comtext">Grows with your business needs</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="copyright">&copy; 2025 Just Java. All rights reserved.</div>
+        <div class="copyright comtext">&copy; 2025 Just Java. All rights reserved.</div>
     </div>
 
     <div class="login-section">
