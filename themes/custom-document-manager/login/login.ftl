@@ -371,45 +371,85 @@
             margin-top: 0.5rem;
         }
 
+        /* Mobile-specific styles */
+        .mobile-header {
+            display: none;
+            background: linear-gradient(135deg, var(--rich-black) 0%, var(--violet) 100%);
+            color: var(--white);
+            padding: 2rem 1.5rem 1.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mobile-header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23780aff' fill-opacity='0.08' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.4;
+        }
+
+        .mobile-logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .mobile-logo {
+            height: 40px;
+            width: 30px;
+            margin-right: 12px;
+        }
+
+        .mobile-logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .mobile-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
         /* Responsive design */
         @media (max-width: 1024px) {
             .custom-login-container {
                 flex-direction: column;
-                margin: 10px auto;
-                min-height: calc(100vh - 20px);
+                margin: 0;
+                border-radius: 0;
+                min-height: 100vh;
+                box-shadow: none;
             }
 
             .brand-section {
-                padding: 2.5rem;
+                display: none;
+            }
+
+            .mobile-header {
+                display: block;
             }
 
             .login-section {
-                padding: 2.5rem;
+                padding: 2rem 1.5rem;
+                flex: 1;
+                justify-content: flex-start;
             }
 
-            .features {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .brand-section,
-            .login-section {
-                padding: 2rem;
+            .login-container {
+                max-width: 400px;
             }
 
-            .tagline {
-                font-size: 1.8rem;
-            }
-
-            .logo-container {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .logo {
-                margin-right: 0;
-                margin-bottom: 10px;
+            .login-header {
+                margin-bottom: 2rem;
             }
 
             .login-header h1 {
@@ -418,19 +458,47 @@
 
             .form-input {
                 padding: 1rem 1rem 1rem 45px;
+                font-size: 16px; /* Prevent zoom on iOS */
             }
 
             .login-button {
                 padding: 1rem;
             }
+        }
 
-            .custom-login-container {
-                margin: 5px auto;
-                border-radius: 0;
+        @media (max-width: 480px) {
+            .login-section {
+                padding: 1.5rem 1rem;
+            }
+
+            .mobile-header {
+                padding: 1.5rem 1rem 1rem;
+            }
+
+            .login-header h1 {
+                font-size: 1.6rem;
+            }
+
+            .security-notice {
+                font-size: 0.8rem;
+                padding: 0.8rem;
             }
         }
     </style>
 <#elseif section = "form">
+
+<!-- Mobile header (only visible on mobile) -->
+<div class="mobile-header">
+    <div class="mobile-logo-container">
+        <svg class="mobile-logo" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M24 4C35.0457 4 44 12.9543 44 24C44 35.0457 35.0457 44 24 44C12.9543 44 4 35.0457 4 24C4 12.9543 12.9543 4 24 4Z" fill="white"/>
+            <path d="M24 8C32.8366 8 40 15.1634 40 24C40 32.8366 32.8366 40 24 40C15.1634 40 8 32.8366 8 24C8 15.1634 15.1634 8 24 8Z" fill="#255bec"/>
+            <path d="M24 12C30.6274 12 36 17.3726 36 24C36 30.6274 30.6274 36 24 36C17.3726 36 12 30.6274 12 24C12 17.3726 17.3726 12 24 12Z" fill="white"/>
+        </svg>
+        <div class="mobile-logo-text">Just Java</div>
+    </div>
+    <div class="mobile-subtitle">Document Management System</div>
+</div>
 
 <div class="custom-login-container">
     <div class="brand-section">
