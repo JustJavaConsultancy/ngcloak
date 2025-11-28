@@ -5,30 +5,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Hide default Keycloak elements */
+        /* Aggressive hiding of default Keycloak elements */
         .login-pf-page-header,
         .login-pf-header,
         h1#kc-page-title,
-        .login-pf-signup {
+        .login-pf-signup,
+        #kc-page-title,
+        .kc-page-title,
+        .login-pf .container,
+        .login-pf-page .login-pf-signup,
+        .login-pf-page .login-pf-header,
+        .card-pf-title,
+        .login-pf-page .card-pf .card-pf-title {
             display: none !important;
+            visibility: hidden !important;
+            height: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
         }
 
+        /* Reset Keycloak page structure */
         .login-pf-page {
-            padding-top: 0;
-            border: none;
+            padding: 0 !important;
+            margin: 0 !important;
+            border: none !important;
+            background: none !important;
+            min-height: 100vh !important;
         }
 
         .login-pf-page .card-pf {
-            padding: 0;
-            margin-bottom: 0;
-            border: none;
-            max-width: none;
+            padding: 0 !important;
+            margin: 0 !important;
+            border: none !important;
+            max-width: none !important;
+            background: none !important;
+            box-shadow: none !important;
         }
 
         #kc-content-wrapper {
-            margin-top: 0;
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 100% !important;
+            height: 100vh !important;
+            overflow: auto !important;
         }
 
+        #kc-content {
+            padding: 0 !important;
+            margin: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        /* Custom styles */
         :root {
             --rich-black: #070f29;
             --ultramarine-blue: #255bec;
@@ -42,21 +71,21 @@
         }
 
         * {
-            margin: 0;
-            padding: 0;
             box-sizing: border-box;
-            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        body {
-            background-color: var(--light-gray);
-            color: var(--text-dark);
-            display: flex;
-            min-height: 100vh;
-            line-height: 1.6;
+        html, body {
+            margin: 0 !important;
+            padding: 0 !important;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important;
+            background-color: var(--light-gray) !important;
+            color: var(--text-dark) !important;
+            line-height: 1.6 !important;
+            height: 100% !important;
+            overflow-x: hidden !important;
         }
 
-        .container {
+        .custom-login-container {
             display: flex;
             width: 100%;
             max-width: 1400px;
@@ -64,16 +93,13 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
             border-radius: 12px;
             overflow: hidden;
-            margin: 20px;
+            margin: 20px auto;
+            min-height: calc(100vh - 40px);
         }
 
         .brand-section {
             flex: 1.2;
-            background: linear-gradient(
-                135deg,
-                var(--rich-black) 0%,
-                var(--violet) 100%
-            );
+            background: linear-gradient(135deg, var(--rich-black) 0%, var(--violet) 100%);
             color: var(--white);
             padding: 3rem 4rem;
             display: flex;
@@ -221,7 +247,7 @@
             margin-bottom: 1.5rem;
         }
 
-        label {
+        .form-label {
             display: block;
             margin-bottom: 0.5rem;
             font-weight: 500;
@@ -255,7 +281,7 @@
             color: var(--ultramarine-blue);
         }
 
-        input {
+        .form-input {
             width: 100%;
             padding: 0.85rem 1rem 0.85rem 45px;
             border: 1px solid var(--medium-gray);
@@ -265,7 +291,7 @@
             background-color: var(--light-gray);
         }
 
-        input:focus {
+        .form-input:focus {
             outline: none;
             border-color: var(--ultramarine-blue);
             box-shadow: 0 0 0 3px rgba(37, 91, 236, 0.1);
@@ -294,11 +320,7 @@
         .login-button {
             width: 100%;
             padding: 0.9rem;
-            background: linear-gradient(
-                135deg,
-                var(--ultramarine-blue) 0%,
-                var(--violet) 100%
-            );
+            background: linear-gradient(135deg, var(--ultramarine-blue) 0%, var(--violet) 100%);
             color: var(--white);
             border: none;
             border-radius: 8px;
@@ -349,10 +371,12 @@
             margin-top: 0.5rem;
         }
 
+        /* Responsive design */
         @media (max-width: 1024px) {
-            .container {
+            .custom-login-container {
                 flex-direction: column;
-                margin: 10px;
+                margin: 10px auto;
+                min-height: calc(100vh - 20px);
             }
 
             .brand-section {
@@ -392,203 +416,208 @@
                 font-size: 1.8rem;
             }
 
-            input {
+            .form-input {
                 padding: 1rem 1rem 1rem 45px;
             }
 
             .login-button {
                 padding: 1rem;
             }
+
+            .custom-login-container {
+                margin: 5px auto;
+                border-radius: 0;
+            }
         }
     </style>
 <#elseif section = "form">
 
-<body>
-    <div class="container">
-        <div class="brand-section">
-            <div>
-                <div class="logo-container">
-                    <svg class="logo" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M24 4C35.0457 4 44 12.9543 44 24C44 35.0457 35.0457 44 24 44C12.9543 44 4 35.0457 4 24C4 12.9543 12.9543 4 24 4Z" fill="white"/>
-                        <path d="M24 8C32.8366 8 40 15.1634 40 24C40 32.8366 32.8366 40 24 40C15.1634 40 8 32.8366 8 24C8 15.1634 15.1634 8 24 8Z" fill="#255bec"/>
-                        <path d="M24 12C30.6274 12 36 17.3726 36 24C36 30.6274 30.6274 36 24 36C17.3726 36 12 30.6274 12 24C12 17.3726 17.3726 12 24 12Z" fill="white"/>
-                    </svg>
-                    <div class="logo-text">Just Java</div>
+<div class="custom-login-container">
+    <div class="brand-section">
+        <div>
+            <div class="logo-container">
+                <svg class="logo" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M24 4C35.0457 4 44 12.9543 44 24C44 35.0457 35.0457 44 24 44C12.9543 44 4 35.0457 4 24C4 12.9543 12.9543 4 24 4Z" fill="white"/>
+                    <path d="M24 8C32.8366 8 40 15.1634 40 24C40 32.8366 32.8366 40 24 40C15.1634 40 8 32.8366 8 24C8 15.1634 15.1634 8 24 8Z" fill="#255bec"/>
+                    <path d="M24 12C30.6274 12 36 17.3726 36 24C36 30.6274 30.6274 36 24 36C17.3726 36 12 30.6274 12 24C12 17.3726 17.3726 12 24 12Z" fill="white"/>
+                </svg>
+                <div class="logo-text">Just Java</div>
+            </div>
+
+            <div class="tagline">Innovate,<br />Develop,<br />Empower.</div>
+
+            <div class="system-description">
+                <h2>Document Management System</h2>
+                <p>
+                    A secure, scalable platform for organizing, storing, and
+                    retrieving your digital documents with enterprise-grade security
+                    and compliance.
+                </p>
+            </div>
+
+            <div class="features">
+                <div class="feature">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="feature-text">
+                        <h3>Secure Storage</h3>
+                        <p>Enterprise-grade security for all your documents</p>
+                    </div>
                 </div>
 
-                <div class="tagline">Innovate,<br />Develop,<br />Empower.</div>
-
-                <div class="system-description">
-                    <h2>Document Management System</h2>
-                    <p>
-                        A secure, scalable platform for organizing, storing, and
-                        retrieving your digital documents with enterprise-grade security
-                        and compliance.
-                    </p>
+                <div class="feature">
+                    <div class="feature-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="feature-text">
+                        <h3>Advanced Search</h3>
+                        <p>Find documents quickly with powerful search</p>
+                    </div>
                 </div>
 
-                <div class="features">
-                    <div class="feature">
-                        <div class="feature-icon">
-                            <i class="fas fa-shield-alt"></i>
-                        </div>
-                        <div class="feature-text">
-                            <h3>Secure Storage</h3>
-                            <p>Enterprise-grade security for all your documents</p>
-                        </div>
+                <div class="feature">
+                    <div class="feature-icon">
+                        <i class="fas fa-tags"></i>
                     </div>
-
-                    <div class="feature">
-                        <div class="feature-icon">
-                            <i class="fas fa-search"></i>
-                        </div>
-                        <div class="feature-text">
-                            <h3>Advanced Search</h3>
-                            <p>Find documents quickly with powerful search</p>
-                        </div>
+                    <div class="feature-text">
+                        <h3>Smart Tagging</h3>
+                        <p>Organize documents with custom tags</p>
                     </div>
+                </div>
 
-                    <div class="feature">
-                        <div class="feature-icon">
-                            <i class="fas fa-tags"></i>
-                        </div>
-                        <div class="feature-text">
-                            <h3>Smart Tagging</h3>
-                            <p>Organize documents with custom tags</p>
-                        </div>
+                <div class="feature">
+                    <div class="feature-icon">
+                        <i class="fas fa-expand-arrows-alt"></i>
                     </div>
-
-                    <div class="feature">
-                        <div class="feature-icon">
-                            <i class="fas fa-expand-arrows-alt"></i>
-                        </div>
-                        <div class="feature-text">
-                            <h3>Scalable</h3>
-                            <p>Grows with your business needs</p>
-                        </div>
+                    <div class="feature-text">
+                        <h3>Scalable</h3>
+                        <p>Grows with your business needs</p>
                     </div>
                 </div>
             </div>
-
-            <div class="copyright">&copy; 2025 Just Java. All rights reserved.</div>
         </div>
 
-        <div class="login-section">
-            <div class="login-container">
-                <div class="login-header">
-                    <h1>Secure Login</h1>
-                    <p>Access your document management system</p>
-                </div>
+        <div class="copyright">&copy; 2025 Just Java. All rights reserved.</div>
+    </div>
 
-                <form id="kc-form-login" action="${url.loginAction}" method="post">
-                    <div class="form-group">
-                        <label for="username">
-                            <#if !realm.loginWithEmailAllowed>${msg("username")}
-                            <#elseif !realm.registrationEmailAsUsername>${msg("usernameOrEmail")}
-                            <#else>${msg("email")}</#if>
-                        </label>
-                        <div class="input-with-icon">
-                            <i class="fas fa-envelope input-icon"></i>
-                            <input
-                                type="text"
-                                id="username"
-                                name="username"
-                                value="${(login.username!'')}"
-                                placeholder="Enter your corporate email"
-                                autocomplete="username"
-                                required
-                                aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>"
-                            />
-                        </div>
-                        <#if messagesPerField.existsError('username','password')>
-                            <div class="error-message">
-                                ${kcSanitize(messagesPerField.getFirstError('username','password'))?no_esc}
-                            </div>
-                        </#if>
+    <div class="login-section">
+        <div class="login-container">
+            <div class="login-header">
+                <h1>Secure Login</h1>
+                <p>Access your document management system</p>
+            </div>
+
+            <form id="kc-form-login" action="${url.loginAction}" method="post">
+                <div class="form-group">
+                    <label class="form-label" for="username">
+                        <#if !realm.loginWithEmailAllowed>${msg("username")}
+                        <#elseif !realm.registrationEmailAsUsername>${msg("usernameOrEmail")}
+                        <#else>${msg("email")}</#if>
+                    </label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-envelope input-icon"></i>
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            class="form-input"
+                            value="${(login.username!'')}"
+                            placeholder="Enter your corporate email"
+                            autocomplete="username"
+                            required
+                            aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>"
+                        />
                     </div>
-
-                    <div class="form-group">
-                        <label for="password">${msg("password")}</label>
-                        <div class="input-with-icon">
-                            <i class="fas fa-lock input-icon"></i>
-                            <input
-                                type="password"
-                                id="password"
-                                name="password"
-                                placeholder="Enter your password"
-                                autocomplete="current-password"
-                                required
-                            />
-                            <i class="fas fa-eye password-toggle" id="togglePassword"></i>
-                        </div>
-                    </div>
-
-                    <#if realm.resetPasswordAllowed>
-                        <div class="forgot-password-container">
-                            <a href="${url.loginResetCredentialsUrl}" class="forgot-password">${msg("doForgotPassword")}</a>
+                    <#if messagesPerField.existsError('username','password')>
+                        <div class="error-message">
+                            ${kcSanitize(messagesPerField.getFirstError('username','password'))?no_esc}
                         </div>
                     </#if>
+                </div>
 
-                    <input type="hidden" name="credentialId"
-                           <#if auth.selectedCredential?has_content>value="${auth.selectedCredential}"</#if>/>
+                <div class="form-group">
+                    <label class="form-label" for="password">${msg("password")}</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            class="form-input"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                        />
+                        <i class="fas fa-eye password-toggle" id="togglePassword"></i>
+                    </div>
+                </div>
 
-                    <button type="submit" class="login-button">
-                        ${msg("doLogIn")}
-                    </button>
-                </form>
-
-                <#if realm.password && realm.registrationAllowed && !registrationDisabled??>
-                    <div class="signup-link">
-                        Need an account? <a href="${url.registrationUrl}">Sign up</a>
+                <#if realm.resetPasswordAllowed>
+                    <div class="forgot-password-container">
+                        <a href="${url.loginResetCredentialsUrl}" class="forgot-password">${msg("doForgotPassword")}</a>
                     </div>
                 </#if>
 
-                <div class="security-notice">
-                    <i class="fas fa-info-circle"></i> This system is protected by
-                    advanced security measures. Your data is safe with us.
+                <input type="hidden" name="credentialId"
+                       <#if auth.selectedCredential?has_content>value="${auth.selectedCredential}"</#if>/>
+
+                <button type="submit" class="login-button">
+                    ${msg("doLogIn")}
+                </button>
+            </form>
+
+            <#if realm.password && realm.registrationAllowed && !registrationDisabled??>
+                <div class="signup-link">
+                    Need an account? <a href="${url.registrationUrl}">Sign up</a>
                 </div>
+            </#if>
+
+            <div class="security-notice">
+                <i class="fas fa-info-circle"></i> This system is protected by
+                advanced security measures. Your data is safe with us.
             </div>
         </div>
     </div>
+</div>
 
-    <script>
-        // Password visibility toggle
-        document.getElementById("togglePassword").addEventListener("click", function () {
-            const passwordField = document.getElementById("password");
-            const toggleIcon = this;
+<script>
+    // Password visibility toggle
+    document.getElementById("togglePassword").addEventListener("click", function () {
+        const passwordField = document.getElementById("password");
+        const toggleIcon = this;
 
-            if (passwordField.type === "password") {
-                passwordField.type = "text";
-                toggleIcon.classList.remove("fa-eye");
-                toggleIcon.classList.add("fa-eye-slash");
-            } else {
-                passwordField.type = "password";
-                toggleIcon.classList.remove("fa-eye-slash");
-                toggleIcon.classList.add("fa-eye");
-            }
-        });
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+            toggleIcon.classList.remove("fa-eye");
+            toggleIcon.classList.add("fa-eye-slash");
+        } else {
+            passwordField.type = "password";
+            toggleIcon.classList.remove("fa-eye-slash");
+            toggleIcon.classList.add("fa-eye");
+        }
+    });
 
-        // Form validation and loading state
-        document.getElementById("kc-form-login").addEventListener("submit", function(e) {
-            const submitButton = document.querySelector(".login-button");
-            const username = document.getElementById("username").value;
-            const password = document.getElementById("password").value;
+    // Form validation and loading state
+    document.getElementById("kc-form-login").addEventListener("submit", function(e) {
+        const submitButton = document.querySelector(".login-button");
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
 
-            if (username && password) {
-                submitButton.disabled = true;
-                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
-            }
-        });
+        if (username && password) {
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
+        }
+    });
 
-        // Auto-focus username field
-        window.addEventListener("load", function() {
-            const usernameField = document.getElementById("username");
-            if (usernameField && !usernameField.value) {
-                usernameField.focus();
-            }
-        });
-    </script>
-</body>
+    // Auto-focus username field
+    window.addEventListener("load", function() {
+        const usernameField = document.getElementById("username");
+        if (usernameField && !usernameField.value) {
+            usernameField.focus();
+        }
+    });
+</script>
 
 </#if>
 </@layout.registrationLayout>
