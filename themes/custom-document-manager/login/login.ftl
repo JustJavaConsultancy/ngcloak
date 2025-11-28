@@ -48,6 +48,7 @@
             width: 100% !important;
             height: 100vh !important;
             overflow: auto !important;
+            background-color: white !important;
         }
 
         #kc-content {
