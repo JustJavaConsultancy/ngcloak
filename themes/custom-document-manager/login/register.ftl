@@ -49,6 +49,7 @@
             width: 100% !important;
             height: 100vh !important;
             overflow: auto !important;
+            background-color: white !important;
         }
 
         #kc-content {
@@ -337,6 +338,7 @@
             cursor: pointer;
             transition: all 0.3s;
             box-shadow: 0 4px 12px rgba(37, 91, 236, 0.2);
+            margin-top: 15px;
         }
 
         .register-button:hover:not(:disabled) {
@@ -548,7 +550,7 @@
 
             <div class="system-description">
                 <h2>Document Management System</h2>
-                <p>
+                <p class="comtext">
                     Join our secure, scalable platform for organizing, storing, and
                     retrieving your digital documents with enterprise-grade security
                     and compliance.
@@ -562,7 +564,7 @@
                     </div>
                     <div class="feature-text">
                         <h3>Secure Storage</h3>
-                        <p>Enterprise-grade security for all your documents</p>
+                        <p class="comtext">Enterprise-grade security for all your documents</p>
                     </div>
                 </div>
 
@@ -572,7 +574,7 @@
                     </div>
                     <div class="feature-text">
                         <h3>Advanced Search</h3>
-                        <p>Find documents quickly with powerful search</p>
+                        <p class="comtext">Find documents quickly with powerful search</p>
                     </div>
                 </div>
 
@@ -582,7 +584,7 @@
                     </div>
                     <div class="feature-text">
                         <h3>Smart Tagging</h3>
-                        <p>Organize documents with custom tags</p>
+                        <p class="comtext">Organize documents with custom tags</p>
                     </div>
                 </div>
 
@@ -592,7 +594,7 @@
                     </div>
                     <div class="feature-text">
                         <h3>Scalable</h3>
-                        <p>Grows with your business needs</p>
+                        <p class="comtext">Grows with your business needs</p>
                     </div>
                 </div>
             </div>
@@ -961,4 +963,5 @@
 
 </#if>
 </@layout.registrationLayout>
+
 
