@@ -316,6 +316,11 @@
             background-color: var(--white);
         }
 
+        .form-input.error {
+            border-color: #dc2626;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+        }
+
         .register-button {
             width: 100%;
             padding: 0.9rem;
@@ -374,34 +379,11 @@
             color: #dc2626;
             font-size: 0.875rem;
             margin-top: 0.5rem;
+            display: none;
         }
 
-        .password-strength {
-            margin-top: 0.5rem;
-        }
-
-        .strength-bars {
-            display: flex;
-            gap: 2px;
-            margin-bottom: 0.25rem;
-        }
-
-        .strength-bar {
-            height: 3px;
-            flex: 1;
-            background-color: var(--medium-gray);
-            border-radius: 2px;
-            transition: background-color 0.3s;
-        }
-
-        .strength-bar.weak { background-color: #ef4444; }
-        .strength-bar.fair { background-color: #f59e0b; }
-        .strength-bar.good { background-color: #eab308; }
-        .strength-bar.strong { background-color: #22c55e; }
-
-        .strength-text {
-            font-size: 0.75rem;
-            color: var(--dark-gray);
+        .error-message.show {
+            display: block;
         }
 
         /* Mobile-specific styles */
@@ -637,8 +619,9 @@
                             required
                             aria-invalid="<#if messagesPerField.existsError('firstName')>true</#if>"
                         />
+                        <div class="error-message" id="firstNameError">Please enter your first name.</div>
                         <#if messagesPerField.existsError('firstName')>
-                            <div class="error-message">
+                            <div class="error-message show">
                                 ${kcSanitize(messagesPerField.get('firstName'))?no_esc}
                             </div>
                         </#if>
@@ -657,8 +640,9 @@
                             required
                             aria-invalid="<#if messagesPerField.existsError('lastName')>true</#if>"
                         />
+                        <div class="error-message" id="lastNameError">Please enter your last name.</div>
                         <#if messagesPerField.existsError('lastName')>
-                            <div class="error-message">
+                            <div class="error-message show">
                                 ${kcSanitize(messagesPerField.get('lastName'))?no_esc}
                             </div>
                         </#if>
@@ -681,8 +665,9 @@
                             aria-invalid="<#if messagesPerField.existsError('email')>true</#if>"
                         />
                     </div>
+                    <div class="error-message" id="emailError">Please enter a valid email address.</div>
                     <#if messagesPerField.existsError('email')>
-                        <div class="error-message">
+                        <div class="error-message show">
                             ${kcSanitize(messagesPerField.get('email'))?no_esc}
                         </div>
                     </#if>
@@ -704,17 +689,12 @@
                         />
                         <i class="fas fa-eye password-toggle" id="togglePassword"></i>
                     </div>
-                    <div class="password-strength" id="passwordStrength" style="display: none;">
-                        <div class="strength-bars">
-                            <div class="strength-bar" id="bar1"></div>
-                            <div class="strength-bar" id="bar2"></div>
-                            <div class="strength-bar" id="bar3"></div>
-                            <div class="strength-bar" id="bar4"></div>
-                        </div>
-                        <div class="strength-text" id="strengthText">Password strength</div>
-                    </div>
+                    <div class="error-message" id="passwordLengthError">Password must be at least 8 characters long.</div>
+                    <div class="error-message" id="passwordUppercaseError">Password must contain at least one uppercase letter.</div>
+                    <div class="error-message" id="passwordLowercaseError">Password must contain at least one lowercase letter.</div>
+                    <div class="error-message" id="passwordSpecialError">Password must contain at least one special character.</div>
                     <#if messagesPerField.existsError('password')>
-                        <div class="error-message">
+                        <div class="error-message show">
                             ${kcSanitize(messagesPerField.get('password'))?no_esc}
                         </div>
                     </#if>
@@ -736,18 +716,13 @@
                         />
                         <i class="fas fa-eye password-toggle" id="togglePasswordConfirm"></i>
                     </div>
+                    <div class="error-message" id="passwordConfirmError">Passwords do not match.</div>
                     <#if messagesPerField.existsError('password-confirm')>
-                        <div class="error-message">
+                        <div class="error-message show">
                             ${kcSanitize(messagesPerField.get('password-confirm'))?no_esc}
                         </div>
                     </#if>
                 </div>
-
-                <@userProfileCommons.userProfileFormFields; callback, attribute>
-                    <#if callback = "afterField">
-                        <#-- Add any additional fields here if needed -->
-                    </#if>
-                </@userProfileCommons.userProfileFormFields>
 
                 <button type="submit" class="register-button" id="registerBtn" disabled>
                     ${msg("doRegister")}
@@ -789,96 +764,183 @@
         }
     }
 
-    // Password strength indicator
-    function updatePasswordStrength(password) {
-        const strengthContainer = document.getElementById("passwordStrength");
-        const strengthText = document.getElementById("strengthText");
-        const bars = [
-            document.getElementById("bar1"),
-            document.getElementById("bar2"),
-            document.getElementById("bar3"),
-            document.getElementById("bar4")
-        ];
+    // Validation functions
+    function validateFirstName() {
+        const input = document.getElementById("firstName");
+        const error = document.getElementById("firstNameError");
+        const isValid = input.value.trim().length > 0;
 
-        if (password.length === 0) {
-            strengthContainer.style.display = "none";
-            return;
-        }
-
-        strengthContainer.style.display = "block";
-
-        let strength = 0;
-        let strengthLabel = "Very Weak";
-        let strengthClass = "";
-
-        // Check password criteria
-        if (password.length >= 8) strength++;
-        if (/[a-z]/.test(password)) strength++;
-        if (/[A-Z]/.test(password)) strength++;
-        if (/[0-9]/.test(password)) strength++;
-        if (/[^a-zA-Z0-9]/.test(password)) strength++;
-
-        // Determine strength level
-        if (strength <= 1) {
-            strengthLabel = "Very Weak";
-            strengthClass = "weak";
-        } else if (strength === 2) {
-            strengthLabel = "Weak";
-            strengthClass = "weak";
-        } else if (strength === 3) {
-            strengthLabel = "Fair";
-            strengthClass = "fair";
-        } else if (strength === 4) {
-            strengthLabel = "Good";
-            strengthClass = "good";
+        if (input.value.length > 0 && !isValid) {
+            error.classList.add("show");
+            input.classList.add("error");
         } else {
-            strengthLabel = "Strong";
-            strengthClass = "strong";
+            error.classList.remove("show");
+            input.classList.remove("error");
         }
 
-        // Update bars
-        bars.forEach((bar, index) => {
-            bar.className = "strength-bar";
-            if (index < Math.min(strength, 4)) {
-                bar.classList.add(strengthClass);
-            }
-        });
-
-        strengthText.textContent = strengthLabel;
+        return isValid;
     }
 
-    // Form validation
-    function validateForm() {
-        const firstName = document.getElementById("firstName").value.trim();
-        const lastName = document.getElementById("lastName").value.trim();
-        const email = document.getElementById("email").value.trim();
-        const password = document.getElementById("password").value;
-        const passwordConfirm = document.getElementById("password-confirm").value;
-        const registerBtn = document.getElementById("registerBtn");
+    function validateLastName() {
+        const input = document.getElementById("lastName");
+        const error = document.getElementById("lastNameError");
+        const isValid = input.value.trim().length > 0;
 
+        if (input.value.length > 0 && !isValid) {
+            error.classList.add("show");
+            input.classList.add("error");
+        } else {
+            error.classList.remove("show");
+            input.classList.remove("error");
+        }
+
+        return isValid;
+    }
+
+    function validateEmail() {
+        const input = document.getElementById("email");
+        const error = document.getElementById("emailError");
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z\d]).{8,}$/;
+        const isValid = emailRegex.test(input.value);
 
-        const isValid = firstName && lastName &&
-                       emailRegex.test(email) &&
-                       passwordRegex.test(password) &&
-                       password === passwordConfirm;
+        if (input.value.length > 0 && !isValid) {
+            error.classList.add("show");
+            input.classList.add("error");
+        } else {
+            error.classList.remove("show");
+            input.classList.remove("error");
+        }
 
-        registerBtn.disabled = !isValid;
+        return isValid;
+    }
+
+    function validatePassword() {
+        const input = document.getElementById("password");
+        const password = input.value;
+
+        const lengthError = document.getElementById("passwordLengthError");
+        const uppercaseError = document.getElementById("passwordUppercaseError");
+        const lowercaseError = document.getElementById("passwordLowercaseError");
+        const specialError = document.getElementById("passwordSpecialError");
+
+        let hasErrors = false;
+
+        if (password.length > 0) {
+            // Check length
+            if (password.length < 8) {
+                lengthError.classList.add("show");
+                hasErrors = true;
+            } else {
+                lengthError.classList.remove("show");
+            }
+
+            // Check uppercase
+            if (!/[A-Z]/.test(password)) {
+                uppercaseError.classList.add("show");
+                hasErrors = true;
+            } else {
+                uppercaseError.classList.remove("show");
+            }
+
+            // Check lowercase
+            if (!/[a-z]/.test(password)) {
+                lowercaseError.classList.add("show");
+                hasErrors = true;
+            } else {
+                lowercaseError.classList.remove("show");
+            }
+
+            // Check special character
+            if (!/[^a-zA-Z0-9]/.test(password)) {
+                specialError.classList.add("show");
+                hasErrors = true;
+            } else {
+                specialError.classList.remove("show");
+            }
+
+            if (hasErrors) {
+                input.classList.add("error");
+            } else {
+                input.classList.remove("error");
+            }
+        } else {
+            // Hide all errors when field is empty
+            lengthError.classList.remove("show");
+            uppercaseError.classList.remove("show");
+            lowercaseError.classList.remove("show");
+            specialError.classList.remove("show");
+            input.classList.remove("error");
+        }
+
+        return !hasErrors && password.length >= 8;
+    }
+
+    function validatePasswordConfirm() {
+        const passwordInput = document.getElementById("password");
+        const confirmInput = document.getElementById("password-confirm");
+        const error = document.getElementById("passwordConfirmError");
+        const isValid = confirmInput.value === passwordInput.value;
+
+        if (confirmInput.value.length > 0 && !isValid) {
+            error.classList.add("show");
+            confirmInput.classList.add("error");
+        } else {
+            error.classList.remove("show");
+            confirmInput.classList.remove("error");
+        }
+
+        return isValid;
+    }
+
+    function validateForm() {
+        const firstNameValid = validateFirstName();
+        const lastNameValid = validateLastName();
+        const emailValid = validateEmail();
+        const passwordValid = validatePassword();
+        const confirmValid = validatePasswordConfirm();
+
+        const registerBtn = document.getElementById("registerBtn");
+        const allValid = firstNameValid && lastNameValid && emailValid && passwordValid && confirmValid;
+
+        registerBtn.disabled = !allValid;
+
+        return allValid;
     }
 
     // Event listeners
-    document.getElementById("firstName").addEventListener("input", validateForm);
-    document.getElementById("lastName").addEventListener("input", validateForm);
-    document.getElementById("email").addEventListener("input", validateForm);
-    document.getElementById("password").addEventListener("input", function() {
-        updatePasswordStrength(this.value);
+    document.getElementById("firstName").addEventListener("input", function() {
+        validateFirstName();
         validateForm();
     });
-    document.getElementById("password-confirm").addEventListener("input", validateForm);
+
+    document.getElementById("lastName").addEventListener("input", function() {
+        validateLastName();
+        validateForm();
+    });
+
+    document.getElementById("email").addEventListener("input", function() {
+        validateEmail();
+        validateForm();
+    });
+
+    document.getElementById("password").addEventListener("input", function() {
+        validatePassword();
+        validatePasswordConfirm(); // Re-validate confirm password when password changes
+        validateForm();
+    });
+
+    document.getElementById("password-confirm").addEventListener("input", function() {
+        validatePasswordConfirm();
+        validateForm();
+    });
 
     // Form submission
     document.getElementById("kc-register-form").addEventListener("submit", function(e) {
+        if (!validateForm()) {
+            e.preventDefault();
+            return;
+        }
+
         const registerBtn = document.getElementById("registerBtn");
         registerBtn.disabled = true;
         registerBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating account...';
