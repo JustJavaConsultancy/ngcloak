@@ -65,3 +65,7 @@ jobs:
         run: |
           echo "Deploying QA with image: $IMAGE_REF"
           railway variables --set "RAILWAY_SERVICE_IMAGE=$IMAGE_REF" --service $RAILWAY_SERVICE_ID
+
+      - name: Deploy to Render
+        run: |
+          curl -X POST ${{secrets.RENDER_DEPLOY_HOOK}}
