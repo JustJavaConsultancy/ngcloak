@@ -717,499 +717,520 @@
 
 <script>
     // Password toggle functionality for desktop
-    document.getElementById("togglePasswordDesktop").addEventListener("click", function () {
-        const pwd = document.getElementById("password-desktop");
-        const icon = this.querySelector("i");
+document.getElementById("togglePasswordDesktop").addEventListener("click", function () {
+    const pwd = document.getElementById("password-desktop");
+    const icon = this.querySelector("i");
 
-        if (pwd.type === "password") {
-            pwd.type = "text";
-            icon.classList.remove("fa-eye");
-            icon.classList.add("fa-eye-slash");
-        } else {
-            pwd.type = "password";
-            icon.classList.remove("fa-eye-slash");
-            icon.classList.add("fa-eye");
-        }
-    });
+    if (pwd.type === "password") {
+        pwd.type = "text";
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
+    } else {
+        pwd.type = "password";
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
+    }
+});
 
-    // Password toggle functionality for mobile
-    document.getElementById("togglePasswordMobile").addEventListener("click", function () {
-        const pwd = document.getElementById("password-mobile");
-        const icon = this.querySelector("i");
+// Password toggle functionality for mobile
+document.getElementById("togglePasswordMobile").addEventListener("click", function () {
+    const pwd = document.getElementById("password-mobile");
+    const icon = this.querySelector("i");
 
-        if (pwd.type === "password") {
-            pwd.type = "text";
-            icon.classList.remove("fa-eye");
-            icon.classList.add("fa-eye-slash");
-        } else {
-            pwd.type = "password";
-            icon.classList.remove("fa-eye-slash");
-            icon.classList.add("fa-eye");
-        }
-    });
+    if (pwd.type === "password") {
+        pwd.type = "text";
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
+    } else {
+        pwd.type = "password";
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
+    }
+});
 
-    // Enhanced form validation for both desktop and mobile
-    function setupFormValidation(formId, submitBtnId) {
-        const form = document.getElementById(formId);
-        const submitBtn = document.getElementById(submitBtnId);
+// Enhanced form validation for both desktop and mobile
+function setupFormValidation(formId, submitBtnId) {
+    const form = document.getElementById(formId);
+    const submitBtn = document.getElementById(submitBtnId);
 
-        if (form && submitBtn) {
-            form.addEventListener("submit", function(e) {
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Signing in...';
-            });
+    if (form && submitBtn) {
+        form.addEventListener("submit", function(e) {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Signing in...';
+        });
+    }
+}
+
+setupFormValidation("kc-form-login-desktop", "kc-login-desktop");
+setupFormValidation("kc-form-login-mobile", "kc-login-mobile");
+
+// Auto-focus first input on load
+window.addEventListener("load", function() {
+    const isDesktop = window.innerWidth >= 1024;
+    const usernameInput = document.getElementById(isDesktop ? "username-desktop" : "username-mobile");
+    if (usernameInput) {
+        usernameInput.focus();
+    }
+});
+
+// SIMPLIFIED ANTI-FREEZE Biometric Authentication for Login
+(function(){
+    console.log('🚀 LOGIN: INITIALIZING ANTI-FREEZE BIOMETRIC SYSTEM');
+
+    let isWebView = false;
+    let biometricAuthInProgress = false;
+    let storedBiometricToken = '';
+    let systemLocked = false;
+    let freezeCheckCounter = 0;
+
+    // MINIMAL state tracking (debug disabled)
+    let debugUpdateCount = 0;
+    let lastDebugUpdate = 0;
+    const DEBUG_THROTTLE = 5000; // 5 seconds between updates
+
+    // Single cleanup function
+    function cleanup() {
+        console.log('🧹 LOGIN CLEANUP: Resetting state');
+        biometricAuthInProgress = false;
+        systemLocked = false;
+
+        try {
+            window.webViewString = '';
+        } catch (e) {
+            console.log('WebViewString clear error:', e);
         }
     }
 
-    setupFormValidation("kc-form-login-desktop", "kc-login-desktop");
-    setupFormValidation("kc-form-login-mobile", "kc-login-mobile");
+    // THROTTLED debug update (DISABLED)
+    function updateLoginDebug() {
+        // Debug display functionality disabled to clean up UI
+        return;
 
-    // Auto-focus first input on load
-    window.addEventListener("load", function() {
-        const isDesktop = window.innerWidth >= 1024;
-        const usernameInput = document.getElementById(isDesktop ? "username-desktop" : "username-mobile");
-        if (usernameInput) {
-            usernameInput.focus();
+        /* DISABLED DEBUG CODE
+        const now = Date.now();
+        if (now - lastDebugUpdate < DEBUG_THROTTLE) {
+            return;
         }
-    });
+        lastDebugUpdate = now;
+        debugUpdateCount++;
 
-    // SIMPLIFIED ANTI-FREEZE Biometric Authentication for Login
-    (function(){
-        console.log('🚀 LOGIN: INITIALIZING ANTI-FREEZE BIOMETRIC SYSTEM');
+        try {
+            requestAnimationFrame(() => {
+                const elements = {
+                    webviewDetected: document.getElementById('loginWebviewDetected'),
+                    tokenStatus: document.getElementById('loginTokenStatus'),
+                    authState: document.getElementById('loginAuthState'),
+                    freezeCheck: document.getElementById('loginFreezeCheck')
+                };
 
-        let isWebView = false;
-        let biometricAuthInProgress = false;
-        let storedBiometricToken = '';
-        let systemLocked = false;
-        let freezeCheckCounter = 0;
+                if (elements.webviewDetected) elements.webviewDetected.textContent = isWebView ? 'YES' : 'NO';
+                if (elements.tokenStatus) elements.tokenStatus.textContent = storedBiometricToken ? 'FOUND' : 'NONE';
+                if (elements.authState) elements.authState.textContent = biometricAuthInProgress ? 'ACTIVE' : 'IDLE';
+                if (elements.freezeCheck) elements.freezeCheck.textContent = 'OK-' + debugUpdateCount;
+            });
+        } catch (error) {
+            console.log('Debug update error:', error);
+        }
+        */
+    }
 
-        // MINIMAL state tracking
-        let debugUpdateCount = 0;
-        let lastDebugUpdate = 0;
-        const DEBUG_THROTTLE = 5000; // 5 seconds between updates
+    // Freeze detection (DISABLED)
+    function startFreezeDetection() {
+        // Freeze detection UI disabled to clean up interface
+        return;
 
-        // Single cleanup function
-        function cleanup() {
-            console.log('🧹 LOGIN CLEANUP: Resetting state');
-            biometricAuthInProgress = false;
-            systemLocked = false;
+        /* DISABLED FREEZE DETECTION
+        setInterval(() => {
+            freezeCheckCounter++;
+            const freezeEl = document.getElementById('loginFreezeCheck');
+            if (freezeEl) {
+                freezeEl.textContent = 'OK-' + freezeCheckCounter;
+            }
+        }, 3000);
+        */
+    }
 
-            try {
+    function log(message) {
+        console.log('[LOGIN-ANTIFREEZE]', message);
+        // Debug display update disabled
+        // updateLoginDebug();
+    }
+
+    function setBiometricStatus(message, type = 'info') {
+        try {
+            const statusEl = document.getElementById('biometric-status');
+            if (statusEl) {
+                statusEl.textContent = message;
+                statusEl.className = 'biometric-status ' + type;
+            }
+        } catch (error) {
+            console.log('Biometric status update error:', error);
+        }
+    }
+
+    // ENHANCED TOKEN RETRIEVAL - Multiple methods for better reliability
+    function requestTokenFromKodular() {
+        log('🔍 ENHANCED TOKEN REQUEST FROM KODULAR');
+
+        try {
+            // Method 1: Direct GET_TOKEN
+            window.webViewString = 'GET_TOKEN';
+
+            // Method 2: Clear and request again (sometimes Kodular needs this)
+            setTimeout(() => {
                 window.webViewString = '';
-            } catch (e) {
-                console.log('WebViewString clear error:', e);
-            }
-        }
-
-        // THROTTLED debug update
-        function updateLoginDebug() {
-            const now = Date.now();
-            if (now - lastDebugUpdate < DEBUG_THROTTLE) {
-                return;
-            }
-            lastDebugUpdate = now;
-            debugUpdateCount++;
-
-            try {
-                requestAnimationFrame(() => {
-                    const elements = {
-                        webviewDetected: document.getElementById('loginWebviewDetected'),
-                        tokenStatus: document.getElementById('loginTokenStatus'),
-                        authState: document.getElementById('loginAuthState'),
-                        freezeCheck: document.getElementById('loginFreezeCheck')
-                    };
-
-                    if (elements.webviewDetected) elements.webviewDetected.textContent = isWebView ? 'YES' : 'NO';
-                    if (elements.tokenStatus) elements.tokenStatus.textContent = storedBiometricToken ? 'FOUND' : 'NONE';
-                    if (elements.authState) elements.authState.textContent = biometricAuthInProgress ? 'ACTIVE' : 'IDLE';
-                    if (elements.freezeCheck) elements.freezeCheck.textContent = 'OK-' + debugUpdateCount;
-                });
-            } catch (error) {
-                console.log('Debug update error:', error);
-            }
-        }
-
-        // Freeze detection
-        function startFreezeDetection() {
-            setInterval(() => {
-                freezeCheckCounter++;
-                const freezeEl = document.getElementById('loginFreezeCheck');
-                if (freezeEl) {
-                    freezeEl.textContent = 'OK-' + freezeCheckCounter;
-                }
-            }, 3000);
-        }
-
-        function log(message) {
-            console.log('[LOGIN-ANTIFREEZE]', message);
-            updateLoginDebug();
-        }
-
-        function setBiometricStatus(message, type = 'info') {
-            try {
-                const statusEl = document.getElementById('biometric-status');
-                if (statusEl) {
-                    statusEl.textContent = message;
-                    statusEl.className = 'biometric-status ' + type;
-                }
-            } catch (error) {
-                console.log('Biometric status update error:', error);
-            }
-        }
-
-        // ENHANCED TOKEN RETRIEVAL - Multiple methods for better reliability
-        function requestTokenFromKodular() {
-            log('🔍 ENHANCED TOKEN REQUEST FROM KODULAR');
-
-            try {
-                // Method 1: Direct GET_TOKEN
-                window.webViewString = 'GET_TOKEN';
-
-                // Method 2: Clear and request again (sometimes Kodular needs this)
                 setTimeout(() => {
-                    window.webViewString = '';
-                    setTimeout(() => {
-                        window.webViewString = 'GET_TOKEN';
-                        log('🔄 TOKEN REQUEST RESENT');
-                    }, 300);
-                }, 500);
+                    window.webViewString = 'GET_TOKEN';
+                    log('🔄 TOKEN REQUEST RESENT');
+                }, 300);
+            }, 500);
 
-                // Method 3: Alternative request format
-                setTimeout(() => {
-                    window.webViewString = 'REQUEST_TOKEN';
-                    log('🔄 ALTERNATIVE TOKEN REQUEST SENT');
-                }, 1000);
+            // Method 3: Alternative request format
+            setTimeout(() => {
+                window.webViewString = 'REQUEST_TOKEN';
+                log('🔄 ALTERNATIVE TOKEN REQUEST SENT');
+            }, 1000);
 
-                // Method 4: URL hash method as backup
-                setTimeout(() => {
-                    window.location.hash = '#GET_TOKEN_' + Date.now();
-                    log('🔄 TOKEN REQUEST VIA HASH');
-                }, 1500);
+            // Method 4: URL hash method as backup
+            setTimeout(() => {
+                window.location.hash = '#GET_TOKEN_' + Date.now();
+                log('🔄 TOKEN REQUEST VIA HASH');
+            }, 1500);
 
-                log('✅ ENHANCED TOKEN REQUEST SEQUENCE INITIATED');
-            } catch (error) {
-                log('❌ Error in enhanced token request: ' + error.message);
-            }
+            log('✅ ENHANCED TOKEN REQUEST SEQUENCE INITIATED');
+        } catch (error) {
+            log('❌ Error in enhanced token request: ' + error.message);
         }
+    }
 
-        // SIMPLIFIED TOKEN MONITORING - Single check
-        function checkForToken() {
-            try {
-                // Check webViewString for token
-                const currentWebViewString = window.webViewString;
-                if (currentWebViewString && currentWebViewString.startsWith('TOKEN:')) {
-                    const token = currentWebViewString.substring(6);
-                    if (token && token.length > 10) {
-                        log('🔑 TOKEN FOUND: ' + token.substring(0, 10) + '...');
-                        storedBiometricToken = token;
-                        return true;
-                    }
-                }
-
-                // Check global variable
-                if (window.biometricToken && window.biometricToken.length > 10) {
-                    log('🔑 TOKEN FOUND IN GLOBAL: ' + window.biometricToken.substring(0, 10) + '...');
-                    storedBiometricToken = window.biometricToken;
+    // SIMPLIFIED TOKEN MONITORING - Single check
+    function checkForToken() {
+        try {
+            // Check webViewString for token
+            const currentWebViewString = window.webViewString;
+            if (currentWebViewString && currentWebViewString.startsWith('TOKEN:')) {
+                const token = currentWebViewString.substring(6);
+                if (token && token.length > 10) {
+                    log('🔑 TOKEN FOUND: ' + token.substring(0, 10) + '...');
+                    storedBiometricToken = token;
                     return true;
                 }
-
-                return false;
-            } catch (error) {
-                log('❌ Error checking for token: ' + error.message);
-                return false;
             }
+
+            // Check global variable
+            if (window.biometricToken && window.biometricToken.length > 10) {
+                log('🔑 TOKEN FOUND IN GLOBAL: ' + window.biometricToken.substring(0, 10) + '...');
+                storedBiometricToken = window.biometricToken;
+                return true;
+            }
+
+            return false;
+        } catch (error) {
+            log('❌ Error checking for token: ' + error.message);
+            return false;
+        }
+    }
+
+    // Function to authenticate with biometric token
+    function authenticateWithBiometricToken(token) {
+        log('🔐 AUTHENTICATING WITH TOKEN');
+
+        if (!token || token.trim() === '') {
+            log('❌ No token available');
+            setBiometricStatus('No biometric token found', 'error');
+            biometricAuthInProgress = false;
+            const btn = document.getElementById('biometric-login-btn');
+            if (btn) btn.disabled = false;
+            return;
         }
 
-        // Function to authenticate with biometric token
-        function authenticateWithBiometricToken(token) {
-            log('🔐 AUTHENTICATING WITH TOKEN');
+        setBiometricStatus('Authenticating...', 'info');
 
-            if (!token || token.trim() === '') {
-                log('❌ No token available');
-                setBiometricStatus('No biometric token found', 'error');
-                biometricAuthInProgress = false;
-                const btn = document.getElementById('biometric-login-btn');
-                if (btn) btn.disabled = false;
+        fetch('/mobile/biometric-login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'HX-Request': 'true'
+            },
+            body: JSON.stringify({ token: token })
+        })
+        .then(response => {
+            log('📡 Server response: ' + response.status);
+
+            const redirectUrl = response.headers.get('HX-Redirect');
+            if (redirectUrl) {
+                log('🔄 Redirecting to: ' + redirectUrl);
+                setBiometricStatus('Login successful!', 'success');
+                cleanup();
+                window.location.href = redirectUrl;
                 return;
             }
 
-            setBiometricStatus('Authenticating...', 'info');
-
-            fetch('/mobile/biometric-login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'HX-Request': 'true'
-                },
-                body: JSON.stringify({ token: token })
-            })
-            .then(response => {
-                log('📡 Server response: ' + response.status);
-
-                const redirectUrl = response.headers.get('HX-Redirect');
-                if (redirectUrl) {
-                    log('🔄 Redirecting to: ' + redirectUrl);
-                    setBiometricStatus('Login successful!', 'success');
-                    cleanup();
-                    window.location.href = redirectUrl;
-                    return;
-                }
-
-                if (response.ok) {
-                    setBiometricStatus('Login successful!', 'success');
-                    cleanup();
-                    setTimeout(() => {
-                        window.location.href = '/mobile/settings';
-                    }, 1000);
-                } else {
-                    response.text().then(errorText => {
-                        log('❌ Server error: ' + errorText);
-                        setBiometricStatus('Authentication failed', 'error');
-                    });
-                }
-            })
-            .catch(error => {
-                log('❌ Network error: ' + error.message);
-                setBiometricStatus('Network error', 'error');
-            })
-            .finally(() => {
-                biometricAuthInProgress = false;
-                const btn = document.getElementById('biometric-login-btn');
-                if (btn) btn.disabled = false;
-            });
-        }
-
-        // ENHANCED message sending for login
-        function sendBiometricMessage() {
-            if (systemLocked) return;
-
-            try {
-                log('📤 SENDING BIOMETRIC MESSAGE - MULTIPLE METHODS');
-
-                // Method 1: Direct webViewString
-                window.webViewString = 'BIOMETRIC';
-
-                // Method 2: Clear and set again (Kodular sometimes misses first attempt)
+            if (response.ok) {
+                setBiometricStatus('Login successful!', 'success');
+                cleanup();
                 setTimeout(() => {
-                    window.webViewString = '';
-                    setTimeout(() => {
-                        window.webViewString = 'BIOMETRIC';
-                        log('📤 BIOMETRIC MESSAGE RESENT');
-                    }, 500);
+                    window.location.href = '/mobile/settings';
                 }, 1000);
+            } else {
+                response.text().then(errorText => {
+                    log('❌ Server error: ' + errorText);
+                    setBiometricStatus('Authentication failed', 'error');
+                });
+            }
+        })
+        .catch(error => {
+            log('❌ Network error: ' + error.message);
+            setBiometricStatus('Network error', 'error');
+        })
+        .finally(() => {
+            biometricAuthInProgress = false;
+            const btn = document.getElementById('biometric-login-btn');
+            if (btn) btn.disabled = false;
+        });
+    }
 
-                // Method 3: Try URL hash method as backup
+    // ENHANCED message sending for login
+    function sendBiometricMessage() {
+        if (systemLocked) return;
+
+        try {
+            log('📤 SENDING BIOMETRIC MESSAGE - MULTIPLE METHODS');
+
+            // Method 1: Direct webViewString
+            window.webViewString = 'BIOMETRIC';
+
+            // Method 2: Clear and set again (Kodular sometimes misses first attempt)
+            setTimeout(() => {
+                window.webViewString = '';
                 setTimeout(() => {
-                    window.location.hash = '#BIOMETRIC_' + Date.now();
-                    log('📤 BIOMETRIC HASH SENT');
-                }, 2000);
-
-            } catch (error) {
-                log('Error sending biometric message:', error);
-            }
-        }
-
-        // Detect WebView - SIMPLIFIED
-        function detectWebView() {
-            const userAgent = navigator.userAgent.toLowerCase();
-            isWebView = userAgent.includes('wv') ||
-                       userAgent.includes('android') ||
-                       userAgent.includes('kodular') ||
-                       window.Android !== undefined;
-
-            log(isWebView ? '✅ LOGIN WEBVIEW DETECTED' : 'ℹ️ LOGIN BROWSER DETECTED');
-
-            if (isWebView && window.innerWidth < 1024) {
-                document.getElementById('biometric-section').style.display = 'block';
-                document.getElementById('loginDebugInfo').style.display = 'block';
-                setBiometricStatus('Biometric login available', 'success');
-
-                // Request token immediately
-                setTimeout(requestTokenFromKodular, 1000);
-            }
-
-            return isWebView;
-        }
-
-        // SIMPLIFIED callback functions
-        window.onSettingsBiometricSuccess = function() {
-            log('✅ LOGIN BIOMETRIC SUCCESS');
-            setBiometricStatus('Fingerprint verified! Getting token...', 'success');
-
-            cleanup();
-
-            // Start simple token monitoring
-            let tokenCheckAttempts = 0;
-            const maxAttempts = 30; // 30 seconds
-
-            const tokenCheckInterval = setInterval(() => {
-                tokenCheckAttempts++;
-
-                if (checkForToken()) {
-                    clearInterval(tokenCheckInterval);
-                    log('🔑 TOKEN RETRIEVED');
-                    authenticateWithBiometricToken(storedBiometricToken);
-                } else if (tokenCheckAttempts >= maxAttempts) {
-                    clearInterval(tokenCheckInterval);
-                    log('⏰ Token retrieval timeout');
-                    setBiometricStatus('Could not retrieve token', 'error');
-                    biometricAuthInProgress = false;
-                    const btn = document.getElementById('biometric-login-btn');
-                    if (btn) btn.disabled = false;
-                } else if (tokenCheckAttempts % 5 === 0) {
-                    // Re-request token every 5 attempts
-                    requestTokenFromKodular();
-                }
-            }, 1000);
-        };
-
-        window.onSettingsBiometricFailure = function() {
-            log('❌ LOGIN BIOMETRIC FAILURE');
-            cleanup();
-            setBiometricStatus('Fingerprint failed', 'error');
-            const btn = document.getElementById('biometric-login-btn');
-            if (btn) btn.disabled = false;
-        };
-
-        window.onSettingsBiometricError = function(error) {
-            log('⚠️ LOGIN BIOMETRIC ERROR: ' + error);
-            cleanup();
-            setBiometricStatus('Biometric error: ' + error, 'error');
-            const btn = document.getElementById('biometric-login-btn');
-            if (btn) btn.disabled = false;
-        };
-
-        // ENHANCED biometric login handler
-        function handleBiometricLogin() {
-            if (!isWebView) {
-                setBiometricStatus('Only available in mobile app', 'error');
-                return;
-            }
-
-            if (biometricAuthInProgress) {
-                log('⏳ Already in progress');
-                return;
-            }
-
-            log('🔐 BIOMETRIC LOGIN CLICKED - ENHANCED');
-
-            cleanup();
-            biometricAuthInProgress = true;
-
-            const btn = document.getElementById('biometric-login-btn');
-            if (btn) btn.disabled = true;
-
-            setBiometricStatus('Requesting biometric authentication...', 'info');
-
-            // Check if we already have a token
-            if (storedBiometricToken && storedBiometricToken.length > 10) {
-                log('🔑 Using existing token');
-                authenticateWithBiometricToken(storedBiometricToken);
-                return;
-            }
-
-            // ENHANCED token request sequence
-            log('🔍 STARTING ENHANCED TOKEN REQUEST SEQUENCE');
-
-            // Immediate token request
-            requestTokenFromKodular();
-
-            // Multiple token requests with delays
-            setTimeout(() => {
-                requestTokenFromKodular();
-                setBiometricStatus('Preparing fingerprint scanner...', 'info');
+                    window.webViewString = 'BIOMETRIC';
+                    log('📤 BIOMETRIC MESSAGE RESENT');
+                }, 500);
             }, 1000);
 
+            // Method 3: Try URL hash method as backup
             setTimeout(() => {
-                requestTokenFromKodular();
-                setBiometricStatus('Initializing biometric authentication...', 'info');
+                window.location.hash = '#BIOMETRIC_' + Date.now();
+                log('📤 BIOMETRIC HASH SENT');
             }, 2000);
 
-            // Start biometric process with multiple attempts
-            setTimeout(() => {
-                setBiometricStatus('Starting fingerprint scanner...', 'info');
-                sendBiometricMessage();
-            }, 3000);
+        } catch (error) {
+            log('Error sending biometric message:', error);
+        }
+    }
 
-            // Second biometric attempt
-            setTimeout(() => {
-                if (biometricAuthInProgress) {
-                    setBiometricStatus('Retrying fingerprint scanner...', 'info');
-                    sendBiometricMessage();
-                }
-            }, 6000);
+    // Detect WebView - SIMPLIFIED
+    function detectWebView() {
+        const userAgent = navigator.userAgent.toLowerCase();
+        isWebView = userAgent.includes('wv') ||
+                   userAgent.includes('android') ||
+                   userAgent.includes('kodular') ||
+                   window.Android !== undefined;
 
-            // Third biometric attempt
-            setTimeout(() => {
-                if (biometricAuthInProgress) {
-                    setBiometricStatus('Final attempt - fingerprint scanner...', 'info');
-                    sendBiometricMessage();
-                }
-            }, 10000);
+        log(isWebView ? '✅ LOGIN WEBVIEW DETECTED' : 'ℹ️ LOGIN BROWSER DETECTED');
 
-            // Extended timeout for better user experience
-            setTimeout(() => {
-                if (biometricAuthInProgress) {
-                    cleanup();
-                    setBiometricStatus('Biometric authentication timed out. Please try again.', 'error');
-                    if (btn) btn.disabled = false;
-                    log('⏰ BIOMETRIC LOGIN TIMEOUT AFTER ENHANCED ATTEMPTS');
-                }
-            }, 45000); // 45 seconds - longer timeout
+        if (isWebView && window.innerWidth < 1024) {
+            const biometricSection = document.getElementById('biometric-section');
+            if (biometricSection) {
+                biometricSection.style.display = 'block';
+            }
+
+            // Debug info display disabled
+            // const debugInfo = document.getElementById('loginDebugInfo');
+            // if (debugInfo) debugInfo.style.display = 'block';
+
+            setBiometricStatus('Biometric login available', 'success');
+
+            // Request token immediately
+            setTimeout(requestTokenFromKodular, 1000);
         }
 
-        // Manual token request
-        function handleManualTokenRequest() {
-            log('🔄 MANUAL TOKEN REQUEST');
+        return isWebView;
+    }
+
+    // SIMPLIFIED callback functions
+    window.onSettingsBiometricSuccess = function() {
+        log('✅ LOGIN BIOMETRIC SUCCESS');
+        setBiometricStatus('Fingerprint verified! Getting token...', 'success');
+
+        cleanup();
+
+        // Start simple token monitoring
+        let tokenCheckAttempts = 0;
+        const maxAttempts = 30; // 30 seconds
+
+        const tokenCheckInterval = setInterval(() => {
+            tokenCheckAttempts++;
+
+            if (checkForToken()) {
+                clearInterval(tokenCheckInterval);
+                log('🔑 TOKEN RETRIEVED');
+                authenticateWithBiometricToken(storedBiometricToken);
+            } else if (tokenCheckAttempts >= maxAttempts) {
+                clearInterval(tokenCheckInterval);
+                log('⏰ Token retrieval timeout');
+                setBiometricStatus('Could not retrieve token', 'error');
+                biometricAuthInProgress = false;
+                const btn = document.getElementById('biometric-login-btn');
+                if (btn) btn.disabled = false;
+            } else if (tokenCheckAttempts % 5 === 0) {
+                // Re-request token every 5 attempts
+                requestTokenFromKodular();
+            }
+        }, 1000);
+    };
+
+    window.onSettingsBiometricFailure = function() {
+        log('❌ LOGIN BIOMETRIC FAILURE');
+        cleanup();
+        setBiometricStatus('Fingerprint failed', 'error');
+        const btn = document.getElementById('biometric-login-btn');
+        if (btn) btn.disabled = false;
+    };
+
+    window.onSettingsBiometricError = function(error) {
+        log('⚠️ LOGIN BIOMETRIC ERROR: ' + error);
+        cleanup();
+        setBiometricStatus('Biometric error: ' + error, 'error');
+        const btn = document.getElementById('biometric-login-btn');
+        if (btn) btn.disabled = false;
+    };
+
+    // ENHANCED biometric login handler
+    function handleBiometricLogin() {
+        if (!isWebView) {
+            setBiometricStatus('Only available in mobile app', 'error');
+            return;
+        }
+
+        if (biometricAuthInProgress) {
+            log('⏳ Already in progress');
+            return;
+        }
+
+        log('🔐 BIOMETRIC LOGIN CLICKED - ENHANCED');
+
+        cleanup();
+        biometricAuthInProgress = true;
+
+        const btn = document.getElementById('biometric-login-btn');
+        if (btn) btn.disabled = true;
+
+        setBiometricStatus('Requesting biometric authentication...', 'info');
+
+        // Check if we already have a token
+        if (storedBiometricToken && storedBiometricToken.length > 10) {
+            log('🔑 Using existing token');
+            authenticateWithBiometricToken(storedBiometricToken);
+            return;
+        }
+
+        // ENHANCED token request sequence
+        log('🔍 STARTING ENHANCED TOKEN REQUEST SEQUENCE');
+
+        // Immediate token request
+        requestTokenFromKodular();
+
+        // Multiple token requests with delays
+        setTimeout(() => {
             requestTokenFromKodular();
-            setBiometricStatus('Token requested', 'info');
+            setBiometricStatus('Preparing fingerprint scanner...', 'info');
+        }, 1000);
+
+        setTimeout(() => {
+            requestTokenFromKodular();
+            setBiometricStatus('Initializing biometric authentication...', 'info');
+        }, 2000);
+
+        // Start biometric process with multiple attempts
+        setTimeout(() => {
+            setBiometricStatus('Starting fingerprint scanner...', 'info');
+            sendBiometricMessage();
+        }, 3000);
+
+        // Second biometric attempt
+        setTimeout(() => {
+            if (biometricAuthInProgress) {
+                setBiometricStatus('Retrying fingerprint scanner...', 'info');
+                sendBiometricMessage();
+            }
+        }, 6000);
+
+        // Third biometric attempt
+        setTimeout(() => {
+            if (biometricAuthInProgress) {
+                setBiometricStatus('Final attempt - fingerprint scanner...', 'info');
+                sendBiometricMessage();
+            }
+        }, 10000);
+
+        // Extended timeout for better user experience
+        setTimeout(() => {
+            if (biometricAuthInProgress) {
+                cleanup();
+                setBiometricStatus('Biometric authentication timed out. Please try again.', 'error');
+                if (btn) btn.disabled = false;
+                log('⏰ BIOMETRIC LOGIN TIMEOUT AFTER ENHANCED ATTEMPTS');
+            }
+        }, 45000); // 45 seconds - longer timeout
+    }
+
+    // Manual token request
+    function handleManualTokenRequest() {
+        log('🔄 MANUAL TOKEN REQUEST');
+        requestTokenFromKodular();
+        setBiometricStatus('Token requested', 'info');
+    }
+
+    // SIMPLIFIED initialization
+    function initialize() {
+        log('🚀 LOGIN: INITIALIZING ANTI-FREEZE SYSTEM');
+
+        detectWebView();
+        startFreezeDetection(); // This is now disabled internally
+
+        const biometricBtn = document.getElementById('biometric-login-btn');
+        const manualTokenBtn = document.getElementById('manualTokenRequest');
+
+        if (biometricBtn) {
+            biometricBtn.addEventListener('click', handleBiometricLogin);
         }
 
-        // SIMPLIFIED initialization
-        function initialize() {
-            log('🚀 LOGIN: INITIALIZING ANTI-FREEZE SYSTEM');
+        if (manualTokenBtn) {
+            manualTokenBtn.addEventListener('click', handleManualTokenRequest);
+        }
 
-            detectWebView();
-            startFreezeDetection();
-
-            const biometricBtn = document.getElementById('biometric-login-btn');
-            const manualTokenBtn = document.getElementById('manualTokenRequest');
-
-            if (biometricBtn) {
-                biometricBtn.addEventListener('click', handleBiometricLogin);
-            }
-
-            if (manualTokenBtn) {
-                manualTokenBtn.addEventListener('click', handleManualTokenRequest);
-            }
-
-            // Simple token monitoring for existing tokens
-            if (isWebView) {
-                setInterval(() => {
-                    if (!biometricAuthInProgress && !storedBiometricToken) {
-                        if (checkForToken()) {
-                            log('🔑 TOKEN DETECTED IN MONITORING');
-                            updateLoginDebug();
-                        }
+        // Simple token monitoring for existing tokens
+        if (isWebView) {
+            setInterval(() => {
+                if (!biometricAuthInProgress && !storedBiometricToken) {
+                    if (checkForToken()) {
+                        log('🔑 TOKEN DETECTED IN MONITORING');
+                        // Debug display update disabled
+                        // updateLoginDebug();
                     }
-                }, 5000); // Every 5 seconds
-            }
-
-            log('✅ LOGIN: ANTI-FREEZE INIT COMPLETE');
-            updateLoginDebug();
+                }
+            }, 5000); // Every 5 seconds
         }
 
-        // Cleanup on unload
-        window.addEventListener('beforeunload', cleanup);
+        log('✅ LOGIN: ANTI-FREEZE INIT COMPLETE');
+        // Debug display update disabled
+        // updateLoginDebug();
+    }
 
-        // Start
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initialize);
-        } else {
-            initialize();
-        }
+    // Cleanup on unload
+    window.addEventListener('beforeunload', cleanup);
 
-    })();
+    // Start
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initialize);
+    } else {
+        initialize();
+    }
+
+})();
+
 </script>
 
 </#if>
