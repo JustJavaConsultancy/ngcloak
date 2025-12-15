@@ -2,7 +2,10 @@ name: Build and Push Docker Image
 
 on:
   push:
-    branches: ["main", "railway", "render"]  # Trigger on pushes to main branch
+    branches: 
+      - main 
+      - railway 
+      - render  # Trigger on push
   workflow_dispatch:
 
 env:
@@ -72,6 +75,9 @@ jobs:
     needs: build-and-push
     if: github.ref == 'refs/heads/main'
     steps:
+      - name: Install Railway CLI
+        run: npm install -g @railway/cli@latest
+        
       - name: Deploy to Railway
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
