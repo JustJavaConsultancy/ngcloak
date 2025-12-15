@@ -2,7 +2,10 @@ name: Build and Push Docker Image
 
 on:
   push:
-    branches: ["main", "railway", "render"]  # Trigger on pushes to main branch
+    branches: 
+      - main 
+      - railway 
+      - render  # Trigger on push
   workflow_dispatch:
 
 env:
@@ -39,7 +42,7 @@ jobs:
     name: Deploy to Railway
     runs-on: ubuntu-latest
     needs: build-and-push
-    if: github.ref == 'refs/heads/qa'
+    if: github.ref == 'refs/heads/railway'
     steps:
       - name: Install Railway CLI
         run: npm install -g @railway/cli@latest
@@ -50,6 +53,7 @@ jobs:
           RAILWAY_PROJECT_ID: 7edc707c-73e3-4b8b-915b-019e9d0b6114
           RAILWAY_SERVICE_ID: Ngcloak
         run: |
+          IMAGE_REF="kazeemakinrinde/ngcloak"
           echo "Deploying Dev with image: $IMAGE_REF"
           railway variables --set "RAILWAY_SERVICE_IMAGE=$IMAGE_REF" --service $RAILWAY_SERVICE_ID
 
@@ -61,6 +65,7 @@ jobs:
     steps:
       - name: Render
         run: |
+          IMAGE_REF="kazeemakinrinde/ngcloak"
           curl -X POST ${{secrets.RENDER_DEPLOY_HOOK}}
   
 
@@ -70,6 +75,9 @@ jobs:
     needs: build-and-push
     if: github.ref == 'refs/heads/main'
     steps:
+      - name: Install Railway CLI
+        run: npm install -g @railway/cli@latest
+        
       - name: Deploy to Railway
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
@@ -77,9 +85,11 @@ jobs:
           RAILWAY_SERVICE_ID: Ngcloak
           IMAGE_REF: ${{ env.IMAGE_REF }}
         run: |
+          IMAGE_REF="kazeemakinrinde/ngcloak"
           echo "Deploying QA with image: $IMAGE_REF"
           railway variables --set "RAILWAY_SERVICE_IMAGE=$IMAGE_REF" --service $RAILWAY_SERVICE_ID
 
       - name: Deploy to Render
         run: |
+          IMAGE_REF="kazeemakinrinde/ngcloak"
           curl -X POST ${{secrets.RENDER_DEPLOY_HOOK}}
