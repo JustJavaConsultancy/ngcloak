@@ -381,7 +381,7 @@
             color: #2563eb;
         }
 
-        /* Debug panel for login - SIMPLIFIED */
+        /* Debug panel for login - HIDDEN FOR CLIENT DEMO */
         .login-debug-info {
             position: fixed;
             bottom: 10px;
@@ -395,6 +395,7 @@
             z-index: 1000;
             font-family: monospace;
             border: 2px solid #10b981;
+            display: none; /* Hidden for client demo */
         }
 
         .login-debug-title {
@@ -409,8 +410,8 @@
 <body class="bg-gradient-to-br from-blue-50 to-indigo-50 min-h-screen"
       style="font-family: 'Be Vietnam Pro', 'Noto Sans', sans-serif">
 
-<!-- Simplified debug panel for login -->
-<div id="loginDebugInfo" class="login-debug-info" style="display: none;">
+<!-- Simplified debug panel for login - HIDDEN FOR CLIENT DEMO -->
+<div id="loginDebugInfo" class="login-debug-info">
     <div class="login-debug-title">🔐 LOGIN DEBUG</div>
     <div>WebView: <span id="loginWebviewDetected" style="color: #10b981;">No</span></div>
     <div>Token: <span id="loginTokenStatus" style="color: #f59e0b;">None</span></div>
