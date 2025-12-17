@@ -303,29 +303,29 @@
             }
 
             .mobile-input {
-                padding: 1rem;
-                border-radius: 1rem;
+                padding: 0.75rem;
+                border-radius: 0.25rem;
                 border-width: 2px;
-                font-size: 1.125rem;
+                font-size: 1rem;
             }
 
             .mobile-input-with-icon {
-                padding-left: 3rem;
+                padding-left: 2.5rem;
             }
 
             .mobile-button {
-                padding: 1rem 1.5rem;
-                border-radius: 1rem;
-                font-size: 1.125rem;
+                padding: 0.875rem 1.25rem;
+                border-radius: 0.25rem;
+                font-size: 1rem;
                 font-weight: 700;
             }
 
             .mobile-icon-container {
-                padding-left: 1rem;
+                padding-left: 0.75rem;
             }
 
             .mobile-icon {
-                font-size: 1.125rem;
+                font-size: 1rem;
             }
         }
 
