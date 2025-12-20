@@ -330,7 +330,7 @@
 
             .mobile-input {
                 padding: 1rem;
-                border-radius: 1rem;
+                border-radius: 0;
                 border-width: 2px;
                 font-size: 1.125rem;
             }
