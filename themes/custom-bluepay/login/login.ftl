@@ -63,8 +63,11 @@
                                     <#elseif !realm.registrationEmailAsUsername>${msg("usernameOrEmail")}
                                     <#else>${msg("email")}</#if>
                                 </label>
-                                <input type="text" class="form-control custom-input " id="username" name="username" value="${(login.username!'')}" autofocus autocomplete="username"
-                                    aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>">
+                                <div class="input-wrapper">
+                                    <i class="fas fa-user input-icon d-lg-none"></i>
+                                    <input type="text" class="form-control custom-input" id="username" name="username" value="${(login.username!'')}" autofocus autocomplete="username"
+                                        aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>">
+                                </div>
                                 <#if messagesPerField.existsError('username','password')>
                                     <span id="input-error" class="form-error" aria-live="polite">
                                         ${kcSanitize(messagesPerField.getFirstError('username','password'))?no_esc}
@@ -76,11 +79,14 @@
                             <div class="mb-3">
                                 <label for="password" class="form-label">${msg("password")}</label>
                                 <div class="position-relative">
-                                    <input type="password" class="form-control custom-input" id="password" name="password" autocomplete="current-password"
-                                        aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>">
-                                    <span class="password-toggle" id="togglePassword">
-                                        <i class="fa-regular fa-eye"></i>
-                                    </span>
+                                    <div class="input-wrapper">
+                                        <i class="fas fa-lock input-icon d-lg-none"></i>
+                                        <input type="password" class="form-control custom-input" id="password" name="password" autocomplete="current-password"
+                                            aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>">
+                                        <span class="password-toggle" id="togglePassword">
+                                            <i class="fa-regular fa-eye"></i>
+                                        </span>
+                                    </div>
                                 </div>
                                 <#if messagesPerField.existsError('username','password')>
                                     <span id="input-error" class="form-error" aria-live="polite">
