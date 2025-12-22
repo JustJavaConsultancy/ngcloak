@@ -272,6 +272,37 @@
             font-size: 14px;
         }
 
+        /* Mobile font size adjustments */
+        @media (max-width: 899px) {
+            .form-title {
+                font-size: 20px;
+            }
+
+            .form-subtitle {
+                font-size: 13px;
+            }
+
+            .form-label {
+                font-size: 12px;
+            }
+
+            .form-input {
+                font-size: 14px;
+            }
+
+            .btn-primary {
+                font-size: 14px;
+            }
+
+            .mobile-footer-link {
+                font-size: 12px;
+            }
+
+            .mobile-security-note {
+                font-size: 10px;
+            }
+        }
+
         .form-input {
             width: 100%;
             padding: 16px;
@@ -465,7 +496,7 @@
             }
 
             .form-title {
-                font-size: 22px;
+                font-size: 18px;
             }
 
             .row {
