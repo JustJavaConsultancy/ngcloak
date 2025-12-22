@@ -235,6 +235,19 @@
                 justify-content: center;
                 gap: 5px;
             }
+
+            /* Mobile form input styles with sharp edges */
+            .form-input {
+                border-radius: 0 !important;
+            }
+
+            .btn-primary {
+                border-radius: 0 !important;
+            }
+
+            .input-group-text {
+                border-radius: 0 !important;
+            }
         }
 
         /* Form Styles */
