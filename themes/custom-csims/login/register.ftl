@@ -711,7 +711,7 @@
     <section class="auth-form-section">
         <div class="form-container">
             <header class="form-header">
-                <h1 class="form-title">Create Account</h1>
+                <h1 class="form-title">Create Accountttt</h1>
                 <p class="form-subtitle">Join the CSIMS platform</p>
             </header>
 
@@ -792,25 +792,8 @@
                     </#if>
                 </div>
 
-                <div class="form-group">
-    <label class="form-label" for="clientId">Client ID</label>
-    <input
-        type="text"
-        id="clientId"
-        name="user.attributes.clientId"
-        class="form-input"
-        value="${(register.formData['user.attributes.clientId']!'')}"
-        placeholder="Enter your client ID"
-        required
-        aria-invalid="<#if messagesPerField.existsError('user.attributes.clientId')>true</#if>"
-    />
+                <@userProfileCommons.renderUserProfileFormFields />
 
-    <#if messagesPerField.existsError('user.attributes.clientId')>
-        <div class="error-message show">
-            ${kcSanitize(messagesPerField.get('user.attributes.clientId'))?no_esc}
-        </div>
-    </#if>
-</div>
 
 
                 <div class="form-group">
@@ -1149,4 +1132,5 @@
 
 </#if>
 </@layout.registrationLayout>
+
 
