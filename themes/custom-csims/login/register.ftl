@@ -793,7 +793,7 @@
                 </div>
 
                 <div class="form-group">
-    <label class="form-label" for="clientId">Client ID</label>
+    <label class="form-label" for="clientId">Client IDDD</label>
     <input
         type="text"
         id="clientId"
@@ -1149,3 +1149,4 @@
 
 </#if>
 </@layout.registrationLayout>
+
