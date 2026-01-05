@@ -792,6 +792,7 @@
                     </#if>
                 </div>
 
+/*
                 <div class="form-group">
     <input
     type="hidden"
@@ -806,7 +807,7 @@
         </div>
     </#if>
 </div>
-
+*/
 
                 <div class="form-group">
                     <label class="form-label" for="password">${msg("password")}</label>
@@ -1141,6 +1142,7 @@
         }
     });
 
+/*
 document.addEventListener("DOMContentLoaded", function () {
     const params = new URLSearchParams(window.location.search);
     const clientId = params.get("clientId");
@@ -1157,11 +1159,13 @@ document.addEventListener("DOMContentLoaded", function () {
         `;
     }
 });
+*/
 
 </script>
 
 </#if>
 </@layout.registrationLayout>
+
 
 
 
