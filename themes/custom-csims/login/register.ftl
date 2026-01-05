@@ -793,17 +793,12 @@
                 </div>
 
                 <div class="form-group">
-    <label class="form-label" for="clientId">Client ID</label>
     <input
-        type="text"
-        id="clientId"
-        name="user.attributes.clientId"
-        class="form-input"
-        value="${(register.formData['user.attributes.clientId']!'')}"
-        placeholder="Enter your client ID"
-        required
-        aria-invalid="<#if messagesPerField.existsError('user.attributes.clientId')>true</#if>"
-    />
+    type="hidden"
+    id="clientId"
+    name="user.attributes.clientId"
+    value="${(register.formData['user.attributes.clientId']!'')}"
+/>
 
     <#if messagesPerField.existsError('user.attributes.clientId')>
         <div class="error-message show">
@@ -1149,5 +1144,6 @@
 
 </#if>
 </@layout.registrationLayout>
+
 
 
