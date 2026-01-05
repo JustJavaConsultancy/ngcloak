@@ -1140,10 +1140,31 @@
             firstNameField.focus();
         }
     });
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const params = new URLSearchParams(window.location.search);
+    const clientId = params.get("clientId");
+
+    if (clientId) {
+        document.getElementById("clientId").value = clientId;
+    } else {
+        // HARD FAIL: registration must come from login
+        document.body.innerHTML = `
+            <div style="padding:2rem;text-align:center">
+                <h2>Invalid registration link</h2>
+                <p>Please register through the login page.</p>
+            </div>
+        `;
+    }
+});
+</script>
+
 </script>
 
 </#if>
 </@layout.registrationLayout>
+
 
 
 
