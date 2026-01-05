@@ -906,19 +906,20 @@
                 togglePasswordVisibility('password');
             });
         }
+
+ const params = new URLSearchParams(window.location.search);
+    const clientId = params.get("clientId");
+    if (!clientId) return;
+
+    // Keycloak exposes this exact ID reliably
+    const registerLink = document.getElementById("kc-registration");
+
+    if (!registerLink) return;
+
+    const url = new URL(registerLink.href);
+    url.searchParams.set("clientId", clientId);
+    registerLink.href = url.toString();
     });
-
-
-        const params = new URLSearchParams(window.location.search);
-        const clientId = params.get("clientId");
-        if (!clientId) return;
-
-        const registerLink = document.querySelector('a[href*="registration"]');
-        if (!registerLink) return;
-
-        const url = new URL(registerLink.href);
-        url.searchParams.set("clientId", clientId);
-        registerLink.href = url.toString();
 </script>
 
 </#if>
