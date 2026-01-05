@@ -1,6 +1,6 @@
 <#import "template.ftl" as layout>
 <@layout.registrationLayout displayMessage=!messagesPerField.existsError('username','password') displayInfo=realm.password && realm.registrationAllowed && !registrationDisabled??; section>
-<#assign clientIdParam = request.getParameter("clientId")!"" />
+<#assign clientIdParam = (requestParameters.clientId![])?first!"" />
 <#if section = "header">
     <title>CSIMS - University Registry & Records System</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
