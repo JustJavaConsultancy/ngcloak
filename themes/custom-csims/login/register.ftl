@@ -792,23 +792,6 @@
                     </#if>
                 </div>
 
-/*
-                <div class="form-group">
-    <input
-    type="hidden"
-    id="clientId"
-    name="user.attributes.clientId"
-    value="${(register.formData['user.attributes.clientId']!'')}"
-/>
-
-    <#if messagesPerField.existsError('user.attributes.clientId')>
-        <div class="error-message show">
-            ${kcSanitize(messagesPerField.get('user.attributes.clientId'))?no_esc}
-        </div>
-    </#if>
-</div>
-*/
-
                 <div class="form-group">
                     <label class="form-label" for="password">${msg("password")}</label>
                     <div class="input-wrapper">
@@ -1142,29 +1125,12 @@
         }
     });
 
-/*
-document.addEventListener("DOMContentLoaded", function () {
-    const params = new URLSearchParams(window.location.search);
-    const clientId = params.get("clientId");
-
-    if (clientId) {
-        document.getElementById("clientId").value = clientId;
-    } else {
-        // HARD FAIL: registration must come from login
-        document.body.innerHTML = `
-            <div style="padding:2rem;text-align:center">
-                <h2>Invalid registration link</h2>
-                <p>Please register through the login page.</p>
-            </div>
-        `;
-    }
-});
-*/
 
 </script>
 
 </#if>
 </@layout.registrationLayout>
+
 
 
 
