@@ -1,5 +1,6 @@
 <#import "template.ftl" as layout>
 <@layout.registrationLayout displayMessage=!messagesPerField.existsError('username','password') displayInfo=realm.password && realm.registrationAllowed && !registrationDisabled??; section>
+<#assign clientIdParam = request.getParameter("clientId")!"" />
 <#if section = "header">
     <title>CSIMS - University Registry & Records System</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -821,9 +822,11 @@
                 <#if realm.password && realm.registrationAllowed && !registrationDisabled??>
                   <footer class="form-footer">
                       <span class="form-footer-text">Don't have an account?</span>
-                      <a href="${url.registrationUrl}&clientId=bowen" class="btn-secondary">
-    ${msg("doRegister")}
-</a>
+                      <a href="${url.registrationUrl}<#if clientIdParam?has_content>&clientId=${clientIdParam}</#if>"
+                         class="btn-secondary">
+                            ${msg("doRegister")}
+                      </a>
+
                   </footer>
                 </#if>
               </form>
