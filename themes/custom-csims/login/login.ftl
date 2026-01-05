@@ -1,6 +1,5 @@
 <#import "template.ftl" as layout>
 <@layout.registrationLayout displayMessage=!messagesPerField.existsError('username','password') displayInfo=realm.password && realm.registrationAllowed && !registrationDisabled??; section>
-<#assign clientIdParam = authSession.clientNotes.clientId!"" />
 <#if section = "header">
     <title>CSIMS - University Registry & Records System</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -822,8 +821,7 @@
                 <#if realm.password && realm.registrationAllowed && !registrationDisabled??>
                   <footer class="form-footer">
                       <span class="form-footer-text">Don't have an account?</span>
-                      <a href="${url.registrationUrl}<#if clientIdParam?has_content>&clientId=${clientIdParam}</#if>"
-                         class="btn-secondary">
+                      <a href="${url.registrationUrl}" class="btn-secondary">
                             ${msg("doRegister")}
                       </a>
 
@@ -909,6 +907,18 @@
             });
         }
     });
+
+
+        const params = new URLSearchParams(window.location.search);
+        const clientId = params.get("clientId");
+        if (!clientId) return;
+
+        const registerLink = document.querySelector('a[href*="registration"]');
+        if (!registerLink) return;
+
+        const url = new URL(registerLink.href);
+        url.searchParams.set("clientId", clientId);
+        registerLink.href = url.toString();
 </script>
 
 </#if>
