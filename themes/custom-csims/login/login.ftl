@@ -821,7 +821,7 @@
                 <#if realm.password && realm.registrationAllowed && !registrationDisabled??>
                   <footer class="form-footer">
                       <span class="form-footer-text">Don't have an account?</span>
-                      <a href="${url.registrationUrl}" class="btn-secondary">
+                      <a id="kc-registration" href="${url.registrationUrl}" class="btn-secondary">
                             ${msg("doRegister")}
                       </a>
 
