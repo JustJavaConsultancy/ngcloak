@@ -1141,7 +1141,6 @@
         }
     });
 
-<script>
 document.addEventListener("DOMContentLoaded", function () {
     const params = new URLSearchParams(window.location.search);
     const clientId = params.get("clientId");
@@ -1158,12 +1157,12 @@ document.addEventListener("DOMContentLoaded", function () {
         `;
     }
 });
-</script>
 
 </script>
 
 </#if>
 </@layout.registrationLayout>
+
 
 
 
