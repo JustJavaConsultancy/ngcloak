@@ -39,3 +39,22 @@ document.getElementById('button').addEventListener('click', function(event) {
 
   window.location.href = "../otp/otp.html"; 
 });
+
+// ================================
+// MOBILE LOGIN LOADING OVERLAY
+// (Keycloak-safe, non-intrusive)
+// ================================
+document.addEventListener('DOMContentLoaded', function () {
+  const form = document.getElementById('kc-form-login');
+  const overlay = document.getElementById('mobile-loading-overlay');
+
+  // Defensive checks — do nothing if elements don't exist
+  if (!form || !overlay) return;
+
+  form.addEventListener('submit', function () {
+    // Only show on mobile
+    if (window.innerWidth < 992) {
+      overlay.classList.add('show');
+    }
+  });
+});
