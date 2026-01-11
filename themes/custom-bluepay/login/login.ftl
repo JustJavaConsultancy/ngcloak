@@ -43,14 +43,6 @@
                             BluePay
                         </div>
                         <div class="mobile-tagline">Secure payments made simple</div>
-<!-- Mobile Loading Overlay -->
-<div id="mobile-loading-overlay" class="mobile-loading-overlay d-lg-none">
-    <div class="loading-content">
-        <div class="spinner"></div>
-        <p>Signing you in…</p>
-    </div>
-</div>
-
                     </div>
 
                     <div class="login-container">
@@ -121,7 +113,6 @@
                                 </#if>
                             </div>
 
-
                             <!-- Login Button -->
                             <button type="submit" class="btn btn-login w-100 mb-4" id="kc-login">${msg("doLogIn")}</button>
 
@@ -149,6 +140,14 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Mobile Loading Overlay -->
+        <div id="mobile-loading-overlay" class="mobile-loading-overlay d-lg-none">
+            <div class="loading-content">
+                <div class="spinner"></div>
+                <p>Signing you in…</p>
             </div>
         </div>
 
