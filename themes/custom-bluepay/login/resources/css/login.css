@@ -470,19 +470,29 @@ body {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   background: rgba(255, 255, 255, 0.98);
-  z-index: 99999;
+  z-index: 999999;
   display: none;
   align-items: center;
   justify-content: center;
   text-align: center;
   backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  pointer-events: all;
+  touch-action: none;
 }
 
 .mobile-loading-overlay.show {
   display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Ensure overlay stays on top of everything */
+.mobile-loading-overlay.show ~ * {
+  pointer-events: none;
 }
 
 .loading-content p {
