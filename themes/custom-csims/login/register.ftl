@@ -1143,19 +1143,20 @@
     });
 
 document.addEventListener("DOMContentLoaded", function () {
-    const params = new URLSearchParams(window.location.search);
-    const clientId = params.get("clientId");
+    const hiddenClientIdInput = document.getElementById("clientId");
+    if (!hiddenClientIdInput) return;
 
-    if (clientId) {
-        document.getElementById("clientId").value = clientId;
-    } else {
-        // HARD FAIL: registration must come from login
-        document.body.innerHTML = `
-            <div style="padding:2rem;text-align:center">
-                <h2>Invalid registration link</h2>
-                <p>Please register through the login page.</p>
-            </div>
-        `;
+    // 1️⃣ If already populated (POST-back), DO NOTHING
+    if (hiddenClientIdInput.value && hiddenClientIdInput.value.trim() !== "") {
+        return;
+    }
+
+    // 2️⃣ Otherwise, try to read from URL (first visit)
+    const params = new URLSearchParams(window.location.search);
+    const clientIdFromUrl = params.get("clientId");
+
+    if (clientIdFromUrl) {
+        hiddenClientIdInput.value = clientIdFromUrl;
     }
 });
 
@@ -1164,3 +1165,4 @@ document.addEventListener("DOMContentLoaded", function () {
 
 </#if>
 </@layout.registrationLayout>
+
