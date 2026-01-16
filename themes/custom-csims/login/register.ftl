@@ -2,7 +2,7 @@
 <#import "user-profile-commons.ftl" as userProfileCommons>
 <@layout.registrationLayout displayMessage=messagesPerField.exists('global') displayRequiredFields=true; section>
 <#if section = "header">
-    <title>CSIMS | Sign Up - University Registry & Records System</title>
+    <title>CSIMS | Sign Up - Tertiary Registry & Records System</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -703,7 +703,7 @@
 <!-- Mobile header (only visible on mobile) -->
 <div class="mobile-header">
     <div class="mobile-logo">CSIMS</div>
-    <div class="mobile-subtitle">University Registry & Records System</div>
+    <div class="mobile-subtitle">Tertiary Registry & Records System</div>
 </div>
 
 <div class="auth-container">
@@ -885,7 +885,7 @@
         <div class="illustration-content">
             <header class="illustration-header">
                 <h2 class="illustration-title">CSIMS</h2>
-                <h3 class="illustration-subtitle">University Registry & Records System</h3>
+                <h3 class="illustration-subtitle">Tertiary Registry & Records System</h3>
             </header>
 
             <div class="illustration-placeholder">
@@ -1165,4 +1165,5 @@ document.addEventListener("DOMContentLoaded", function () {
 
 </#if>
 </@layout.registrationLayout>
+
 
