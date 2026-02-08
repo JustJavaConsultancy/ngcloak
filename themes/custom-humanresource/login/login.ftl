@@ -92,6 +92,7 @@
             width: 100%;
             align-items: center;
             padding: 883px 80px 424px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
 
         @media (max-width: 991px) {
@@ -99,15 +100,6 @@
                 max-width: 100%;
                 padding: 100px 20px;
             }
-        }
-
-        .background-image {
-            position: absolute;
-            inset: 0;
-            height: 100%;
-            width: 100%;
-            object-fit: cover;
-            object-position: center;
         }
 
         .overlay-container {
@@ -442,11 +434,6 @@
 <#elseif section = "form">
     <section class="hero-section">
         <div class="hero-container">
-            <img
-                src="https://api.builder.io/api/v1/image/assets/TEMP/a501990b1298550b9f7cb34d588b9d08861363b4?placeholderIfAbsent=true&apiKey=f5d69d5735f94647af8819d73904242b"
-                alt="Hero background"
-                class="background-image"
-            />
             <div class="overlay-container">
                 <div class="content-panel">
                     <#if message?has_content && (message.type != 'warning' || !isAppInitiatedAction??)>
