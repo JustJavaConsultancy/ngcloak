@@ -515,11 +515,6 @@
 <#elseif section = "form">
     <section class="hero-section">
         <div class="hero-container">
-            <img
-                src="https://api.builder.io/api/v1/image/assets/TEMP/a501990b1298550b9f7cb34d588b9d08861363b4?placeholderIfAbsent=true&apiKey=f5d69d5735f94647af8819d73904242b"
-                alt="Hero background"
-                class="background-image"
-            />
             <div class="overlay-container">
                 <div class="content-panel">
                     <header class="login-header">
