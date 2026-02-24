@@ -1,9 +1,10 @@
 <#import "template.ftl" as layout>
-<#import "passkeys.ftl" as passkeys>
 <@layout.registrationLayout displayMessage=!messagesPerField.existsError('username','password') displayInfo=realm.password && realm.registrationAllowed && !registrationDisabled??; section>
+
 <#if section = "header">
-    <title>Sign In - Hero Application</title>
+    <title>JUST HR - Workforce Manager Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         /* Aggressive hiding of default Keycloak elements */
         .login-pf-page-header,
@@ -73,138 +74,231 @@
         html, body {
             margin: 0 !important;
             padding: 0 !important;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-            font-size: 16px !important;
-            line-height: 1.6 !important;
-            color: #1f2937 !important;
-            background-color: #ffffff !important;
+            font-family: "Inter", sans-serif !important;
+            background-color: #f9fafb !important;
             -webkit-font-smoothing: antialiased !important;
             -moz-osx-font-smoothing: grayscale !important;
             height: 100% !important;
             overflow-x: hidden !important;
         }
 
-        /* Hero Section Styles */
-        .hero-section {
-            background-color: rgba(255, 255, 255, 1);
-            overflow: hidden;
-            min-height: 100vh;
-            position: relative;
+        /* Background watermark styles */
+        .bg-shield-watermark {
+            position: fixed;
+            bottom: -40px;
+            left: 5%;
+            width: 300px;
+            height: 350px;
+            color: #e5e7eb;
+            opacity: 0.5;
+            z-index: -1;
+            animation: float 6s ease-in-out infinite;
         }
 
-        .hero-container {
+        .bg-building-watermark {
+            position: fixed;
+            top: 50px;
+            right: 5%;
+            width: 250px;
+            height: 300px;
+            color: #e5e7eb;
+            opacity: 0.5;
+            z-index: -1;
+            animation: float 8s ease-in-out infinite reverse;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes slideInFromLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        /* Main container */
+        .main-container {
+            background-color: #f9fafb;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            position: relative;
-            min-height: 100vh;
-            width: 100%;
             align-items: center;
             justify-content: center;
-            padding: 80px;
-        }
-
-        @media (max-width: 991px) {
-            .hero-container {
-                max-width: 100%;
-                padding: 20px;
-            }
-        }
-
-        .background-image {
-            position: absolute;
-            inset: 0;
-            height: 100%;
-            width: 100%;
-            object-fit: cover;
-            object-position: center;
-            z-index: 1;
-        }
-
-        .overlay-container {
+            padding: 1rem;
             position: relative;
-            background-color: rgba(255, 244, 244, 0.12);
-            width: 551px;
-            max-width: 100%;
-            z-index: 2;
-            border-radius: 12px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
         }
 
-        @media (max-width: 991px) {
-            .overlay-container {
-                width: 100%;
-                max-width: 400px;
-            }
+        /* Login card */
+        .login-card {
+            width: 100%;
+            max-width: 480px;
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+            z-index: 10;
+            animation: fadeInScale 0.6s ease-out;
         }
 
-        .content-panel {
-            background-color: rgba(255, 255, 255, 0.95);
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-        }
-
-        @media (max-width: 991px) {
-            .content-panel {
-                padding: 30px 20px;
-            }
-        }
-
-        /* Form Styles */
-        .login-header {
+        /* Card header */
+        .card-header {
+            padding: 2.5rem 2rem 1.5rem;
             text-align: center;
-            margin-bottom: 32px;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
         }
 
-        .login-title {
-            font-size: 28px;
+        .shield-icon-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .shield-icon {
+            width: 3.5rem;
+            height: 3.5rem;
+            background-color: #dbeafe;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2563eb;
+            animation: pulse 2s infinite;
+        }
+
+        .brand-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .brand-icon {
+            width: 1.5rem;
+            height: 1.5rem;
+            color: #2563eb;
+        }
+
+        .brand-title {
+            font-size: 1.5rem;
             font-weight: 700;
-            color: #1f2937;
-            margin-bottom: 8px;
+            color: #111827;
             letter-spacing: -0.025em;
         }
 
-        .login-subtitle {
-            font-size: 16px;
-            color: #6b7280;
-            font-weight: 400;
+        .brand-subtitle {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.75rem;
         }
 
+        .secure-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            background-color: #f0fdf4;
+            color: #16a34a;
+            font-size: 0.75rem;
+            font-weight: 700;
+            border-radius: 9999px;
+            border: 1px solid #bbf7d0;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .secure-badge svg {
+            width: 0.75rem;
+            height: 0.75rem;
+            margin-right: 0.25rem;
+        }
+
+        .auth-description {
+            margin-top: 1.5rem;
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        /* Form styles */
         .login-form {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+            padding: 0 2.5rem 2.5rem;
+            animation: slideInFromLeft 0.8s ease-out 0.4s both;
         }
 
         .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
+            margin-bottom: 1.25rem;
         }
 
         .form-label {
-            font-size: 14px;
+            display: block;
+            font-size: 0.875rem;
             font-weight: 600;
             color: #374151;
-            letter-spacing: 0.025em;
+            margin-bottom: 0.5rem;
         }
 
-        .input-wrapper {
+        .input-container {
             position: relative;
-            display: flex;
-            align-items: center;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 1.25rem;
+            height: 1.25rem;
+            color: #9ca3af;
+            pointer-events: none;
+            transition: color 0.2s ease-in-out;
         }
 
         .form-input {
+            display: block;
             width: 100%;
-            padding: 12px 16px;
-            border: 2px solid #e5e7eb;
-            border-radius: 8px;
-            font-size: 16px;
-            font-family: inherit;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            color: #111827;
             background-color: white;
-            transition: all 0.25s ease-in-out;
+            transition: all 0.2s ease-in-out;
             outline: none;
         }
 
@@ -213,10 +307,192 @@
             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
 
+        .form-input:focus + .input-icon {
+            color: #3b82f6;
+        }
+
         .form-input::placeholder {
             color: #9ca3af;
         }
 
+        .password-container {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.25rem;
+            color: #9ca3af;
+            transition: color 0.2s ease-in-out;
+        }
+
+        .password-toggle:hover {
+            color: #6b7280;
+        }
+
+        .password-toggle svg {
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .checkbox-input {
+            width: 1rem;
+            height: 1rem;
+            color: #3b82f6;
+            border: 1px solid #d1d5db;
+            border-radius: 0.25rem;
+            margin-right: 0.5rem;
+        }
+
+        .checkbox-input:focus {
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .checkbox-label {
+            font-size: 0.875rem;
+            color: #374151;
+        }
+
+        .forgot-password {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #3b82f6;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+
+        .forgot-password:hover {
+            color: #2563eb;
+        }
+
+        .submit-button {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            font-size: 1rem;
+            font-weight: 700;
+            color: white;
+            background-color: #3b82f6;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .submit-button:hover {
+            background-color: #2563eb;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .submit-button:active {
+            transform: translateY(0);
+        }
+
+        .submit-button svg {
+            margin-left: 0.5rem;
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+
+        /* Card footer */
+        .card-footer {
+            background-color: #f9fafb;
+            padding: 1.25rem 2.5rem;
+            border-top: 1px solid #f3f4f6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: fadeInUp 0.8s ease-out 0.6s both;
+        }
+
+        .encryption-badge {
+            display: flex;
+            align-items: center;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #6b7280;
+        }
+
+        .encryption-badge svg {
+            width: 1rem;
+            height: 1rem;
+            color: #22c55e;
+            margin-right: 0.25rem;
+        }
+
+        .support-link {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #3b82f6;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+
+        .support-link:hover {
+            color: #2563eb;
+        }
+
+        /* Page footer */
+        .page-footer {
+            width: 100%;
+            max-width: 64rem;
+            margin-top: 3rem;
+            padding: 0 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: between;
+            align-items: center;
+            font-size: 0.625rem;
+            font-weight: 700;
+            color: #9ca3af;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            gap: 1rem;
+            animation: fadeInUp 1s ease-out 0.8s both;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .footer-link {
+            color: #9ca3af;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+
+        .footer-link:hover {
+            color: #6b7280;
+        }
+
+        .copyright {
+            text-align: center;
+        }
+
+        /* Error styles */
         .form-input.error {
             border-color: #ef4444;
         }
@@ -225,168 +501,19 @@
             box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
         }
 
-        .password-wrapper {
-            position: relative;
-        }
-
-        .password-toggle {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 4px;
-            color: #6b7280;
-            transition: color 0.25s ease-in-out;
-        }
-
-        .password-toggle:hover {
-            color: #374151;
-        }
-
-        .password-toggle svg {
-            width: 20px;
-            height: 20px;
-        }
-
-        .form-options {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 8px 0;
-        }
-
-        .checkbox-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            color: #6b7280;
-        }
-
-        .checkbox-wrapper input[type="checkbox"] {
-            display: none;
-        }
-
-        .checkmark {
-            width: 18px;
-            height: 18px;
-            border: 2px solid #d1d5db;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.25s ease-in-out;
-            position: relative;
-        }
-
-        .checkbox-wrapper input[type="checkbox"]:checked + .checkmark {
-            background-color: #3b82f6;
-            border-color: #3b82f6;
-        }
-
-        .checkbox-wrapper input[type="checkbox"]:checked + .checkmark::after {
-            content: '✓';
-            color: white;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .forgot-password {
-            color: #3b82f6;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: color 0.25s ease-in-out;
-        }
-
-        .forgot-password:hover {
-            color: #2563eb;
-            text-decoration: underline;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-            color: white;
-            border: none;
-            padding: 14px 24px;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            font-family: inherit;
-            cursor: pointer;
-            transition: all 0.25s ease-in-out;
-            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            letter-spacing: 0.025em;
-        }
-
-        .btn-primary:hover {
-            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-            transform: translateY(-1px);
-        }
-
-        .btn-primary:active {
-            transform: translateY(0);
-            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-        }
-
-        .btn-primary:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .form-footer {
-            text-align: center;
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid #e5e7eb;
-        }
-
-        .form-footer-text {
-            color: #6b7280;
-            font-size: 14px;
-            margin-bottom: 0;
-            display: inline;
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: #3b82f6;
-            border: none;
-            padding: 0;
-            font-size: 14px;
-            font-weight: 600;
-            font-family: inherit;
-            text-decoration: none;
-            display: inline;
-            cursor: pointer;
-            transition: color 0.25s ease-in-out;
-            letter-spacing: 0.025em;
-            margin-left: 8px;
-        }
-
-        .btn-secondary:hover {
-            color: #2563eb;
-            text-decoration: underline;
-        }
-
-        /* Error and Message Styles */
         .error-message {
             color: #ef4444;
-            font-size: 14px;
-            margin-top: 4px;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
         }
 
+        /* Message styles */
         .alert {
-            padding: 16px;
-            border-radius: 8px;
-            margin-bottom: 20px;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
             border: 1px solid;
+            animation: fadeInUp 0.5s ease-out;
         }
 
         .alert-error {
@@ -407,309 +534,324 @@
             border-color: #bfdbfe;
         }
 
-        /* Social Providers */
-        .social-providers {
-            margin-top: 24px;
-            padding-top: 24px;
-            border-top: 1px solid #e5e7eb;
-        }
-
-        .social-providers h2 {
-            text-align: center;
-            font-size: 14px;
-            font-weight: 500;
-            color: #6b7280;
-            margin-bottom: 16px;
-        }
-
-        .social-providers-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .social-provider-button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 12px 16px;
-            border: 2px solid #e5e7eb;
-            border-radius: 8px;
-            background-color: white;
-            color: #374151;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.25s ease-in-out;
-        }
-
-        .social-provider-button:hover {
-            border-color: #d1d5db;
-            background-color: #f9fafb;
-        }
-
         /* Responsive Design */
         @media (max-width: 768px) {
-            .hero-container {
-                padding: 16px;
-                min-height: 100vh;
+            .main-container {
+                padding: 1rem;
             }
 
-            .overlay-container {
-                width: 100%;
-                margin: 0;
+            .login-card {
+                max-width: 100%;
             }
 
-            .content-panel {
-                padding: 24px 16px;
+            .card-header {
+                padding: 2rem 1.5rem 1rem;
             }
 
-            .login-title {
-                font-size: 24px;
+            .login-form {
+                padding: 0 1.5rem 2rem;
             }
 
-            .login-subtitle {
-                font-size: 14px;
+            .card-footer {
+                padding: 1rem 1.5rem;
+                flex-direction: column;
+                gap: 0.75rem;
+                text-align: center;
             }
 
-            .form-input {
-                font-size: 16px; /* Prevent zoom on iOS */
+            .page-footer {
+                margin-top: 2rem;
+                font-size: 0.625rem;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
             }
 
             .form-options {
                 flex-direction: column;
-                gap: 12px;
+                gap: 0.75rem;
                 align-items: flex-start;
             }
         }
 
         @media (max-width: 480px) {
-            .content-panel {
-                padding: 20px 12px;
+            .main-container {
+                padding: 0.75rem;
             }
 
-            .login-title {
-                font-size: 20px;
+            .card-header {
+                padding: 1.5rem 1rem 0.75rem;
             }
 
-            .btn-primary {
-                width: 100%;
-                padding: 12px;
-                font-size: 14px;
+            .login-form {
+                padding: 0 1rem 1.5rem;
+            }
+
+            .brand-title {
+                font-size: 1.25rem;
+            }
+
+            .brand-subtitle {
+                font-size: 1.125rem;
             }
 
             .form-input {
-                padding: 10px 12px;
-                font-size: 14px;
-            }
-
-            .form-label {
-                font-size: 12px;
+                font-size: 16px; /* Prevent zoom on iOS */
             }
         }
     </style>
+
 <#elseif section = "form">
-    <section class="hero-section">
-        <div class="hero-container">
-            <div class="overlay-container">
-                <div class="content-panel">
-                    <header class="login-header">
-                        <h1 class="login-title">Welcome Back</h1>
-                        <p class="login-subtitle">Sign in to your account</p>
-                    </header>
 
-                    <#if message?has_content && (message.type != 'warning' || !isAppInitiatedAction??)>
-                        <div class="alert alert-<#if message.type = 'error'>error<#elseif message.type = 'success'>success<#else>info</#if>">
-                            ${kcSanitize(message.summary)?no_esc}
-                        </div>
-                    </#if>
+<div class="main-container">
+    <!-- Background Watermarks -->
+    <div class="bg-shield-watermark">
+        <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"></path>
+        </svg>
+    </div>
+    <div class="bg-building-watermark">
+        <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15 11V5l-3-3-3 3v2H3v14h18V11h-6zm-8 8H5v-2h2v2zm0-4H5v-2h2v2zm0-4H5V9h2v2zm6 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V9h2v2zm0-4h-2V5h2v2zm6 12h-2v-2h2v2zm0-4h-2v-2h2v2z"></path>
+        </svg>
+    </div>
 
-                    <#if realm.password>
-                        <form id="kc-form-login" onsubmit="login.disabled = true; return true;" action="${url.loginAction}" method="post" class="login-form">
-                            <#if !usernameHidden??>
-                                <div class="form-group">
-                                    <label for="username" class="form-label">
-                                        <#if !realm.loginWithEmailAllowed>${msg("username")}<#elseif !realm.registrationEmailAsUsername>${msg("usernameOrEmail")}<#else>${msg("email")}</#if>
-                                    </label>
-                                    <input
-                                        tabindex="2"
-                                        id="username"
-                                        class="form-input <#if messagesPerField.existsError('username','password')>error</#if>"
-                                        name="username"
-                                        value="${(login.username!'')}"
-                                        type="text"
-                                        autofocus
-                                        autocomplete="${(enableWebAuthnConditionalUI?has_content)?then('username webauthn', 'username')}"
-                                        aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>"
-                                        dir="ltr"
-                                    />
-                                    <#if messagesPerField.existsError('username','password')>
-                                        <div class="error-message">
-                                            ${kcSanitize(messagesPerField.getFirstError('username','password'))?no_esc}
-                                        </div>
-                                    </#if>
-                                </div>
-                            </#if>
+    <!-- Main Login Card -->
+    <main class="login-card">
+        <!-- Card Header -->
+        <section class="card-header">
+            <!-- Top Shield Icon -->
+            <div class="shield-icon-container">
+                <div class="shield-icon">
+                    <svg class="h-8 w-8" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path clip-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" fill-rule="evenodd"></path>
+                    </svg>
+                </div>
+            </div>
+            <!-- Brand and Subtitle -->
+            <div class="brand-container">
+                <svg class="brand-icon" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M3 6a3 3 0 013-3h10a1 1 0 01.8 1.6L14.25 8l2.55 3.4a1 1 0 01-.8 1.6H6a3 3 0 01-3-3V6z"></path>
+                </svg>
+                <h1 class="brand-title">JUST HR</h1>
+            </div>
+            <p class="brand-subtitle">Workforce Manager</p>
+            <!-- Secure Portal Badge -->
+            <div class="secure-badge">
+                <svg fill="currentColor" viewBox="0 0 20 20">
+                    <path clip-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" fill-rule="evenodd"></path>
+                </svg>
+                Secure Portal
+            </div>
+            <p class="auth-description">
+                Authorized access only. Please enter your credentials below.
+            </p>
+        </section>
 
-                            <div class="form-group">
-                                <label for="password" class="form-label">${msg("password")}</label>
-                                <div class="password-wrapper">
-                                    <input
-                                        tabindex="3"
-                                        id="password"
-                                        class="form-input <#if messagesPerField.existsError('username','password')>error</#if>"
-                                        name="password"
-                                        type="password"
-                                        autocomplete="current-password"
-                                        aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>"
-                                    />
-                                    <button class="password-toggle" type="button" aria-label="${msg("showPassword")}"
-                                            aria-controls="password" data-password-toggle tabindex="4"
-                                            data-icon-show="${properties.kcFormPasswordVisibilityIconShow!}" data-icon-hide="${properties.kcFormPasswordVisibilityIconHide!}"
-                                            data-label-show="${msg('showPassword')}" data-label-hide="${msg('hidePassword')}">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                        </svg>
-                                    </button>
-                                </div>
-                                <#if usernameHidden?? && messagesPerField.existsError('username','password')>
-                                    <div class="error-message">
-                                        ${kcSanitize(messagesPerField.getFirstError('username','password'))?no_esc}
-                                    </div>
-                                </#if>
-                            </div>
+        <!-- Login Form -->
+        <#if message?has_content && (message.type != 'warning' || !isAppInitiatedAction??)>
+            <div style="padding: 0 2.5rem;">
+                <div class="alert alert-<#if message.type = 'error'>error<#elseif message.type = 'success'>success<#else>info</#if>">
+                    ${kcSanitize(message.summary)?no_esc}
+                </div>
+            </div>
+        </#if>
 
-                            <div class="form-options">
-                                <#if realm.rememberMe && !usernameHidden??>
-                                    <label class="checkbox-wrapper">
-                                        <#if login.rememberMe??>
-                                            <input tabindex="5" id="rememberMe" name="rememberMe" type="checkbox" checked>
-                                        <#else>
-                                            <input tabindex="5" id="rememberMe" name="rememberMe" type="checkbox">
-                                        </#if>
-                                        <span class="checkmark"></span>
-                                        <span>${msg("rememberMe")}</span>
-                                    </label>
-                                </#if>
-                                <#if realm.resetPasswordAllowed>
-                                    <a tabindex="6" href="${url.loginResetCredentialsUrl}" class="forgot-password">${msg("doForgotPassword")}</a>
-                                </#if>
-                            </div>
-
-                            <input type="hidden" id="id-hidden-input" name="credentialId" <#if auth.selectedCredential?has_content>value="${auth.selectedCredential}"</#if>/>
-                            <button tabindex="7" class="btn-primary" name="login" id="kc-login" type="submit">${msg("doLogIn")}</button>
-
-                            <#if realm.password && realm.registrationAllowed && !registrationDisabled??>
-                                <footer class="form-footer">
-                                    <span class="form-footer-text">${msg("noAccount")}</span>
-                                    <a tabindex="8" href="${url.registrationUrl}" class="btn-secondary">${msg("doRegister")}</a>
-                                </footer>
-                            </#if>
-                        </form>
-                    </#if>
-
-                    <#if realm.password && social?? && social.providers?has_content>
-                        <div class="social-providers">
-                            <h2>${msg("identity-provider-login-label")}</h2>
-                            <ul class="social-providers-list">
-                                <#list social.providers as p>
-                                    <li>
-                                        <a data-once-link data-disabled-class="disabled" id="social-${p.alias}"
-                                                class="social-provider-button"
-                                                type="button" href="${p.loginUrl}">
-                                            <#if p.iconClasses?has_content>
-                                                <i class="${p.iconClasses!}" aria-hidden="true"></i>
-                                            </#if>
-                                            <span>${p.displayName!}</span>
-                                        </a>
-                                    </li>
-                                </#list>
-                            </ul>
+        <#if realm.password>
+            <form id="kc-form-login" class="login-form" onsubmit="login.disabled = true; return true;" action="${url.loginAction}" method="post" novalidate="novalidate">
+                <!-- Email Field -->
+                <div class="form-group">
+                    <label for="username" class="form-label">
+                        <#if !realm.loginWithEmailAllowed>${msg("username")}<#elseif !realm.registrationEmailAsUsername>${msg("usernameOrEmail")}<#else>${msg("email")}</#if>
+                    </label>
+                    <div class="input-container">
+                        <svg class="input-icon" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path clip-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" fill-rule="evenodd"></path>
+                        </svg>
+                        <input
+                            class="form-input <#if messagesPerField.existsError('username','password')>error</#if>"
+                            id="username"
+                            name="username"
+                            placeholder="e.g. john.doe@company.com"
+                            type="text"
+                            value="${(login.username!'')}"
+                            autofocus
+                            autocomplete="${(enableWebAuthnConditionalUI?has_content)?then('username webauthn', 'username')}"
+                            tabindex="1"
+                        />
+                    </div>
+                    <#if messagesPerField.existsError('username','password')>
+                        <div class="error-message">
+                            ${kcSanitize(messagesPerField.getFirstError('username','password'))?no_esc}
                         </div>
                     </#if>
                 </div>
+
+                <!-- Password Field -->
+                <div class="form-group">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                        <label class="form-label" for="password">${msg("password")}</label>
+                        <#if realm.resetPasswordAllowed>
+                            <a class="forgot-password" href="${url.loginResetCredentialsUrl}">${msg("doForgotPassword")}</a>
+                        </#if>
+                    </div>
+                    <div class="input-container password-container">
+                        <svg class="input-icon" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path clip-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" fill-rule="evenodd"></path>
+                        </svg>
+                        <input
+                            class="form-input <#if messagesPerField.existsError('username','password')>error</#if>"
+                            id="password"
+                            name="password"
+                            type="password"
+                            autocomplete="current-password"
+                            tabindex="2"
+                            style="padding-right: 2.5rem;"
+                        />
+                        <button type="button" class="password-toggle" id="passwordToggle">
+                            <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
+                                <path clip-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" fill-rule="evenodd"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Remember Device -->
+                <div class="form-options">
+                    <#if realm.rememberMe && !usernameHidden??>
+                        <div class="checkbox-container">
+                            <input
+                                class="checkbox-input"
+                                id="rememberMe"
+                                name="rememberMe"
+                                type="checkbox"
+                                tabindex="3"
+                                <#if login.rememberMe??>checked</#if>
+                            />
+                            <label class="checkbox-label" for="rememberMe">${msg("rememberMe")}</label>
+                        </div>
+                    <#else>
+                        <div></div>
+                    </#if>
+                </div>
+
+                <input type="hidden" id="id-hidden-input" name="credentialId" <#if auth.selectedCredential?has_content>value="${auth.selectedCredential}"</#if>/>
+
+                <!-- Submit Button -->
+                <button class="submit-button" type="submit" name="login" id="kc-login" tabindex="4">
+                    ${msg("doLogIn")}
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                    </svg>
+                </button>
+            </form>
+        </#if>
+
+        <!-- Card Footer -->
+        <footer class="card-footer">
+            <div class="encryption-badge">
+                <svg fill="currentColor" viewBox="0 0 20 20">
+                    <path clip-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" fill-rule="evenodd"></path>
+                </svg>
+                256-bit Encryption
             </div>
+            <a class="support-link" href="#">Contact Support</a>
+        </footer>
+    </main>
+
+    <!-- Page Footer -->
+    <footer class="page-footer">
+        <div class="footer-links">
+            <a class="footer-link" href="#">Privacy Policy</a>
+            <a class="footer-link" href="#">Terms of Use</a>
+            <a class="footer-link" href="#">System Status</a>
         </div>
-    </section>
+        <div class="copyright">© 2024 JUST HR. ALL RIGHTS RESERVED.</div>
+    </footer>
+</div>
 
-    <@passkeys.conditionalUIData />
-    <script type="module" src="${url.resourcesPath}/js/passwordVisibility.js"></script>
+<script>
+    // Password toggle functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const passwordToggle = document.getElementById('passwordToggle');
+        const passwordInput = document.getElementById('password');
 
-    <script>
-        // Enhanced password toggle functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const passwordToggle = document.querySelector('.password-toggle');
-            const passwordInput = document.getElementById('password');
+        if (passwordToggle && passwordInput) {
+            passwordToggle.addEventListener('click', function(e) {
+                e.preventDefault();
 
-            if (passwordToggle && passwordInput) {
-                passwordToggle.addEventListener('click', function(e) {
-                    e.preventDefault();
+                const isPassword = passwordInput.type === 'password';
+                passwordInput.type = isPassword ? 'text' : 'password';
 
-                    const isPassword = passwordInput.type === 'password';
-                    passwordInput.type = isPassword ? 'text' : 'password';
-
-                    const icon = this.querySelector('svg');
-                    if (isPassword) {
-                        // Show "hide" icon
-                        icon.innerHTML = `
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 1-4.243-4.243m4.242 4.242L9.88 9.88" />
-                        `;
-                    } else {
-                        // Show "show" icon
-                        icon.innerHTML = `
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                        `;
-                    }
-                });
-            }
-
-            // Handle registration link with client ID preservation
-            const params = new URLSearchParams(window.location.search);
-            const clientId = params.get("clientId");
-            if (clientId) {
-                const registerLink = document.querySelector('a[href*="registrationUrl"]');
-                if (registerLink) {
-                    const url = new URL(registerLink.href);
-                    url.searchParams.set("clientId", clientId);
-                    registerLink.href = url.toString();
+                // Update icon
+                const icon = passwordToggle.querySelector('svg');
+                if (isPassword) {
+                    // Show "eye-slash" icon when password is visible
+                    icon.innerHTML = `
+                        <path d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 11-4.243-4.243m4.242 4.242L9.88 9.88" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" fill="none" stroke="currentColor"/>
+                    `;
+                } else {
+                    // Show "eye" icon when password is hidden
+                    icon.innerHTML = `
+                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
+                        <path clip-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" fill-rule="evenodd" fill="currentColor"></path>
+                    `;
                 }
-            }
+            });
+        }
+
+        // Add subtle hover animations to form elements
+        const formInputs = document.querySelectorAll('.form-input');
+        formInputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.style.transform = 'translateY(-1px)';
+            });
+
+            input.addEventListener('blur', function() {
+                this.style.transform = 'translateY(0)';
+            });
         });
-    </script>
+
+        // Add loading state to submit button
+        const submitButton = document.getElementById('kc-login');
+        const loginForm = document.getElementById('kc-form-login');
+
+        if (submitButton && loginForm) {
+            loginForm.addEventListener('submit', function() {
+                submitButton.disabled = true;
+                submitButton.style.opacity = '0.7';
+                submitButton.innerHTML = `
+                    <svg style="animation: spin 1s linear infinite; width: 1.25rem; height: 1.25rem; margin-right: 0.5rem;" fill="none" viewBox="0 0 24 24">
+                        <circle style="opacity: 0.25;" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path style="opacity: 0.75;" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Signing In...
+                `;
+            });
+        }
+    });
+
+    // Add CSS for spin animation
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    `;
+    document.head.appendChild(style);
+</script>
 
 <#elseif section = "info">
     <#if realm.password && realm.registrationAllowed && !registrationDisabled??>
         <div id="kc-registration-container">
             <div id="kc-registration">
-                <span>${msg("noAccount")} <a tabindex="8" href="${url.registrationUrl}">${msg("doRegister")}</a></span>
+                <span>${msg("noAccount")} <a href="${url.registrationUrl}">${msg("doRegister")}</a></span>
             </div>
-        </div>
-    </#if>
-
-<#elseif section = "socialProviders">
-    <#if realm.password && social?? && social.providers?has_content>
-        <div id="kc-social-providers" class="social-providers">
-            <h2>${msg("identity-provider-login-label")}</h2>
-            <ul class="social-providers-list">
-                <#list social.providers as p>
-                    <li>
-                        <a data-once-link data-disabled-class="disabled" id="social-${p.alias}"
-                                class="social-provider-button"
-                                type="button" href="${p.loginUrl}">
-                            <#if p.iconClasses?has_content>
-                                <i class="${p.iconClasses!}" aria-hidden="true"></i>
-                            </#if>
-                            <span>${p.displayName!}</span>
-                        </a>
-                    </li>
-                </#list>
-            </ul>
         </div>
     </#if>
 </#if>
