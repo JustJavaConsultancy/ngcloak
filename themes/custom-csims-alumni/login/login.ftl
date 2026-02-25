@@ -743,8 +743,8 @@
     <section class="auth-form-section">
         <div class="form-container">
             <header class="form-header">
-                <h1 class="form-title">Welcome Back</h1>
-                <p class="form-subtitle">Sign in to access your CSIMS account</p>
+                <h1 class="form-title">Alumni Access</h1>
+                <p class="form-subtitle">Sign in to access your academic records and services</p>
             </header>
 
             <#if message?has_content && (message.type != 'warning' || !isAppInitiatedAction??)>
