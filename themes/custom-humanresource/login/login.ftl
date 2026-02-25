@@ -9,6 +9,11 @@
     <!-- Custom Font: Inter (Modern Sans-Serif) -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style data-purpose="typography">
+        body {
+            font-family: "Inter", sans-serif;
+        }
+    </style>
+    <style data-purpose="keycloak-overrides">
         /* Aggressive hiding of default Keycloak elements */
         .login-pf-page-header,
         .login-pf-header,
@@ -20,8 +25,7 @@
         .login-pf-page .login-pf-signup,
         .login-pf-page .login-pf-header,
         .card-pf-title,
-        .login-pf-page .card-pf .card-pf-title,
-        #kc-info-wrapper {
+        .login-pf-page .card-pf .card-pf-title {
             display: none !important;
             visibility: hidden !important;
             height: 0 !important;
@@ -29,13 +33,25 @@
             padding: 0 !important;
         }
 
-        /* Reset Keycloak page structure */
+        /* Complete reset of Keycloak structure */
+        html, body {
+            margin: 0 !important;
+            padding: 0 !important;
+            font-family: "Inter", sans-serif !important;
+            background: #f9fafb !important;
+            min-height: 100vh !important;
+            height: 100% !important;
+        }
+
         .login-pf-page {
             padding: 0 !important;
             margin: 0 !important;
             border: none !important;
-            background: none !important;
+            background: #f9fafb !important;
             min-height: 100vh !important;
+            height: 100% !important;
+            width: 100% !important;
+            position: relative !important;
         }
 
         .login-pf-page .card-pf {
@@ -46,6 +62,8 @@
             background: none !important;
             box-shadow: none !important;
             border-top: none !important;
+            width: 100% !important;
+            height: 100% !important;
         }
 
         #kc-content-wrapper {
@@ -53,7 +71,8 @@
             padding: 0 !important;
             width: 100% !important;
             height: 100vh !important;
-            overflow: auto !important;
+            background: #f9fafb !important;
+            position: relative !important;
         }
 
         #kc-content {
@@ -61,16 +80,16 @@
             margin: 0 !important;
             width: 100% !important;
             height: 100% !important;
+            background: #f9fafb !important;
         }
 
         #kc-info {
             margin: 0 !important;
+            padding: 0 !important;
         }
 
-        body {
-            font-family: "Inter", sans-serif !important;
-            margin: 0 !important;
-            padding: 0 !important;
+        #kc-info-wrapper {
+            display: none !important;
         }
     </style>
     <style data-purpose="background-elements">
@@ -140,6 +159,11 @@
         @keyframes pulse {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.8; }
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         /* Apply animations */
@@ -217,12 +241,6 @@
             transition: all 0.2s ease-in-out;
         }
 
-        /* Loading button animation */
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
         .loading-spinner {
             animation: spin 1s linear infinite;
         }
@@ -230,7 +248,7 @@
 
 <#elseif section = "form">
 
-<body class="bg-gray-50 min-h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden">
+<div class="bg-gray-50 min-h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden">
     <!-- BEGIN: Background Watermarks -->
     <div class="bg-shield-watermark">
         <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -376,7 +394,7 @@
                     id="kc-login"
                     tabindex="4"
                 >
-                    ${msg("doLogIn")}
+                    Sign In
                     <svg class="ml-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
                     </svg>
@@ -459,7 +477,7 @@
             }
         });
     </script>
-</body>
+</div>
 
 <#elseif section = "info">
     <#if realm.password && realm.registrationAllowed && !registrationDisabled??>
