@@ -114,7 +114,13 @@
                             </div>
 
                             <!-- Login Button -->
-                            <button type="submit" class="btn btn-login w-100 mb-4" id="kc-login">${msg("doLogIn")}</button>
+                            <button type="submit" class="btn btn-login w-100 mb-4" id="kc-login">
+    ${msg("doLogIn")}
+</button>
+
+<button type="button" class="btn btn-outline-secondary w-100 mb-3" id="fingerprint-login">
+    <i class="fas fa-fingerprint"></i> Login with Fingerprint
+</button>
 
                             <!-- Registration Link -->
                             <div class="text-center">
@@ -153,6 +159,48 @@
 
         <!-- Bootstrap JS Bundle with Popper -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+
+document.addEventListener("deviceready", function () {
+
+    const fingerprintBtn = document.getElementById("fingerprint-login");
+
+    if (!fingerprintBtn) return;
+
+    fingerprintBtn.addEventListener("click", function () {
+
+        if (!window.Fingerprint) {
+            alert("Biometric authentication not supported on this device");
+            return;
+        }
+
+        Fingerprint.show({
+            title: "BluePay Login",
+            subtitle: "Authenticate to continue",
+            description: "Place your finger on the sensor",
+            disableBackup: false
+        },
+
+        function success() {
+
+            console.log("Fingerprint success");
+
+            document.getElementById("kc-form-login").submit();
+
+        },
+
+        function error(err) {
+
+            console.log("Fingerprint error:", err);
+            alert("Fingerprint authentication failed");
+
+        });
+
+    });
+
+});
+
+</script>
         <script src="${url.resourcesPath}/js/login.js"></script>
 
     </#if>
