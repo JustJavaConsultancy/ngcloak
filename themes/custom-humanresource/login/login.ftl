@@ -404,14 +404,28 @@
         <!-- END: Login Form -->
 
         <!-- BEGIN: Card Footer -->
-        <footer class="bg-gray-50 px-10 py-5 border-t border-gray-100 flex justify-between items-center card-footer">
-            <div class="flex items-center text-xs font-medium text-gray-500">
-                <svg class="w-4 h-4 text-green-500 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                    <path clip-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" fill-rule="evenodd"></path>
-                </svg>
-                256-bit Encryption
+        <footer class="bg-gray-50 px-10 py-5 border-t border-gray-100 card-footer">
+            <div class="flex justify-between items-center mb-4">
+                <div class="flex items-center text-xs font-medium text-gray-500">
+                    <svg class="w-4 h-4 text-green-500 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                        <path clip-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" fill-rule="evenodd"></path>
+                    </svg>
+                    256-bit Encryption
+                </div>
+                <a class="text-xs font-semibold text-blue-600 hover:text-blue-500" href="#">Contact Support</a>
             </div>
-            <a class="text-xs font-semibold text-blue-600 hover:text-blue-500" href="#">Contact Support</a>
+
+            <#if realm.registrationAllowed && !registrationDisabled??>
+                <div class="text-center pt-4 border-t border-gray-200">
+                    <p class="text-sm text-gray-600 mb-3">Don't have an account?</p>
+                    <a href="${url.registrationUrl}" class="inline-flex items-center justify-center w-full py-3 px-4 border-2 border-blue-600 rounded-lg text-sm font-semibold text-blue-600 bg-white hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+                        </svg>
+                        Create New Account
+                    </a>
+                </div>
+            </#if>
         </footer>
         <!-- END: Card Footer -->
     </main>
