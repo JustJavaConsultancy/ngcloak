@@ -39,7 +39,7 @@
             margin: 0 !important;
             padding: 0 !important;
             font-family: "Inter", sans-serif !important;
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
             min-height: 100vh !important;
             height: 100% !important;
             overflow-x: hidden !important;
@@ -99,7 +99,7 @@
             flex-direction: column;
             justify-content: flex-start;
             align-items: center;
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             position: relative;
             overflow: hidden;
             padding-top: 2rem;
@@ -180,8 +180,8 @@
         }
 
         .mobile-input:focus {
-            border-color: #10b981 !important;
-            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1) !important;
+            border-color: #667eea !important;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1) !important;
             transform: translateY(-1px) !important;
         }
 
@@ -209,7 +209,7 @@
 
         .mobile-button:hover, .mobile-button:active {
             transform: translateY(-2px) !important;
-            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3) !important;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3) !important;
         }
 
         .mobile-button:disabled {
@@ -371,7 +371,7 @@
         }
 
         .strength-check.valid {
-            background: #10b981;
+            background: #667eea;
         }
 
         .strength-text {
@@ -379,7 +379,7 @@
         }
 
         .strength-text.valid {
-            color: #059669;
+            color: #764ba2;
         }
 
         /* Safe area handling for notched devices */
@@ -411,7 +411,7 @@
         <section class="pt-6 pb-4 px-6 text-center fade-in-up">
             <!-- Employee Icon -->
             <div class="flex justify-center mb-4">
-                <div class="w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center text-white shadow-lg">
+                <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white shadow-lg">
                     <svg class="h-7 w-7" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                         <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1a1 1 0 102 0V7zM12 7a1 1 0 112 0v1a1 1 0 11-2 0V7zM16 3a1 1 0 10-2 0v1a1 1 0 102 0V3zM12 3a1 1 0 112 0v1a1 1 0 11-2 0V3z"></path>
                     </svg>
@@ -425,7 +425,7 @@
             </div>
 
             <!-- Registration Badge -->
-            <div class="inline-flex items-center px-3 py-1 bg-green-50 text-green-700 text-xs font-medium rounded-full border border-green-100 mb-3">
+            <div class="inline-flex items-center px-3 py-1 bg-blue-50 text-blue-700 text-xs font-medium rounded-full border border-blue-100 mb-3">
                 <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"></path>
                 </svg>
@@ -659,14 +659,14 @@
         <footer class="bg-gray-50 px-6 py-4 border-t border-gray-100">
             <div class="flex justify-between items-center text-xs text-gray-500">
                 <div class="flex items-center">
-                    <svg class="w-3 h-3 text-green-500 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                    <svg class="w-3 h-3 text-blue-500 mr-1" fill="currentColor" viewBox="0 0 20 20">
                         <path clip-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" fill-rule="evenodd"></path>
                     </svg>
                     Secure Registration
                 </div>
                 <div>
                     Already have an account?
-                    <a class="font-medium text-green-600 hover:text-green-500 ml-1" href="${url.loginUrl}">Sign In</a>
+                    <a class="font-medium text-blue-600 hover:text-blue-500 ml-1" href="${url.loginUrl}">Sign In</a>
                 </div>
             </div>
         </footer>
