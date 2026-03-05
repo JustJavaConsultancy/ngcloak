@@ -25,16 +25,30 @@
         .login-pf-page .login-pf-signup,
         .login-pf-page .login-pf-header,
         .card-pf-title,
-        .login-pf-page .card-pf .card-pf-title {
+        .login-pf-page .card-pf .card-pf-title,
+        .login-pf-page .login-pf-brand,
+        .login-pf-brand,
+        .login-pf-page .login-pf-page-header,
+        body.login-pf .login-pf-page .login-pf-header,
+        body.login-pf .login-pf-page .login-pf-signup,
+        body.login-pf .login-pf-page .card-pf .card-pf-title,
+        body.login-pf .login-pf-page .card-pf .card-pf-body .form-group:last-of-type,
+        body.login-pf .login-pf-page .card-pf .card-pf-body .form-actions {
             display: none !important;
             visibility: hidden !important;
             height: 0 !important;
             margin: 0 !important;
             padding: 0 !important;
+            opacity: 0 !important;
+            position: absolute !important;
+            left: -9999px !important;
         }
 
-        /* Complete reset of Keycloak structure */
-        html, body {
+        /* Complete reset of Keycloak structure with higher specificity */
+        html,
+        html body,
+        body.login-pf,
+        body.login-pf html {
             margin: 0 !important;
             padding: 0 !important;
             font-family: "Inter", sans-serif !important;
@@ -44,7 +58,9 @@
             overflow-x: hidden !important;
         }
 
-        .login-pf-page {
+        body.login-pf .login-pf-page,
+        .login-pf-page,
+        body.login-pf .login-pf-page .login-pf-page-header {
             padding: 0 !important;
             margin: 0 !important;
             border: none !important;
@@ -55,7 +71,9 @@
             position: relative !important;
         }
 
-        .login-pf-page .card-pf {
+        body.login-pf .login-pf-page .card-pf,
+        .login-pf-page .card-pf,
+        body.login-pf .login-pf-page .card-pf .card-pf-body {
             padding: 0 !important;
             margin: 0 !important;
             border: none !important;
@@ -67,6 +85,7 @@
             height: 100% !important;
         }
 
+        body.login-pf #kc-content-wrapper,
         #kc-content-wrapper {
             margin: 0 !important;
             padding: 0 !important;
@@ -76,6 +95,7 @@
             position: relative !important;
         }
 
+        body.login-pf #kc-content,
         #kc-content {
             padding: 0 !important;
             margin: 0 !important;
@@ -84,13 +104,36 @@
             background: transparent !important;
         }
 
+        body.login-pf #kc-info,
         #kc-info {
             margin: 0 !important;
             padding: 0 !important;
         }
 
+        body.login-pf #kc-info-wrapper,
         #kc-info-wrapper {
             display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            position: absolute !important;
+            left: -9999px !important;
+        }
+
+        /* Override any remaining Keycloak styles */
+        body.login-pf .login-pf-page .card-pf .card-pf-body .form-group,
+        body.login-pf .login-pf-page .card-pf .card-pf-body .form-group .form-control,
+        body.login-pf .login-pf-page .card-pf .card-pf-body .btn {
+            all: unset !important;
+        }
+
+        /* Force our container to be visible */
+        .mobile-container {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            z-index: 9999 !important;
         }
     </style>
     <style data-purpose="mobile-optimizations">
