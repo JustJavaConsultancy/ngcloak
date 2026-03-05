@@ -2,7 +2,7 @@
 <@layout.registrationLayout displayMessage=messagesPerField.exists('global') displayRequiredFields=true; section>
 
 <#if section = "header">
-    <title>JUST HR - Mobile Registration</title>
+    <title>Employee Portal - Mobile Registration</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <!-- Tailwind CSS v3 CDN -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -125,7 +125,7 @@
         }
 
         /* Background elements for mobile */
-        .bg-shield-watermark {
+        .bg-employee-watermark {
             position: fixed;
             bottom: -20px;
             left: -10%;
@@ -137,7 +137,7 @@
             animation: float 8s ease-in-out infinite;
         }
 
-        .bg-building-watermark {
+        .bg-team-watermark {
             position: fixed;
             top: 20px;
             right: -10%;
@@ -308,45 +308,45 @@
 
 <div class="bg-gray-50 min-h-screen flex flex-col relative overflow-hidden safe-area-top safe-area-bottom">
     <!-- BEGIN: Background Watermarks -->
-    <div class="bg-shield-watermark">
+    <div class="bg-employee-watermark">
         <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"></path>
+            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path>
         </svg>
     </div>
-    <div class="bg-building-watermark">
+    <div class="bg-team-watermark">
         <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M15 11V5l-3-3-3 3v2H3v14h18V11h-6zm-8 8H5v-2h2v2zm0-4H5v-2h2v2zm0-4H5V9h2v2zm6 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V9h2v2zm0-4h-2V5h2v2zm6 12h-2v-2h2v2zm0-4h-2v-2h2v2z"></path>
+            <path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zM4 18v-4h3v4h2v-7.5c0-.83.67-1.5 1.5-1.5S12 9.67 12 10.5V11h2.5c.83 0 1.5.67 1.5 1.5V18h2v-6.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5V18h2v-6.5c0-1.93-1.57-3.5-3.5-3.5S16 9.57 16 11.5V12h-2.5c-.83 0-1.5-.67-1.5-1.5V9.5C12 7.57 10.43 6 8.5 6S5 7.57 5 9.5V18H4z"></path>
         </svg>
     </div>
     <!-- END: Background Watermarks -->
 
     <!-- BEGIN: Mobile Header -->
     <header class="flex-shrink-0 pt-6 pb-4 px-6 text-center mobile-header">
-        <!-- Top Shield Icon -->
+        <!-- Top Employee Icon -->
         <div class="flex justify-center mb-4">
             <div class="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
-                <svg class="h-8 w-8" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                    <path clip-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" fill-rule="evenodd"></path>
+                <svg class="h-8 w-8" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path>
                 </svg>
             </div>
         </div>
         <!-- Brand and Subtitle -->
         <div class="flex items-center justify-center space-x-2 mb-1">
-            <svg class="w-6 h-6 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M3 6a3 3 0 013-3h10a1 1 0 01.8 1.6L14.25 8l2.55 3.4a1 1 0 01-.8 1.6H6a3 3 0 01-3-3V6z"></path>
+            <svg class="w-6 h-6 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zM4 18v-4h3v4h2v-7.5c0-.83.67-1.5 1.5-1.5S12 9.67 12 10.5V11h2.5c.83 0 1.5.67 1.5 1.5V18h2v-6.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5V18h2v-6.5c0-1.93-1.57-3.5-3.5-3.5S16 9.57 16 11.5V12h-2.5c-.83 0-1.5-.67-1.5-1.5V9.5C12 7.57 10.43 6 8.5 6S5 7.57 5 9.5V18H4z"></path>
             </svg>
-            <h1 class="text-2xl font-bold text-gray-900 tracking-tight">JUST HR</h1>
+            <h1 class="text-2xl font-bold text-gray-900 tracking-tight">Employee Portal</h1>
         </div>
-        <p class="text-lg font-semibold text-gray-800 mb-3">Workforce Manager</p>
+        <p class="text-lg font-semibold text-gray-800 mb-3">Join Our Team</p>
         <!-- Registration Badge -->
         <div class="inline-flex items-center px-3 py-1 bg-green-50 text-green-600 text-sm font-bold rounded-full border border-green-100 uppercase tracking-wider">
-            <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1a1 1 0 102 0V7zM12 7a1 1 0 112 0v1a1 1 0 11-2 0V7zM16 3a1 1 0 10-2 0v1a1 1 0 102 0V3zM12 3a1 1 0 112 0v1a1 1 0 11-2 0V3z"></path>
+            <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"></path>
             </svg>
-            New Account
+            Employee Setup
         </div>
         <p class="mt-4 text-sm text-gray-500 px-2">
-            Create your account to access the workforce management system.
+            Set up your employee account to access your workplace dashboard and benefits.
         </p>
 
         <!-- Progress Indicator -->
@@ -570,14 +570,14 @@
                 <svg class="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
                     <path clip-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" fill-rule="evenodd"></path>
                 </svg>
-                256-bit Encryption
+                Your Data Protected
             </div>
         </div>
 
         <!-- Login Link -->
         <div class="text-center mb-4">
             <div class="text-sm font-medium text-gray-500">
-                Already have an account?
+                Already an employee?
                 <a class="font-semibold text-blue-600 hover:text-blue-500 ml-1 mobile-touch-target" href="${url.loginUrl}">Sign In</a>
             </div>
         </div>
@@ -590,7 +590,7 @@
                 <a class="hover:text-gray-600 transition-colors mobile-touch-target" href="#">Support</a>
             </div>
             <div class="text-xs font-bold text-gray-400 tracking-wider uppercase">
-                © 2024 JUST HR. ALL RIGHTS RESERVED.
+                © 2024 Employee Portal. ALL RIGHTS RESERVED.
             </div>
         </div>
     </footer>
