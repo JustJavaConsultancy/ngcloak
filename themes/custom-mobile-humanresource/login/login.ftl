@@ -25,55 +25,36 @@
         .login-pf-page .login-pf-signup,
         .login-pf-page .login-pf-header,
         .card-pf-title,
-        .login-pf-page .card-pf .card-pf-title,
-        .login-pf-page .login-pf-brand,
-        .login-pf-brand,
-        .login-pf-page .login-pf-page-header,
-        body.login-pf .login-pf-page .login-pf-header,
-        body.login-pf .login-pf-page .login-pf-signup,
-        body.login-pf .login-pf-page .card-pf .card-pf-title,
-        body.login-pf .login-pf-page .card-pf .card-pf-body .form-group:last-of-type,
-        body.login-pf .login-pf-page .card-pf .card-pf-body .form-actions {
+        .login-pf-page .card-pf .card-pf-title {
             display: none !important;
             visibility: hidden !important;
             height: 0 !important;
             margin: 0 !important;
             padding: 0 !important;
-            opacity: 0 !important;
-            position: absolute !important;
-            left: -9999px !important;
         }
 
-        /* Complete reset of Keycloak structure with higher specificity */
-        html,
-        html body,
-        body.login-pf,
-        body.login-pf html {
+        /* Complete reset of Keycloak structure */
+        html, body {
             margin: 0 !important;
             padding: 0 !important;
             font-family: "Inter", sans-serif !important;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
             min-height: 100vh !important;
             height: 100% !important;
-            overflow-x: hidden !important;
         }
 
-        body.login-pf .login-pf-page,
-        .login-pf-page,
-        body.login-pf .login-pf-page .login-pf-page-header {
+        .login-pf-page {
             padding: 0 !important;
             margin: 0 !important;
             border: none !important;
-            background: transparent !important;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
             min-height: 100vh !important;
             height: 100% !important;
             width: 100% !important;
             position: relative !important;
         }
 
-        body.login-pf .login-pf-page .card-pf,
-        .login-pf-page .card-pf,
-        body.login-pf .login-pf-page .card-pf .card-pf-body {
+        .login-pf-page .card-pf {
             padding: 0 !important;
             margin: 0 !important;
             border: none !important;
@@ -85,131 +66,156 @@
             height: 100% !important;
         }
 
-        body.login-pf #kc-content-wrapper,
         #kc-content-wrapper {
             margin: 0 !important;
             padding: 0 !important;
             width: 100% !important;
             height: 100vh !important;
-            background: transparent !important;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
             position: relative !important;
         }
 
-        body.login-pf #kc-content,
         #kc-content {
             padding: 0 !important;
             margin: 0 !important;
             width: 100% !important;
             height: 100% !important;
-            background: transparent !important;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
         }
 
-        body.login-pf #kc-info,
         #kc-info {
             margin: 0 !important;
             padding: 0 !important;
         }
 
-        body.login-pf #kc-info-wrapper,
         #kc-info-wrapper {
             display: none !important;
-            visibility: hidden !important;
-            opacity: 0 !important;
-            position: absolute !important;
-            left: -9999px !important;
-        }
-
-        /* Override any remaining Keycloak styles */
-        body.login-pf .login-pf-page .card-pf .card-pf-body .form-group,
-        body.login-pf .login-pf-page .card-pf .card-pf-body .form-group .form-control,
-        body.login-pf .login-pf-page .card-pf .card-pf-body .btn {
-            all: unset !important;
-        }
-
-        /* Force our container to be visible */
-        .mobile-container {
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            right: 0 !important;
-            bottom: 0 !important;
-            z-index: 9999 !important;
         }
     </style>
-    <style data-purpose="mobile-optimizations">
-        /* Mobile-first design optimizations */
-        .mobile-container {
-            min-height: 100vh;
-            padding: 1rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .mobile-card {
-            width: 100%;
-            max-width: 400px;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-radius: 24px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            animation: slideUp 0.6s ease-out;
-        }
-
-        .floating-elements {
-            position: absolute;
+    <style data-purpose="mobile-design">
+        /* Mobile-optimized floating elements */
+        .mobile-bg-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
             pointer-events: none;
             z-index: 0;
+            overflow: hidden;
         }
 
-        .floating-circle {
+        .floating-shape {
             position: absolute;
-            border-radius: 50%;
             background: rgba(255, 255, 255, 0.1);
-            animation: float 6s ease-in-out infinite;
+            border-radius: 50%;
+            animation: mobileFloat 8s ease-in-out infinite;
         }
 
-        .floating-circle:nth-child(1) {
+        .floating-shape:nth-child(1) {
             width: 80px;
             height: 80px;
-            top: 10%;
+            top: 15%;
             left: 10%;
             animation-delay: 0s;
         }
 
-        .floating-circle:nth-child(2) {
-            width: 120px;
-            height: 120px;
-            top: 20%;
+        .floating-shape:nth-child(2) {
+            width: 60px;
+            height: 60px;
+            top: 25%;
             right: 15%;
             animation-delay: 2s;
         }
 
-        .floating-circle:nth-child(3) {
-            width: 60px;
-            height: 60px;
+        .floating-shape:nth-child(3) {
+            width: 100px;
+            height: 100px;
             bottom: 30%;
             left: 20%;
             animation-delay: 4s;
         }
 
-        .floating-circle:nth-child(4) {
-            width: 100px;
-            height: 100px;
-            bottom: 10%;
+        .floating-shape:nth-child(4) {
+            width: 70px;
+            height: 70px;
+            bottom: 15%;
             right: 10%;
             animation-delay: 1s;
         }
 
-        /* Touch-optimized form elements */
-        .mobile-input {
+        /* Animations */
+        @keyframes mobileFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(180deg); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes slideInFromLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Apply animations */
+        .mobile-login-container {
+            animation: fadeInScale 0.6s ease-out;
+        }
+
+        .mobile-card-header {
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        .mobile-login-form {
+            animation: slideInFromLeft 0.8s ease-out 0.4s both;
+        }
+
+        .mobile-card-footer {
+            animation: fadeInUp 0.8s ease-out 0.6s both;
+        }
+
+        .mobile-page-footer {
+            animation: fadeInUp 1s ease-out 0.8s both;
+        }
+
+        /* Mobile-optimized form styles */
+        .mobile-form-input {
             height: 56px !important;
             font-size: 16px !important; /* Prevents zoom on iOS */
             border-radius: 16px !important;
@@ -220,10 +226,20 @@
             transition: all 0.3s ease !important;
         }
 
-        .mobile-input:focus {
+        .mobile-form-input:focus {
             border-color: #667eea !important;
             box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1) !important;
             transform: translateY(-2px) !important;
+        }
+
+        .mobile-form-input-error {
+            border-color: #ef4444 !important;
+            background-color: #fef2f2 !important;
+        }
+
+        .mobile-form-input-error:focus {
+            border-color: #ef4444 !important;
+            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1) !important;
         }
 
         .mobile-input-icon {
@@ -259,70 +275,7 @@
             box-shadow: none !important;
         }
 
-        /* Animations */
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(180deg); }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.8; }
-        }
-
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .fade-in-up {
-            animation: fadeInUp 0.6s ease-out forwards;
-        }
-
-        .fade-in-up-delay-1 {
-            animation: fadeInUp 0.6s ease-out 0.2s forwards;
-            opacity: 0;
-        }
-
-        .fade-in-up-delay-2 {
-            animation: fadeInUp 0.6s ease-out 0.4s forwards;
-            opacity: 0;
-        }
-
-        /* Error styles */
-        .mobile-input-error {
-            border-color: #ef4444 !important;
-            background-color: #fef2f2 !important;
-        }
-
-        .mobile-input-error:focus {
-            border-color: #ef4444 !important;
-            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1) !important;
-        }
-
-        .error-message {
+        .mobile-error-message {
             color: #ef4444;
             font-size: 14px;
             margin-top: 8px;
@@ -362,7 +315,7 @@
 
         /* Safe area handling for notched devices */
         @supports (padding: max(0px)) {
-            .mobile-container {
+            .mobile-main-container {
                 padding-top: max(1rem, env(safe-area-inset-top));
                 padding-bottom: max(1rem, env(safe-area-inset-bottom));
                 padding-left: max(1rem, env(safe-area-inset-left));
@@ -373,20 +326,20 @@
 
 <#elseif section = "form">
 
-<div class="mobile-container">
-    <!-- BEGIN: Floating Background Elements -->
-    <div class="floating-elements">
-        <div class="floating-circle"></div>
-        <div class="floating-circle"></div>
-        <div class="floating-circle"></div>
-        <div class="floating-circle"></div>
+<div class="mobile-main-container min-h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+    <!-- BEGIN: Mobile Background Elements -->
+    <div class="mobile-bg-elements">
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
     </div>
-    <!-- END: Floating Background Elements -->
+    <!-- END: Mobile Background Elements -->
 
     <!-- BEGIN: Main Login Card -->
-    <main class="mobile-card z-10">
+    <main class="w-full max-w-[400px] bg-white bg-opacity-95 backdrop-blur-lg rounded-3xl shadow-2xl overflow-hidden z-10 mobile-login-container">
         <!-- BEGIN: Card Header -->
-        <section class="pt-8 pb-6 px-6 text-center fade-in-up">
+        <section class="pt-8 pb-6 px-6 text-center mobile-card-header">
             <!-- Employee Icon -->
             <div class="flex justify-center mb-6">
                 <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white shadow-lg">
@@ -402,7 +355,7 @@
                 <p class="text-lg font-semibold text-gray-700">Employee Portal</p>
             </div>
 
-            <!-- Welcome Message -->
+            <!-- Welcome Badge -->
             <div class="inline-flex items-center px-4 py-2 bg-blue-50 text-blue-700 text-sm font-medium rounded-full border border-blue-100 mb-4">
                 <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
                     <path clip-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" fill-rule="evenodd"></path>
@@ -411,14 +364,14 @@
             </div>
 
             <p class="text-sm text-gray-600">
-                Access your employee dashboard, schedules, and more.
+                Access your employee dashboard and workplace tools.
             </p>
         </section>
         <!-- END: Card Header -->
 
         <!-- BEGIN: Messages -->
         <#if message?has_content && (message.type != 'warning' || !isAppInitiatedAction??)>
-            <div class="px-6 fade-in-up-delay-1">
+            <div class="px-6">
                 <div class="mobile-alert mobile-alert-<#if message.type = 'error'>error<#elseif message.type = 'success'>success<#else>info</#if>">
                     ${kcSanitize(message.summary)?no_esc}
                 </div>
@@ -428,7 +381,7 @@
 
         <!-- BEGIN: Login Form -->
         <#if realm.password>
-            <form id="kc-form-login" class="px-6 pb-8 fade-in-up-delay-2" onsubmit="login.disabled = true; return true;" action="${url.loginAction}" method="post" novalidate="novalidate">
+            <form id="kc-form-login" class="px-6 pb-8 mobile-login-form" onsubmit="login.disabled = true; return true;" action="${url.loginAction}" method="post" novalidate="novalidate">
                 <!-- Email Field -->
                 <div class="mb-6">
                     <label class="block text-sm font-semibold text-gray-700 mb-3" for="username">
@@ -441,7 +394,7 @@
                             </svg>
                         </div>
                         <input
-                            class="mobile-input w-full <#if messagesPerField.existsError('username','password')>mobile-input-error</#if>"
+                            class="mobile-form-input w-full <#if messagesPerField.existsError('username','password')>mobile-form-input-error</#if>"
                             id="username"
                             name="username"
                             placeholder="Enter your employee credentials"
@@ -453,7 +406,7 @@
                         />
                     </div>
                     <#if messagesPerField.existsError('username','password')>
-                        <div class="error-message">
+                        <div class="mobile-error-message">
                             ${kcSanitize(messagesPerField.getFirstError('username','password'))?no_esc}
                         </div>
                     </#if>
@@ -474,7 +427,7 @@
                             </svg>
                         </div>
                         <input
-                            class="mobile-input w-full pr-14 <#if messagesPerField.existsError('username','password')>mobile-input-error</#if>"
+                            class="mobile-form-input w-full pr-14 <#if messagesPerField.existsError('username','password')>mobile-form-input-error</#if>"
                             id="password"
                             name="password"
                             type="password"
@@ -525,10 +478,10 @@
         <!-- END: Login Form -->
 
         <!-- BEGIN: Card Footer -->
-        <footer class="bg-gray-50 px-6 py-4 border-t border-gray-100">
+        <footer class="bg-gray-50 px-6 py-4 border-t border-gray-100 mobile-card-footer">
             <div class="flex justify-between items-center text-xs text-gray-500 mb-4">
                 <div class="flex items-center">
-                    <svg class="w-3 h-3 text-green-500 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                    <svg class="w-3 h-3 text-blue-500 mr-1" fill="currentColor" viewBox="0 0 20 20">
                         <path clip-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" fill-rule="evenodd"></path>
                     </svg>
                     Secure Connection
@@ -553,7 +506,7 @@
     <!-- END: Main Login Card -->
 
     <!-- BEGIN: Bottom Links -->
-    <footer class="mt-8 text-center">
+    <footer class="mt-8 text-center mobile-page-footer">
         <div class="flex justify-center space-x-6 text-xs text-white opacity-80">
             <a class="hover:opacity-100 transition-opacity" href="#">Privacy</a>
             <a class="hover:opacity-100 transition-opacity" href="#">Support</a>
