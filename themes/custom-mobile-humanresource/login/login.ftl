@@ -126,15 +126,19 @@
             all: unset !important;
         }
 
-        /* Force our container to be visible */
-        .mobile-container {
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            right: 0 !important;
-            bottom: 0 !important;
-            z-index: 9999 !important;
-        }
+        /* Force our container to be visible + scrollable */
+.mobile-container {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  z-index: 9999 !important;
+
+  /* NEW: allow vertical scroll when content exceeds viewport */
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+}
     </style>
     <style data-purpose="mobile-optimizations">
         /* Mobile-first design optimizations */
@@ -147,7 +151,9 @@
             align-items: center;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             position: relative;
-            overflow: hidden;
+            overflow-x: hidden;
+            overflow-y: auto;
+           -webkit-overflow-scrolling: touch;
         }
 
         .mobile-card {
