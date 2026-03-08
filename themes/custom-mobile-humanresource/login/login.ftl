@@ -139,101 +139,104 @@
         }
     </style>
     <style data-purpose="mobile-app-design">
-        /* Mobile app-like design */
+        /* Mobile app-like design with square edges and smaller content */
         .app-container {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             font-family: "Inter", sans-serif;
+            padding: 0.5rem;
         }
 
         .app-header {
-            padding: 2rem 1.5rem 1rem 1.5rem;
+            padding: 1rem 1rem 0.5rem 1rem;
             text-align: center;
             flex-shrink: 0;
         }
 
         .app-content {
             flex: 1;
-            padding: 0 1.5rem 2rem 1.5rem;
+            padding: 0 1rem 1rem 1rem;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start;
             min-height: 0;
+            margin-top: 1rem;
         }
 
         .app-logo {
-            width: 80px;
-            height: 80px;
+            width: 50px;
+            height: 50px;
             background: rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
+            border-radius: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 1.5rem auto;
+            margin: 0 auto 0.75rem auto;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
         .app-title {
             color: white;
-            font-size: 2rem;
+            font-size: 1.25rem;
             font-weight: 700;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.25rem;
             letter-spacing: -0.025em;
         }
 
         .app-subtitle {
             color: rgba(255, 255, 255, 0.8);
-            font-size: 1rem;
+            font-size: 0.75rem;
             font-weight: 500;
         }
 
         .login-section {
             background: white;
-            border-radius: 24px 24px 0 0;
-            padding: 2rem 1.5rem;
-            margin-top: auto;
-            min-height: 60vh;
+            border-radius: 4px;
+            padding: 1.25rem 1rem;
+            margin-top: 0;
+            min-height: auto;
             position: relative;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .login-title {
-            font-size: 1.5rem;
+            font-size: 1.125rem;
             font-weight: 700;
             color: #1f2937;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.25rem;
             text-align: center;
         }
 
         .login-description {
             color: #6b7280;
             text-align: center;
-            margin-bottom: 2rem;
-            font-size: 0.875rem;
+            margin-bottom: 1.25rem;
+            font-size: 0.75rem;
         }
 
         /* Form styles */
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
         }
 
         .form-label {
             display: block;
-            font-size: 0.875rem;
+            font-size: 0.75rem;
             font-weight: 600;
             color: #374151;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.375rem;
         }
 
         .form-input {
             width: 100%;
-            height: 56px;
-            padding: 0 1rem;
+            height: 44px;
+            padding: 0 0.75rem;
             border: 2px solid #e5e7eb;
-            border-radius: 12px;
-            font-size: 16px; /* Prevents zoom on iOS */
+            border-radius: 4px;
+            font-size: 14px;
             background: #ffffff;
             transition: all 0.2s ease;
             color: #1f2937;
@@ -242,7 +245,7 @@
         .form-input:focus {
             outline: none;
             border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
         }
 
         .form-input-error {
@@ -252,7 +255,7 @@
 
         .form-input-error:focus {
             border-color: #ef4444;
-            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+            box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.1);
         }
 
         .password-container {
@@ -261,7 +264,7 @@
 
         .password-toggle {
             position: absolute;
-            right: 1rem;
+            right: 0.75rem;
             top: 50%;
             transform: translateY(-50%);
             cursor: pointer;
@@ -275,33 +278,33 @@
 
         .error-message {
             color: #ef4444;
-            font-size: 0.75rem;
-            margin-top: 0.5rem;
+            font-size: 0.625rem;
+            margin-top: 0.375rem;
             padding-left: 0.25rem;
         }
 
         .remember-me {
             display: flex;
             align-items: center;
-            margin-bottom: 2rem;
+            margin-bottom: 1.25rem;
         }
 
         .remember-me input {
-            width: 1rem;
-            height: 1rem;
-            margin-right: 0.5rem;
+            width: 0.875rem;
+            height: 0.875rem;
+            margin-right: 0.375rem;
             accent-color: #667eea;
         }
 
         .remember-me label {
-            font-size: 0.875rem;
+            font-size: 0.75rem;
             color: #6b7280;
             cursor: pointer;
         }
 
         .forgot-password {
             color: #667eea;
-            font-size: 0.875rem;
+            font-size: 0.75rem;
             font-weight: 500;
             text-decoration: none;
             float: right;
@@ -313,24 +316,24 @@
 
         .login-button {
             width: 100%;
-            height: 56px;
+            height: 44px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border: none;
-            border-radius: 12px;
+            border-radius: 4px;
             color: white;
-            font-size: 1rem;
+            font-size: 0.875rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
         }
 
         .login-button:hover:not(:disabled) {
             transform: translateY(-1px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
         }
 
         .login-button:disabled {
@@ -341,14 +344,14 @@
 
         .register-link {
             text-align: center;
-            padding-top: 1rem;
+            padding-top: 0.75rem;
             border-top: 1px solid #e5e7eb;
         }
 
         .register-link p {
             color: #6b7280;
-            font-size: 0.875rem;
-            margin-bottom: 0.75rem;
+            font-size: 0.75rem;
+            margin-bottom: 0.5rem;
         }
 
         .register-button {
@@ -356,12 +359,12 @@
             align-items: center;
             justify-content: center;
             width: 100%;
-            height: 48px;
+            height: 40px;
             border: 2px solid #667eea;
-            border-radius: 12px;
+            border-radius: 4px;
             background: white;
             color: #667eea;
-            font-size: 0.875rem;
+            font-size: 0.75rem;
             font-weight: 600;
             text-decoration: none;
             transition: all 0.2s ease;
@@ -374,11 +377,11 @@
 
         /* Message styles */
         .alert {
-            padding: 1rem;
-            border-radius: 12px;
-            margin-bottom: 1.5rem;
+            padding: 0.75rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
             border: 1px solid;
-            font-size: 0.875rem;
+            font-size: 0.75rem;
         }
 
         .alert-error {
@@ -409,46 +412,84 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Responsive adjustments */
-        @media (max-height: 700px) {
+        /* Responsive adjustments for small screens */
+        @media (max-height: 600px) {
             .app-header {
-                padding: 1rem 1.5rem 0.5rem 1.5rem;
+                padding: 0.5rem 1rem 0.25rem 1rem;
             }
 
             .app-logo {
-                width: 60px;
-                height: 60px;
-                margin-bottom: 1rem;
+                width: 40px;
+                height: 40px;
+                margin-bottom: 0.5rem;
             }
 
             .app-title {
-                font-size: 1.5rem;
+                font-size: 1rem;
+            }
+
+            .app-subtitle {
+                font-size: 0.625rem;
             }
 
             .login-section {
-                min-height: auto;
-                padding: 1.5rem;
+                padding: 1rem 0.75rem;
+            }
+
+            .app-content {
+                margin-top: 0.5rem;
             }
         }
 
-        @media (max-height: 600px) {
-            .app-content {
-                justify-content: flex-start;
+        @media (max-height: 500px) {
+            .app-container {
+                padding: 0.25rem;
+            }
+
+            .app-header {
+                padding: 0.25rem 0.5rem;
             }
 
             .login-section {
-                margin-top: 1rem;
-                border-radius: 16px;
+                padding: 0.75rem;
+            }
+
+            .form-group {
+                margin-bottom: 0.75rem;
+            }
+
+            .login-description {
+                margin-bottom: 1rem;
+            }
+        }
+
+        @media (max-width: 320px) {
+            .app-container {
+                padding: 0.25rem;
+            }
+
+            .login-section {
+                padding: 0.75rem 0.5rem;
+            }
+
+            .form-input {
+                height: 40px;
+                font-size: 13px;
+            }
+
+            .login-button {
+                height: 40px;
+                font-size: 0.75rem;
             }
         }
 
         /* Safe area handling for notched devices */
         @supports (padding: max(0px)) {
             .app-container {
-                padding-top: env(safe-area-inset-top);
-                padding-bottom: env(safe-area-inset-bottom);
-                padding-left: env(safe-area-inset-left);
-                padding-right: env(safe-area-inset-right);
+                padding-top: max(0.5rem, env(safe-area-inset-top));
+                padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+                padding-left: max(0.5rem, env(safe-area-inset-left));
+                padding-right: max(0.5rem, env(safe-area-inset-right));
             }
         }
     </style>
@@ -457,19 +498,19 @@
 
 <div class="app-container">
     <!-- App Header -->
-    <div class="app-header">
+    <header class="app-header">
         <div class="app-logo">
-            <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                 <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path>
             </svg>
         </div>
         <h1 class="app-title">JUST HR</h1>
         <p class="app-subtitle">Employee App</p>
-    </div>
+    </header>
 
     <!-- App Content -->
-    <div class="app-content">
-        <div class="login-section">
+    <main class="app-content">
+        <section class="login-section">
             <h2 class="login-title">Welcome Back</h2>
             <p class="login-description">Sign in to access your workplace</p>
 
@@ -508,7 +549,7 @@
 
                     <!-- Password Field -->
                     <div class="form-group">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.375rem;">
                             <label class="form-label" for="password" style="margin-bottom: 0;">Password</label>
                             <#if realm.resetPasswordAllowed>
                                 <a class="forgot-password" href="${url.loginResetCredentialsUrl}">Forgot?</a>
@@ -525,7 +566,7 @@
                                 tabindex="2"
                             />
                             <div class="password-toggle" id="passwordToggle">
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
                                     <path clip-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" fill-rule="evenodd"></path>
                                 </svg>
@@ -558,7 +599,7 @@
                         tabindex="4"
                     >
                         <span id="login-text">Sign In</span>
-                        <svg id="login-icon" class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <svg id="login-icon" class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
                         </svg>
                     </button>
@@ -568,7 +609,7 @@
                         <div class="register-link">
                             <p>New employee?</p>
                             <a href="${url.registrationUrl}" class="register-button">
-                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
                                 </svg>
                                 Create Account
@@ -577,8 +618,8 @@
                     </#if>
                 </form>
             </#if>
-        </div>
-    </div>
+        </section>
+    </main>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -632,7 +673,7 @@
             const inputs = document.querySelectorAll('input');
             inputs.forEach(input => {
                 input.addEventListener('focus', function() {
-                    this.style.fontSize = '16px';
+                    this.style.fontSize = '14px';
                 });
             });
         });
@@ -641,12 +682,12 @@
 
 <#elseif section = "info">
     <#if realm.password && realm.registrationAllowed && !registrationDisabled??>
-        <div style="text-align: center; padding: 1rem; background: white; margin: 1rem; border-radius: 12px;">
-            <p style="color: #6b7280; font-size: 0.875rem; margin-bottom: 0.75rem;">
+        <div style="text-align: center; padding: 0.75rem; background: white; margin: 0.5rem; border-radius: 4px;">
+            <p style="color: #6b7280; font-size: 0.75rem; margin-bottom: 0.5rem;">
                 New employee?
             </p>
-            <a href="${url.registrationUrl}" style="display: inline-flex; align-items: center; justify-content: center; width: 100%; height: 48px; border: 2px solid #667eea; border-radius: 12px; background: white; color: #667eea; font-size: 0.875rem; font-weight: 600; text-decoration: none;">
-                <svg style="width: 1rem; height: 1rem; margin-right: 0.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <a href="${url.registrationUrl}" style="display: inline-flex; align-items: center; justify-content: center; width: 100%; height: 40px; border: 2px solid #667eea; border-radius: 4px; background: white; color: #667eea; font-size: 0.75rem; font-weight: 600; text-decoration: none;">
+                <svg style="width: 0.75rem; height: 0.75rem; margin-right: 0.375rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
                 </svg>
                 Create Account
