@@ -91,10 +91,10 @@
         }
     </style>
     <style data-purpose="mobile-optimizations">
-        /* Mobile-first design optimizations */
+        /* Mobile-first design optimizations with square edges and smaller content */
         .mobile-container {
             min-height: 100vh;
-            padding: 1rem;
+            padding: 0.5rem;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
@@ -102,19 +102,19 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             position: relative;
             overflow: hidden;
-            padding-top: 2rem;
+            padding-top: 1rem;
         }
 
         .mobile-card {
             width: 100%;
-            max-width: 420px;
+            max-width: 380px;
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
-            border-radius: 24px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             overflow: hidden;
             animation: slideUp 0.6s ease-out;
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
         }
 
         .floating-elements {
@@ -132,36 +132,36 @@
         }
 
         .floating-shape:nth-child(1) {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
             top: 15%;
             left: 10%;
             animation-delay: 0s;
         }
 
         .floating-shape:nth-child(2) {
-            width: 80px;
-            height: 80px;
-            border-radius: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 4px;
             top: 25%;
             right: 15%;
             animation-delay: 2s;
         }
 
         .floating-shape:nth-child(3) {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            border-radius: 4px;
             bottom: 40%;
             left: 20%;
             animation-delay: 4s;
         }
 
         .floating-shape:nth-child(4) {
-            width: 70px;
-            height: 70px;
-            border-radius: 15px;
+            width: 45px;
+            height: 45px;
+            border-radius: 4px;
             bottom: 20%;
             right: 10%;
             animation-delay: 1s;
@@ -169,11 +169,11 @@
 
         /* Touch-optimized form elements */
         .mobile-input {
-            height: 52px !important;
-            font-size: 16px !important; /* Prevents zoom on iOS */
-            border-radius: 14px !important;
-            padding-left: 52px !important;
-            padding-right: 16px !important;
+            height: 44px !important;
+            font-size: 14px !important;
+            border-radius: 4px !important;
+            padding-left: 40px !important;
+            padding-right: 12px !important;
             border: 2px solid #e5e7eb !important;
             background: #ffffff !important;
             transition: all 0.3s ease !important;
@@ -181,24 +181,24 @@
 
         .mobile-input:focus {
             border-color: #667eea !important;
-            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1) !important;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1) !important;
             transform: translateY(-1px) !important;
         }
 
         .mobile-input-icon {
             position: absolute;
-            left: 16px;
+            left: 12px;
             top: 50%;
             transform: translateY(-50%);
-            width: 18px;
-            height: 18px;
+            width: 14px;
+            height: 14px;
             color: #9ca3af;
         }
 
         .mobile-button {
-            height: 52px !important;
-            border-radius: 14px !important;
-            font-size: 16px !important;
+            height: 44px !important;
+            border-radius: 4px !important;
+            font-size: 14px !important;
             font-weight: 600 !important;
             background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
             border: none !important;
@@ -209,7 +209,7 @@
 
         .mobile-button:hover, .mobile-button:active {
             transform: translateY(-2px) !important;
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3) !important;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3) !important;
         }
 
         .mobile-button:disabled {
@@ -222,8 +222,8 @@
         /* Form layout for mobile */
         .form-row {
             display: flex;
-            gap: 12px;
-            margin-bottom: 20px;
+            gap: 8px;
+            margin-bottom: 16px;
         }
 
         .form-group {
@@ -232,14 +232,14 @@
 
         .form-group-full {
             width: 100%;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
         /* Animations */
         @keyframes slideUp {
             from {
                 opacity: 0;
-                transform: translateY(50px);
+                transform: translateY(30px);
             }
             to {
                 opacity: 1;
@@ -249,23 +249,18 @@
 
         @keyframes float {
             0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-15px) rotate(180deg); }
+            50% { transform: translateY(-10px) rotate(180deg); }
         }
 
         @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(15px);
             }
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.8; }
         }
 
         @keyframes spin {
@@ -295,14 +290,14 @@
 
         .mobile-input-error:focus {
             border-color: #ef4444 !important;
-            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1) !important;
+            box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.1) !important;
         }
 
         .error-message {
             color: #ef4444;
-            font-size: 12px;
-            margin-top: 6px;
-            padding-left: 12px;
+            font-size: 10px;
+            margin-top: 4px;
+            padding-left: 8px;
             display: none;
         }
 
@@ -312,9 +307,9 @@
 
         /* Message styles */
         .mobile-alert {
-            padding: 14px;
-            border-radius: 14px;
-            margin-bottom: 16px;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 12px;
             border: 1px solid;
             animation: fadeInUp 0.5s ease-out;
         }
@@ -343,9 +338,9 @@
 
         /* Password strength indicator */
         .password-strength {
-            margin-top: 8px;
-            padding: 8px 12px;
-            border-radius: 8px;
+            margin-top: 6px;
+            padding: 6px 8px;
+            border-radius: 4px;
             background: #f9fafb;
             border: 1px solid #e5e7eb;
         }
@@ -353,8 +348,8 @@
         .strength-item {
             display: flex;
             align-items: center;
-            font-size: 11px;
-            margin-bottom: 4px;
+            font-size: 9px;
+            margin-bottom: 3px;
         }
 
         .strength-item:last-child {
@@ -362,10 +357,10 @@
         }
 
         .strength-check {
-            width: 12px;
-            height: 12px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
-            margin-right: 6px;
+            margin-right: 4px;
             background: #e5e7eb;
             transition: all 0.2s ease;
         }
@@ -382,13 +377,75 @@
             color: #764ba2;
         }
 
+        /* Responsive adjustments for very small screens */
+        @media (max-height: 600px) {
+            .mobile-container {
+                padding-top: 0.5rem;
+            }
+
+            .mobile-card {
+                margin-bottom: 0.5rem;
+            }
+
+            .form-row {
+                margin-bottom: 12px;
+            }
+
+            .form-group-full {
+                margin-bottom: 12px;
+            }
+        }
+
+        @media (max-height: 500px) {
+            .mobile-container {
+                padding: 0.25rem;
+                padding-top: 0.25rem;
+            }
+
+            .mobile-input {
+                height: 40px !important;
+                font-size: 13px !important;
+            }
+
+            .mobile-button {
+                height: 40px !important;
+                font-size: 13px !important;
+            }
+        }
+
+        @media (max-width: 320px) {
+            .mobile-container {
+                padding: 0.25rem;
+            }
+
+            .mobile-card {
+                max-width: 100%;
+            }
+
+            .form-row {
+                gap: 6px;
+            }
+
+            .mobile-input {
+                height: 40px !important;
+                font-size: 13px !important;
+                padding-left: 36px !important;
+            }
+
+            .mobile-input-icon {
+                width: 12px;
+                height: 12px;
+                left: 10px;
+            }
+        }
+
         /* Safe area handling for notched devices */
         @supports (padding: max(0px)) {
             .mobile-container {
-                padding-top: max(2rem, env(safe-area-inset-top) + 1rem);
-                padding-bottom: max(1rem, env(safe-area-inset-bottom));
-                padding-left: max(1rem, env(safe-area-inset-left));
-                padding-right: max(1rem, env(safe-area-inset-right));
+                padding-top: max(0.5rem, env(safe-area-inset-top));
+                padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+                padding-left: max(0.5rem, env(safe-area-inset-left));
+                padding-right: max(0.5rem, env(safe-area-inset-right));
             }
         }
     </style>
@@ -408,11 +465,11 @@
     <!-- BEGIN: Main Registration Card -->
     <main class="mobile-card z-10">
         <!-- BEGIN: Card Header -->
-        <section class="pt-6 pb-4 px-6 text-center fade-in-up">
+        <section class="pt-4 pb-3 px-4 text-center fade-in-up">
             <!-- Employee Icon -->
-            <div class="flex justify-center mb-4">
-                <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white shadow-lg">
-                    <svg class="h-7 w-7" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <div class="flex justify-center mb-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-sm flex items-center justify-center text-white shadow-lg">
+                    <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                         <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1a1 1 0 102 0V7zM12 7a1 1 0 112 0v1a1 1 0 11-2 0V7zM16 3a1 1 0 10-2 0v1a1 1 0 102 0V3zM12 3a1 1 0 112 0v1a1 1 0 11-2 0V3z"></path>
                     </svg>
                 </div>
@@ -420,19 +477,19 @@
 
             <!-- Brand and Title -->
             <div class="mb-2">
-                <h1 class="text-xl font-bold text-gray-900 mb-1">JUST HR</h1>
-                <p class="text-lg font-semibold text-gray-700">Employee Registration</p>
+                <h1 class="text-base font-bold text-gray-900 mb-1">JUST HR</h1>
+                <p class="text-sm font-semibold text-gray-700">Employee Registration</p>
             </div>
 
             <!-- Registration Badge -->
-            <div class="inline-flex items-center px-3 py-1 bg-blue-50 text-blue-700 text-xs font-medium rounded-full border border-blue-100 mb-3">
-                <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+            <div class="inline-flex items-center px-2 py-1 bg-blue-50 text-blue-700 text-xs font-medium rounded-sm border border-blue-100 mb-2">
+                <svg class="w-2 h-2 mr-1" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"></path>
                 </svg>
                 Join the Team
             </div>
 
-            <p class="text-sm text-gray-600">
+            <p class="text-xs text-gray-600">
                 Create your employee account to get started.
             </p>
         </section>
@@ -440,7 +497,7 @@
 
         <!-- BEGIN: Messages -->
         <#if message?has_content && (message.type != 'warning' || !isAppInitiatedAction??)>
-            <div class="px-6 fade-in-up-delay-1">
+            <div class="px-4 fade-in-up-delay-1">
                 <div class="mobile-alert mobile-alert-<#if message.type = 'error'>error<#elseif message.type = 'success'>success<#else>info</#if>">
                     ${kcSanitize(message.summary)?no_esc}
                 </div>
@@ -449,11 +506,11 @@
         <!-- END: Messages -->
 
         <!-- BEGIN: Registration Form -->
-        <form id="kc-register-form" class="px-6 pb-6 fade-in-up-delay-2" action="${url.registrationAction}" method="post" novalidate="novalidate">
+        <form id="kc-register-form" class="px-4 pb-4 fade-in-up-delay-2" action="${url.registrationAction}" method="post" novalidate="novalidate">
             <!-- Name Fields Row -->
             <div class="form-row">
                 <div class="form-group">
-                    <label class="block text-sm font-semibold text-gray-700 mb-2" for="firstName">
+                    <label class="block text-xs font-semibold text-gray-700 mb-1" for="firstName">
                         First Name
                     </label>
                     <div class="relative">
@@ -484,7 +541,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="block text-sm font-semibold text-gray-700 mb-2" for="lastName">
+                    <label class="block text-xs font-semibold text-gray-700 mb-1" for="lastName">
                         Last Name
                     </label>
                     <div class="relative">
@@ -516,7 +573,7 @@
 
             <!-- Email Field -->
             <div class="form-group-full">
-                <label class="block text-sm font-semibold text-gray-700 mb-2" for="email">
+                <label class="block text-xs font-semibold text-gray-700 mb-1" for="email">
                     Work Email
                 </label>
                 <div class="relative">
@@ -548,7 +605,7 @@
 
             <!-- Password Field -->
             <div class="form-group-full">
-                <label class="block text-sm font-semibold text-gray-700 mb-2" for="password">
+                <label class="block text-xs font-semibold text-gray-700 mb-1" for="password">
                     Create Password
                 </label>
                 <div class="relative">
@@ -558,7 +615,7 @@
                         </svg>
                     </div>
                     <input
-                        class="mobile-input w-full pr-12 <#if messagesPerField.existsError('password')>mobile-input-error</#if>"
+                        class="mobile-input w-full pr-10 <#if messagesPerField.existsError('password')>mobile-input-error</#if>"
                         id="password"
                         name="password"
                         type="password"
@@ -567,8 +624,8 @@
                         tabindex="4"
                         required
                     />
-                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer" id="passwordToggle">
-                        <svg class="h-4 w-4 text-gray-400 hover:text-gray-600" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <div class="absolute inset-y-0 right-0 pr-2 flex items-center cursor-pointer" id="passwordToggle">
+                        <svg class="h-3 w-3 text-gray-400 hover:text-gray-600" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                             <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
                             <path clip-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" fill-rule="evenodd"></path>
                         </svg>
@@ -604,7 +661,7 @@
 
             <!-- Confirm Password Field -->
             <div class="form-group-full">
-                <label class="block text-sm font-semibold text-gray-700 mb-2" for="password-confirm">
+                <label class="block text-xs font-semibold text-gray-700 mb-1" for="password-confirm">
                     Confirm Password
                 </label>
                 <div class="relative">
@@ -614,7 +671,7 @@
                         </svg>
                     </div>
                     <input
-                        class="mobile-input w-full pr-12 <#if messagesPerField.existsError('password-confirm')>mobile-input-error</#if>"
+                        class="mobile-input w-full pr-10 <#if messagesPerField.existsError('password-confirm')>mobile-input-error</#if>"
                         id="password-confirm"
                         name="password-confirm"
                         type="password"
@@ -623,8 +680,8 @@
                         tabindex="5"
                         required
                     />
-                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer" id="passwordConfirmToggle">
-                        <svg class="h-4 w-4 text-gray-400 hover:text-gray-600" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <div class="absolute inset-y-0 right-0 pr-2 flex items-center cursor-pointer" id="passwordConfirmToggle">
+                        <svg class="h-3 w-3 text-gray-400 hover:text-gray-600" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                             <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
                             <path clip-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" fill-rule="evenodd"></path>
                         </svg>
@@ -640,7 +697,7 @@
 
             <!-- Submit Button -->
             <button
-                class="mobile-button w-full flex justify-center items-center mt-6"
+                class="mobile-button w-full flex justify-center items-center mt-4"
                 type="submit"
                 name="register"
                 id="kc-register"
@@ -648,7 +705,7 @@
                 disabled
             >
                 <span id="register-text">Create Employee Account</span>
-                <svg id="register-icon" class="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <svg id="register-icon" class="ml-1 h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
                 </svg>
             </button>
@@ -656,10 +713,10 @@
         <!-- END: Registration Form -->
 
         <!-- BEGIN: Card Footer -->
-        <footer class="bg-gray-50 px-6 py-4 border-t border-gray-100">
+        <footer class="bg-gray-50 px-4 py-3 border-t border-gray-100">
             <div class="flex justify-between items-center text-xs text-gray-500">
                 <div class="flex items-center">
-                    <svg class="w-3 h-3 text-blue-500 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                    <svg class="w-2 h-2 text-blue-500 mr-1" fill="currentColor" viewBox="0 0 20 20">
                         <path clip-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" fill-rule="evenodd"></path>
                     </svg>
                     Secure Registration
@@ -676,12 +733,12 @@
 
     <!-- BEGIN: Bottom Links -->
     <footer class="text-center">
-        <div class="flex justify-center space-x-6 text-xs text-white opacity-80">
+        <div class="flex justify-center space-x-4 text-xs text-white opacity-80">
             <a class="hover:opacity-100 transition-opacity" href="#">Privacy</a>
             <a class="hover:opacity-100 transition-opacity" href="#">Support</a>
             <a class="hover:opacity-100 transition-opacity" href="#">Terms</a>
         </div>
-        <div class="mt-2 text-xs text-white opacity-60">© 2024 JUST HR</div>
+        <div class="mt-1 text-xs text-white opacity-60">© 2024 JUST HR</div>
     </footer>
     <!-- END: Bottom Links -->
 
@@ -937,7 +994,7 @@
             const inputs = document.querySelectorAll('input');
             inputs.forEach(input => {
                 input.addEventListener('focus', function() {
-                    this.style.fontSize = '16px';
+                    this.style.fontSize = '14px';
                 });
             });
 
