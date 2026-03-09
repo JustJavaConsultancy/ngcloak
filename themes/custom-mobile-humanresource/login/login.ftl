@@ -187,7 +187,7 @@
         }
 
         .app-subtitle {
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(255, 255, 255, 0.8) !important;
             font-size: 0.75rem;
             font-weight: 500;
         }
