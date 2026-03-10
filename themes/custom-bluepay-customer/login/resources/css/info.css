@@ -1,0 +1,124 @@
+:root {
+  --bs-primary: #0c74b1;
+  --bs-primary-rgb: 12, 116, 177;
+  --bs-secondary: #062c5a;
+  --bs-secondary-rgb: 6, 44, 90;
+  --bs-info: #cfe5f2;
+  --bs-info-rgb: 207, 229, 242;
+  --bs-body-color-rgb: 49, 57, 87;
+  --bs-body-color: #313957;
+  --bs-border-color: #e8e8e8;
+  --bs-light-rgb: 249, 247, 247;
+  --bs-light: #f9f7f7;
+  --bs-success: #46a14b;
+  --bs-danger: #ff3b30;
+}
+
+body {
+  background-color: var(--bs-primary) !important;
+  color: white !important;
+}
+
+/* Remove Keycloak's default styling */
+.login-pf body {
+  background: var(--bs-primary) !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.login-pf-page {
+  background: transparent !important;
+  padding: 0 !important;
+}
+
+#kc-header,
+#kc-content,
+#kc-content-wrapper {
+  background: transparent !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  max-width: 100% !important;
+}
+
+#kc-header-wrapper,
+#kc-header,
+#kc-form-options,
+#kc-form-buttons,
+#kc-info-wrapper,
+#kc-feedback-wrapper,
+.alert-error {
+  display: none !important;
+}
+
+html,
+body {
+  overflow-x: hidden;
+}
+
+.app-btn {
+  background-color: #0c74b1;
+  border-color: #0c74b1;
+  color: #fff;
+  width: 100%;
+  padding: 1rem;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.app-btn.active:hover {
+  background-color: #0a63a0;
+  border-color: #0a63a0;
+}
+
+.py-4 {
+  background-color: #0c74b1;
+}
+
+/* Success card styling */
+.success-card {
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.success-icon {
+  color: var(--bs-success);
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+}
+
+.btn-primary {
+  background-color: var(--bs-primary);
+  border-color: var(--bs-primary);
+  padding: 12px 24px;
+  font-weight: 600;
+  border-radius: 6px;
+}
+
+.btn-primary:hover {
+  background-color: #0a63a0;
+  border-color: #0a63a0;
+}
+
+/* .success-card {
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.success-icon {
+  color: var(--bs-success);
+  font-size: 4rem;
+}
+
+.btn-primary {
+  background-color: var(--bs-primary);
+  border-color: var(--bs-primary);
+  padding: 12px 24px;
+  font-weight: 600;
+  border-radius: 6px;
+} */
