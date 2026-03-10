@@ -126,20 +126,20 @@
                                 </#if>
                             </div>
                         </form>
+                    </div>
 
-                        <!-- Mobile Footer Links -->
-                        <div class="mobile-footer-links d-lg-none">
-                            <#if realm.password && realm.registrationAllowed && !registrationDisabled??>
-                                <a href="${url.registrationUrl}" class="mobile-footer-link">Create account</a>
-                            </#if>
-                            <a href="#" class="mobile-footer-link">Help Center</a>
-                        </div>
+                    <!-- Mobile Footer Links -->
+                    <div class="mobile-footer-links d-lg-none">
+                        <#if realm.password && realm.registrationAllowed && !registrationDisabled??>
+                            <a href="${url.registrationUrl}" class="mobile-footer-link">Create account</a>
+                        </#if>
+                        <a href="#" class="mobile-footer-link">Help Center</a>
+                    </div>
 
-                        <!-- Mobile Security Note -->
-                        <div class="mobile-security-note d-lg-none">
-                            <i class="fas fa-lock"></i>
-                            Your information is securely encrypted
-                        </div>
+                    <!-- Mobile Security Note -->
+                    <div class="mobile-security-note d-lg-none">
+                        <i class="fas fa-lock"></i>
+                        Your information is securely encrypted
                     </div>
                 </div>
             </div>
