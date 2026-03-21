@@ -91,7 +91,7 @@
         }
     </style>
     <style data-purpose="mobile-optimizations">
-        /* Mobile-first design optimizations with square edges and smaller content */
+        /* Base mobile design (default) */
         .mobile-container {
             min-height: 100vh;
             padding: 0.5rem;
@@ -377,7 +377,311 @@
             color: #764ba2;
         }
 
-        /* Responsive adjustments for very small screens */
+        /* Tablet styles (768px and up) */
+        @media (min-width: 768px) {
+            .mobile-container {
+                padding: 2rem;
+                align-items: center;
+                justify-content: center;
+                padding-top: 2rem;
+            }
+
+            .mobile-card {
+                max-width: 480px;
+                border-radius: 12px;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+                margin-bottom: 1.5rem;
+            }
+
+            .floating-shape {
+                border-radius: 8px;
+            }
+
+            .floating-shape:nth-child(1) {
+                width: 60px;
+                height: 60px;
+            }
+
+            .floating-shape:nth-child(2) {
+                width: 70px;
+                height: 70px;
+            }
+
+            .floating-shape:nth-child(3) {
+                width: 50px;
+                height: 50px;
+            }
+
+            .floating-shape:nth-child(4) {
+                width: 65px;
+                height: 65px;
+            }
+
+            .mobile-input {
+                height: 48px !important;
+                border-radius: 8px !important;
+                font-size: 15px !important;
+                padding-left: 44px !important;
+                padding-right: 16px !important;
+            }
+
+            .mobile-input-icon {
+                left: 14px;
+                width: 16px;
+                height: 16px;
+            }
+
+            .mobile-button {
+                height: 48px !important;
+                border-radius: 8px !important;
+                font-size: 15px !important;
+            }
+
+            .form-row {
+                gap: 12px;
+                margin-bottom: 20px;
+            }
+
+            .form-group-full {
+                margin-bottom: 20px;
+            }
+
+            .mobile-alert {
+                border-radius: 8px;
+                padding: 12px;
+                margin-bottom: 16px;
+            }
+
+            .password-strength {
+                border-radius: 8px;
+                padding: 8px 10px;
+                margin-top: 8px;
+            }
+
+            .strength-item {
+                font-size: 11px;
+                margin-bottom: 4px;
+            }
+
+            .strength-check {
+                width: 10px;
+                height: 10px;
+                margin-right: 6px;
+            }
+
+            .error-message {
+                font-size: 11px;
+                margin-top: 6px;
+                padding-left: 10px;
+            }
+        }
+
+        /* Desktop styles (1024px and up) */
+        @media (min-width: 1024px) {
+            .mobile-container {
+                padding: 3rem;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                position: relative;
+            }
+
+            .mobile-container::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: url('data:image/svg+xml,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%23ffffff" fill-opacity="0.05"><circle cx="30" cy="30" r="1"/></g></g></svg>') repeat;
+                pointer-events: none;
+            }
+
+            .mobile-card {
+                max-width: 520px;
+                border-radius: 16px;
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                margin-bottom: 2rem;
+            }
+
+            .floating-shape {
+                border-radius: 12px;
+            }
+
+            .floating-shape:nth-child(1) {
+                width: 80px;
+                height: 80px;
+            }
+
+            .floating-shape:nth-child(2) {
+                width: 90px;
+                height: 90px;
+            }
+
+            .floating-shape:nth-child(3) {
+                width: 70px;
+                height: 70px;
+            }
+
+            .floating-shape:nth-child(4) {
+                width: 85px;
+                height: 85px;
+            }
+
+            .mobile-input {
+                height: 52px !important;
+                border-radius: 12px !important;
+                font-size: 16px !important;
+                padding-left: 48px !important;
+                padding-right: 20px !important;
+                border-width: 1px !important;
+            }
+
+            .mobile-input:focus {
+                box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15) !important;
+            }
+
+            .mobile-input-icon {
+                left: 16px;
+                width: 18px;
+                height: 18px;
+            }
+
+            .mobile-button {
+                height: 52px !important;
+                border-radius: 12px !important;
+                font-size: 16px !important;
+            }
+
+            .form-row {
+                gap: 16px;
+                margin-bottom: 24px;
+            }
+
+            .form-group-full {
+                margin-bottom: 24px;
+            }
+
+            .mobile-alert {
+                border-radius: 12px;
+                padding: 16px;
+                margin-bottom: 20px;
+                font-size: 14px;
+            }
+
+            .password-strength {
+                border-radius: 12px;
+                padding: 12px 16px;
+                margin-top: 10px;
+            }
+
+            .strength-item {
+                font-size: 12px;
+                margin-bottom: 6px;
+            }
+
+            .strength-check {
+                width: 12px;
+                height: 12px;
+                margin-right: 8px;
+            }
+
+            .error-message {
+                font-size: 12px;
+                margin-top: 8px;
+                padding-left: 12px;
+            }
+
+            /* Enhanced form layout for desktop */
+            .form-row {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+            }
+
+            /* Card header styling for desktop */
+            .mobile-card section:first-child {
+                padding: 2rem 2.5rem 1.5rem 2.5rem !important;
+            }
+
+            .mobile-card form {
+                padding: 0 2.5rem 2rem 2.5rem !important;
+            }
+
+            .mobile-card footer {
+                padding: 1.5rem 2.5rem !important;
+            }
+
+            /* Typography improvements for desktop */
+            .mobile-card h1 {
+                font-size: 1.5rem !important;
+                margin-bottom: 0.5rem !important;
+            }
+
+            .mobile-card section p {
+                font-size: 1rem !important;
+            }
+
+            .mobile-card label {
+                font-size: 0.875rem !important;
+                margin-bottom: 0.5rem !important;
+            }
+        }
+
+        /* Large desktop styles (1440px and up) */
+        @media (min-width: 1440px) {
+            .mobile-card {
+                max-width: 580px;
+            }
+
+            .mobile-input {
+                height: 56px !important;
+                font-size: 17px !important;
+                padding-left: 52px !important;
+            }
+
+            .mobile-input-icon {
+                left: 18px;
+                width: 20px;
+                height: 20px;
+            }
+
+            .mobile-button {
+                height: 56px !important;
+                font-size: 17px !important;
+            }
+
+            .form-row {
+                gap: 24px;
+                margin-bottom: 28px;
+            }
+
+            .form-group-full {
+                margin-bottom: 28px;
+            }
+
+            .mobile-card section:first-child {
+                padding: 2.5rem 3rem 2rem 3rem !important;
+            }
+
+            .mobile-card form {
+                padding: 0 3rem 2.5rem 3rem !important;
+            }
+
+            .mobile-card footer {
+                padding: 2rem 3rem !important;
+            }
+
+            .mobile-card h1 {
+                font-size: 1.75rem !important;
+            }
+
+            .mobile-card section p {
+                font-size: 1.125rem !important;
+            }
+        }
+
+        /* Mobile responsive adjustments for small screens */
         @media (max-height: 600px) {
             .mobile-container {
                 padding-top: 0.5rem;
@@ -446,6 +750,24 @@
                 padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
                 padding-left: max(0.5rem, env(safe-area-inset-left));
                 padding-right: max(0.5rem, env(safe-area-inset-right));
+            }
+
+            @media (min-width: 768px) {
+                .mobile-container {
+                    padding-top: max(2rem, env(safe-area-inset-top));
+                    padding-bottom: max(2rem, env(safe-area-inset-bottom));
+                    padding-left: max(2rem, env(safe-area-inset-left));
+                    padding-right: max(2rem, env(safe-area-inset-right));
+                }
+            }
+
+            @media (min-width: 1024px) {
+                .mobile-container {
+                    padding-top: max(3rem, env(safe-area-inset-top));
+                    padding-bottom: max(3rem, env(safe-area-inset-bottom));
+                    padding-left: max(3rem, env(safe-area-inset-left));
+                    padding-right: max(3rem, env(safe-area-inset-right));
+                }
             }
         }
     </style>
