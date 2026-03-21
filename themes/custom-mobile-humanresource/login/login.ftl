@@ -139,7 +139,7 @@
         }
     </style>
     <style data-purpose="mobile-app-design">
-        /* Mobile app-like design with square edges and smaller content */
+        /* Base mobile design (default) */
         .app-container {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
@@ -412,7 +412,256 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Responsive adjustments for small screens */
+        /* Tablet styles (768px and up) */
+        @media (min-width: 768px) {
+            .app-container {
+                padding: 2rem;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .app-header {
+                padding: 1.5rem 2rem 1rem 2rem;
+            }
+
+            .app-logo {
+                width: 64px;
+                height: 64px;
+                border-radius: 12px;
+                margin-bottom: 1rem;
+            }
+
+            .app-title {
+                font-size: 1.5rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .app-subtitle {
+                font-size: 0.875rem;
+            }
+
+            .app-content {
+                width: 100%;
+                max-width: 400px;
+                margin-top: 1.5rem;
+                padding: 0;
+            }
+
+            .login-section {
+                border-radius: 12px;
+                padding: 2rem;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            }
+
+            .login-title {
+                font-size: 1.375rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .login-description {
+                font-size: 0.875rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .form-input {
+                height: 48px;
+                border-radius: 8px;
+                font-size: 15px;
+                padding: 0 1rem;
+            }
+
+            .form-label {
+                font-size: 0.875rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .login-button {
+                height: 48px;
+                border-radius: 8px;
+                font-size: 1rem;
+            }
+
+            .register-button {
+                height: 44px;
+                border-radius: 8px;
+                font-size: 0.875rem;
+            }
+
+            .alert {
+                border-radius: 8px;
+                padding: 1rem;
+                font-size: 0.875rem;
+            }
+        }
+
+        /* Desktop styles (1024px and up) */
+        @media (min-width: 1024px) {
+            .app-container {
+                padding: 3rem;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                position: relative;
+            }
+
+            .app-container::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: url('data:image/svg+xml,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%23ffffff" fill-opacity="0.05"><circle cx="30" cy="30" r="1"/></g></g></svg>') repeat;
+                pointer-events: none;
+            }
+
+            .app-header {
+                padding: 2rem 2.5rem 1.5rem 2.5rem;
+            }
+
+            .app-logo {
+                width: 72px;
+                height: 72px;
+                border-radius: 16px;
+                margin-bottom: 1.25rem;
+            }
+
+            .app-title {
+                font-size: 1.75rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .app-subtitle {
+                font-size: 1rem;
+            }
+
+            .app-content {
+                max-width: 450px;
+                margin-top: 2rem;
+            }
+
+            .login-section {
+                border-radius: 16px;
+                padding: 2.5rem;
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .login-title {
+                font-size: 1.5rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .login-description {
+                font-size: 1rem;
+                margin-bottom: 2rem;
+            }
+
+            .form-group {
+                margin-bottom: 1.5rem;
+            }
+
+            .form-input {
+                height: 52px;
+                border-radius: 12px;
+                font-size: 16px;
+                padding: 0 1.25rem;
+                border-width: 1px;
+            }
+
+            .form-input:focus {
+                box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+            }
+
+            .form-label {
+                font-size: 1rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .password-toggle {
+                right: 1.25rem;
+            }
+
+            .remember-me {
+                margin-bottom: 2rem;
+            }
+
+            .remember-me input {
+                width: 1rem;
+                height: 1rem;
+                margin-right: 0.5rem;
+            }
+
+            .remember-me label {
+                font-size: 0.875rem;
+            }
+
+            .forgot-password {
+                font-size: 0.875rem;
+            }
+
+            .login-button {
+                height: 52px;
+                border-radius: 12px;
+                font-size: 1.125rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .register-link {
+                padding-top: 1.5rem;
+            }
+
+            .register-link p {
+                font-size: 0.875rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .register-button {
+                height: 48px;
+                border-radius: 12px;
+                font-size: 1rem;
+            }
+
+            .alert {
+                border-radius: 12px;
+                padding: 1.25rem;
+                font-size: 1rem;
+            }
+
+            .error-message {
+                font-size: 0.75rem;
+            }
+        }
+
+        /* Large desktop styles (1440px and up) */
+        @media (min-width: 1440px) {
+            .app-content {
+                max-width: 500px;
+            }
+
+            .login-section {
+                padding: 3rem;
+            }
+
+            .login-title {
+                font-size: 1.75rem;
+            }
+
+            .login-description {
+                font-size: 1.125rem;
+            }
+
+            .form-input {
+                height: 56px;
+                font-size: 17px;
+            }
+
+            .login-button {
+                height: 56px;
+                font-size: 1.25rem;
+            }
+        }
+
+        /* Mobile responsive adjustments for small screens */
         @media (max-height: 600px) {
             .app-header {
                 padding: 0.5rem 1rem 0.25rem 1rem;
@@ -490,6 +739,24 @@
                 padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
                 padding-left: max(0.5rem, env(safe-area-inset-left));
                 padding-right: max(0.5rem, env(safe-area-inset-right));
+            }
+
+            @media (min-width: 768px) {
+                .app-container {
+                    padding-top: max(2rem, env(safe-area-inset-top));
+                    padding-bottom: max(2rem, env(safe-area-inset-bottom));
+                    padding-left: max(2rem, env(safe-area-inset-left));
+                    padding-right: max(2rem, env(safe-area-inset-right));
+                }
+            }
+
+            @media (min-width: 1024px) {
+                .app-container {
+                    padding-top: max(3rem, env(safe-area-inset-top));
+                    padding-bottom: max(3rem, env(safe-area-inset-bottom));
+                    padding-left: max(3rem, env(safe-area-inset-left));
+                    padding-right: max(3rem, env(safe-area-inset-right));
+                }
             }
         }
     </style>
