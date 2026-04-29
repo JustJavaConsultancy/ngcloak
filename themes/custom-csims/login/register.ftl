@@ -2,7 +2,7 @@
 <#import "user-profile-commons.ftl" as userProfileCommons>
 <@layout.registrationLayout displayMessage=messagesPerField.exists('global') displayRequiredFields=true; section>
 <#if section = "header">
-    <title>CSIMS | Sign Up - Tertiary Registry & Records System</title>
+    <title>Kleek | Sign Up - Tertiary Registry & Records System</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -70,34 +70,24 @@
         }
 
         :root {
-            /* Color Palette */
-            --primary-50: #f0f9ff;
-            --primary-100: #e0f2fe;
-            --primary-200: #bae6fd;
-            --primary-300: #7dd3fc;
-            --primary-400: #38bdf8;
-            --primary-500: #0ea5e9;
-            --primary-600: #0284c7;
-            --primary-700: #0369a1;
-            --primary-800: #075985;
-            --primary-900: #0c4a6e;
-            --primary-950: #082f49;
+            /* Kleek Color Palette */
+            --oxford-navy: #042d62;
+            --oxford-navy-light: #0a4080;
+            --oxford-navy-dark: #021a3a;
+            --light-green: #7de19a;
+            --light-green-light: #9de8b3;
+            --light-green-dark: #5dd981;
+            --light-turquoise: #e4fff6;
+            --light-turquoise-dark: #d0f5e8;
+            --onyx: #121212;
+            --onyx-light: #2a2a2a;
+            --bright-snow: #f9f9f9;
+            --bright-snow-dark: #f0f0f0;
 
-            --gray-50: #f8fafc;
-            --gray-100: #f1f5f9;
-            --gray-200: #e2e8f0;
-            --gray-300: #cbd5e1;
-            --gray-400: #94a3b8;
-            --gray-500: #64748b;
-            --gray-600: #475569;
-            --gray-700: #334155;
-            --gray-800: #1e293b;
-            --gray-900: #0f172a;
-            --gray-950: #020617;
-
-            --success-50: #f0fdf4;
-            --success-500: #22c55e;
-            --success-600: #16a34a;
+            /* Extended palette for UI elements */
+            --success-50: #e4fff6;
+            --success-500: #7de19a;
+            --success-600: #5dd981;
 
             --error-50: #fef2f2;
             --error-500: #ef4444;
@@ -155,8 +145,8 @@
             font-family: var(--font-family) !important;
             font-size: var(--font-size-base) !important;
             line-height: 1.6 !important;
-            color: var(--gray-900) !important;
-            background-color: var(--gray-50) !important;
+            color: var(--onyx) !important;
+            background-color: var(--bright-snow) !important;
             -webkit-font-smoothing: antialiased !important;
             -moz-osx-font-smoothing: grayscale !important;
             height: 100% !important;
@@ -167,13 +157,13 @@
         .auth-container {
             display: flex;
             min-height: 100vh;
-            background: linear-gradient(135deg, var(--primary-50) 0%, var(--gray-50) 100%);
+            background: linear-gradient(135deg, var(--light-turquoise) 0%, var(--bright-snow) 100%);
         }
 
         /* Mobile header */
         .mobile-header {
             display: none;
-            background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-800) 100%);
+            background: linear-gradient(135deg, var(--oxford-navy) 0%, var(--oxford-navy-dark) 100%);
             color: white;
             padding: var(--spacing-4) var(--spacing-6);
             text-align: center;
@@ -188,8 +178,8 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/><circle cx="10" cy="60" r="0.5" fill="white" opacity="0.1"/><circle cx="90" cy="40" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-            opacity: 0.3;
+            background: linear-gradient(45deg, var(--light-green) 0%, transparent 50%, var(--light-turquoise) 100%);
+            opacity: 0.1;
         }
 
         .mobile-logo {
@@ -198,6 +188,7 @@
             margin-bottom: var(--spacing-1);
             position: relative;
             z-index: 1;
+            color: var(--light-green);
         }
 
         .mobile-subtitle {
@@ -214,7 +205,7 @@
             align-items: center;
             justify-content: center;
             padding: var(--spacing-8);
-            background: var(--gray-50);
+            background: var(--bright-snow);
             position: relative;
         }
 
@@ -225,7 +216,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(135deg, var(--primary-50) 0%, transparent 50%);
+            background: linear-gradient(135deg, var(--light-turquoise) 0%, transparent 50%);
             opacity: 0.3;
             pointer-events: none;
         }
@@ -245,14 +236,14 @@
         .form-title {
             font-size: var(--font-size-3xl);
             font-weight: 700;
-            color: var(--gray-900);
+            color: var(--oxford-navy);
             margin-bottom: var(--spacing-2);
             letter-spacing: -0.025em;
         }
 
         .form-subtitle {
             font-size: var(--font-size-lg);
-            color: var(--gray-600);
+            color: var(--onyx-light);
             font-weight: 400;
         }
 
@@ -281,7 +272,7 @@
         .form-label {
             font-size: var(--font-size-sm);
             font-weight: 600;
-            color: var(--gray-700);
+            color: var(--oxford-navy);
             letter-spacing: 0.025em;
         }
 
@@ -294,7 +285,7 @@
         .form-input {
             width: 100%;
             padding: var(--spacing-3) var(--spacing-4);
-            border: 2px solid var(--gray-200);
+            border: 2px solid var(--light-turquoise-dark);
             border-radius: var(--radius-md);
             font-size: var(--font-size-base);
             font-family: var(--font-family);
@@ -311,8 +302,8 @@
         }
 
         .form-input:focus {
-            border-color: var(--primary-500);
-            box-shadow: 0 0 0 3px var(--primary-100);
+            border-color: var(--light-green);
+            box-shadow: 0 0 0 3px var(--light-turquoise);
         }
 
         .form-input.error {
@@ -324,7 +315,7 @@
         }
 
         .form-input::placeholder {
-            color: var(--gray-400);
+            color: var(--onyx-light);
         }
 
         .input-icon {
@@ -332,13 +323,13 @@
             right: var(--spacing-3);
             width: 20px;
             height: 20px;
-            color: var(--gray-400);
+            color: var(--onyx-light);
             pointer-events: none;
             transition: color var(--transition-normal);
         }
 
         .form-input:focus + .input-icon {
-            color: var(--primary-500);
+            color: var(--light-green);
         }
 
         .password-toggle {
@@ -348,12 +339,12 @@
             border: none;
             cursor: pointer;
             padding: var(--spacing-1);
-            color: var(--gray-400);
+            color: var(--onyx-light);
             transition: color var(--transition-normal);
         }
 
         .password-toggle:hover {
-            color: var(--gray-600);
+            color: var(--oxford-navy);
         }
 
         .password-toggle .input-icon {
@@ -364,8 +355,8 @@
 
         /* Buttons */
         .btn-primary {
-            background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-700) 100%);
-            color: white;
+            background: linear-gradient(135deg, var(--light-green) 0%, var(--light-green-dark) 100%);
+            color: var(--oxford-navy);
             border: none;
             padding: var(--spacing-4) var(--spacing-6);
             border-radius: var(--radius-md);
@@ -379,7 +370,7 @@
         }
 
         .btn-primary:hover:not(:disabled) {
-            background: linear-gradient(135deg, var(--primary-700) 0%, var(--primary-800) 100%);
+            background: linear-gradient(135deg, var(--light-green-dark) 0%, var(--light-green) 100%);
             box-shadow: var(--shadow-md);
             transform: translateY(-1px);
         }
@@ -397,7 +388,7 @@
 
         .btn-secondary {
             background: transparent;
-            color: var(--primary-600);
+            color: var(--oxford-navy);
             border: none;
             padding: 0;
             font-size: var(--font-size-base);
@@ -411,7 +402,7 @@
         }
 
         .btn-secondary:hover {
-            color: var(--primary-700);
+            color: var(--light-green);
             text-decoration: underline;
         }
 
@@ -419,11 +410,11 @@
             text-align: center;
             margin-top: var(--spacing-4);
             padding-top: var(--spacing-4);
-            border-top: 1px solid var(--gray-200);
+            border-top: 1px solid var(--light-turquoise-dark);
         }
 
         .form-footer-text {
-            color: var(--gray-600);
+            color: var(--onyx-light);
             font-size: var(--font-size-sm);
             margin-bottom: 0;
             display: inline;
@@ -436,7 +427,7 @@
         /* Illustration Section */
         .auth-illustration-section {
             flex: 1;
-            background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-800) 100%);
+            background: linear-gradient(135deg, var(--oxford-navy) 0%, var(--oxford-navy-dark) 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -454,8 +445,8 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/><circle cx="10" cy="60" r="0.5" fill="white" opacity="0.1"/><circle cx="90" cy="40" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-            opacity: 0.3;
+            background: linear-gradient(45deg, var(--light-green) 0%, transparent 50%, var(--light-turquoise) 100%);
+            opacity: 0.1;
         }
 
         .illustration-content {
@@ -473,7 +464,7 @@
         .illustration-title {
             font-size: var(--font-size-4xl);
             font-weight: 700;
-            color: white;
+            color: var(--light-green);
             margin-bottom: var(--spacing-3);
             letter-spacing: -0.025em;
         }
@@ -481,7 +472,7 @@
         .illustration-subtitle {
             font-size: var(--font-size-lg);
             font-weight: 500;
-            color: var(--primary-100);
+            color: var(--light-turquoise);
             margin-bottom: var(--spacing-2);
             letter-spacing: -0.01em;
         }
@@ -514,22 +505,22 @@
             align-items: center;
             gap: var(--spacing-2);
             padding: var(--spacing-2) var(--spacing-3);
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(125, 225, 154, 0.1);
             border-radius: var(--radius-md);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(125, 225, 154, 0.2);
             transition: all var(--transition-normal);
         }
 
         .feature-item:hover {
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(125, 225, 154, 0.15);
             transform: translateY(-2px);
         }
 
         .feature-icon {
             width: 20px;
             height: 20px;
-            color: white;
+            color: var(--light-green);
             flex-shrink: 0;
         }
 
@@ -562,19 +553,19 @@
         .alert-error {
             background-color: var(--error-50);
             color: var(--error-600);
-            border-color: var(--error-200);
+            border-color: var(--error-500);
         }
 
         .alert-success {
             background-color: var(--success-50);
             color: var(--success-600);
-            border-color: var(--success-200);
+            border-color: var(--success-500);
         }
 
         .alert-info {
-            background-color: var(--primary-50);
-            color: var(--primary-600);
-            border-color: var(--primary-200);
+            background-color: var(--light-turquoise);
+            color: var(--oxford-navy);
+            border-color: var(--light-green);
         }
 
         /* Responsive Design */
@@ -702,7 +693,7 @@
 
 <!-- Mobile header (only visible on mobile) -->
 <div class="mobile-header">
-    <div class="mobile-logo">CSIMS</div>
+    <div class="mobile-logo">Kleek</div>
     <div class="mobile-subtitle">Tertiary Registry & Records System</div>
 </div>
 
@@ -712,7 +703,7 @@
         <div class="form-container">
             <header class="form-header">
                 <h1 class="form-title">Create Account</h1>
-                <p class="form-subtitle">Join the CSIMS platform</p>
+                <p class="form-subtitle">Join the Kleek platform</p>
             </header>
 
             <#if message?has_content && (message.type != 'warning' || !isAppInitiatedAction??)>
@@ -884,7 +875,7 @@
     <section class="auth-illustration-section">
         <div class="illustration-content">
             <header class="illustration-header">
-                <h2 class="illustration-title">CSIMS</h2>
+                <h2 class="illustration-title">Kleek</h2>
                 <h3 class="illustration-subtitle">Tertiary Registry & Records System</h3>
             </header>
 
@@ -1165,5 +1156,3 @@ document.addEventListener("DOMContentLoaded", function () {
 
 </#if>
 </@layout.registrationLayout>
-
-
