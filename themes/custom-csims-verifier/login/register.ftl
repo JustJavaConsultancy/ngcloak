@@ -2,7 +2,7 @@
 <#import "user-profile-commons.ftl" as userProfileCommons>
 <@layout.registrationLayout displayMessage=messagesPerField.exists('global') displayRequiredFields=true; section>
 <#if section = "header">
-    <title>CSIMS | Verifier Registration - Credential Verification Portal</title>
+    <title>Kleek | Verifier Registration - Credential Verification Portal</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -70,39 +70,57 @@
         }
 
         :root {
-            /* Color Palette */
-            --primary-50: #f0f9ff;
-            --primary-100: #e0f2fe;
-            --primary-200: #bae6fd;
-            --primary-300: #7dd3fc;
-            --primary-400: #38bdf8;
-            --primary-500: #0ea5e9;
-            --primary-600: #0284c7;
-            --primary-700: #0369a1;
-            --primary-800: #075985;
-            --primary-900: #0c4a6e;
-            --primary-950: #082f49;
+            /* Kleek Color Palette */
+            --oxford-navy: #042d62;
+            --light-green: #7de19a;
+            --light-turquoise: #e4fff6;
+            --onyx: #121212;
+            --bright-snow: #f9f9f9;
 
-            --gray-50: #f8fafc;
-            --gray-100: #f1f5f9;
-            --gray-200: #e2e8f0;
-            --gray-300: #cbd5e1;
-            --gray-400: #94a3b8;
-            --gray-500: #64748b;
-            --gray-600: #475569;
-            --gray-700: #334155;
-            --gray-800: #1e293b;
-            --gray-900: #0f172a;
-            --gray-950: #020617;
+            /* Primary colors based on oxford navy */
+            --primary-50: #e8f0ff;
+            --primary-100: #d1e1ff;
+            --primary-200: #a3c3ff;
+            --primary-300: #759eff;
+            --primary-400: #4779ff;
+            --primary-500: #1954ff;
+            --primary-600: #042d62;
+            --primary-700: #032451;
+            --primary-800: #021b40;
+            --primary-900: #01122f;
+            --primary-950: #000a1e;
 
-            --success-50: #f0fdf4;
-            --success-500: #22c55e;
-            --success-600: #16a34a;
+            /* Gray colors based on onyx and bright snow */
+            --gray-50: #f9f9f9;
+            --gray-100: #f1f1f1;
+            --gray-200: #e4e4e4;
+            --gray-300: #d1d1d1;
+            --gray-400: #a8a8a8;
+            --gray-500: #7f7f7f;
+            --gray-600: #565656;
+            --gray-700: #3d3d3d;
+            --gray-800: #242424;
+            --gray-900: #121212;
+            --gray-950: #0a0a0a;
 
+            /* Success colors based on light green */
+            --success-50: #e4fff6;
+            --success-100: #c9ffed;
+            --success-200: #93ffdb;
+            --success-300: #5dffc9;
+            --success-400: #27ffb7;
+            --success-500: #7de19a;
+            --success-600: #64b47a;
+            --success-700: #4b875b;
+            --success-800: #325a3c;
+            --success-900: #192d1e;
+
+            /* Error colors */
             --error-50: #fef2f2;
             --error-500: #ef4444;
             --error-600: #dc2626;
 
+            /* Warning colors */
             --warning-50: #fffbeb;
             --warning-500: #f59e0b;
             --warning-600: #d97706;
@@ -167,13 +185,13 @@
         .auth-container {
             display: flex;
             min-height: 100vh;
-            background: linear-gradient(135deg, var(--primary-50) 0%, var(--gray-50) 100%);
+            background: linear-gradient(135deg, var(--light-turquoise) 0%, var(--gray-50) 100%);
         }
 
         /* Mobile header */
         .mobile-header {
             display: none;
-            background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-800) 100%);
+            background: linear-gradient(135deg, var(--oxford-navy) 0%, var(--primary-800) 100%);
             color: white;
             padding: var(--spacing-4) var(--spacing-6);
             text-align: center;
@@ -225,7 +243,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(135deg, var(--primary-50) 0%, transparent 50%);
+            background: linear-gradient(135deg, var(--light-turquoise) 0%, transparent 50%);
             opacity: 0.3;
             pointer-events: none;
         }
@@ -311,8 +329,8 @@
         }
 
         .form-input:focus {
-            border-color: var(--primary-500);
-            box-shadow: 0 0 0 3px var(--primary-100);
+            border-color: var(--oxford-navy);
+            box-shadow: 0 0 0 3px rgba(4, 45, 98, 0.1);
         }
 
         .form-input.error {
@@ -338,7 +356,7 @@
         }
 
         .form-input:focus + .input-icon {
-            color: var(--primary-500);
+            color: var(--oxford-navy);
         }
 
         .password-toggle {
@@ -364,7 +382,7 @@
 
         /* Buttons */
         .btn-primary {
-            background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-700) 100%);
+            background: linear-gradient(135deg, var(--oxford-navy) 0%, var(--primary-700) 100%);
             color: white;
             border: none;
             padding: var(--spacing-4) var(--spacing-6);
@@ -397,7 +415,7 @@
 
         .btn-secondary {
             background: transparent;
-            color: var(--primary-600);
+            color: var(--oxford-navy);
             border: none;
             padding: 0;
             font-size: var(--font-size-base);
@@ -436,7 +454,7 @@
         /* Illustration Section */
         .auth-illustration-section {
             flex: 1;
-            background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-800) 100%);
+            background: linear-gradient(135deg, var(--oxford-navy) 0%, var(--primary-800) 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -481,7 +499,7 @@
         .illustration-subtitle {
             font-size: var(--font-size-lg);
             font-weight: 500;
-            color: var(--primary-100);
+            color: var(--light-turquoise);
             margin-bottom: var(--spacing-2);
             letter-spacing: -0.01em;
         }
@@ -514,22 +532,22 @@
             align-items: center;
             gap: var(--spacing-2);
             padding: var(--spacing-2) var(--spacing-3);
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(228, 255, 246, 0.1);
             border-radius: var(--radius-md);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(228, 255, 246, 0.2);
             transition: all var(--transition-normal);
         }
 
         .feature-item:hover {
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(228, 255, 246, 0.15);
             transform: translateY(-2px);
         }
 
         .feature-icon {
             width: 20px;
             height: 20px;
-            color: white;
+            color: var(--light-green);
             flex-shrink: 0;
         }
 
@@ -572,9 +590,9 @@
         }
 
         .alert-info {
-            background-color: var(--primary-50);
-            color: var(--primary-600);
-            border-color: var(--primary-200);
+            background-color: var(--light-turquoise);
+            color: var(--oxford-navy);
+            border-color: var(--light-green);
         }
 
         /* Responsive Design */
@@ -702,7 +720,7 @@
 
 <!-- Mobile header (only visible on mobile) -->
 <div class="mobile-header">
-    <div class="mobile-logo">CSIMS</div>
+    <div class="mobile-logo">Kleek</div>
     <div class="mobile-subtitle">Credential Verification Portal</div>
 </div>
 
@@ -882,7 +900,7 @@
     <section class="auth-illustration-section">
         <div class="illustration-content">
             <header class="illustration-header">
-                <h2 class="illustration-title">CSIMS</h2>
+                <h2 class="illustration-title">Kleek</h2>
                 <h3 class="illustration-subtitle">Credential Verification Portal</h3>
             </header>
 
