@@ -72,55 +72,27 @@
         :root {
             /* Kleek Color Palette */
             --oxford-navy: #042d62;
+            --oxford-navy-light: #0a4080;
+            --oxford-navy-dark: #021a3a;
             --light-green: #7de19a;
+            --light-green-light: #9de8b3;
+            --light-green-dark: #5dd981;
             --light-turquoise: #e4fff6;
+            --light-turquoise-dark: #d0f5e8;
             --onyx: #121212;
+            --onyx-light: #2a2a2a;
             --bright-snow: #f9f9f9;
+            --bright-snow-dark: #f0f0f0;
 
-            /* Primary colors based on oxford navy */
-            --primary-50: #e8f0ff;
-            --primary-100: #d1e1ff;
-            --primary-200: #a3c3ff;
-            --primary-300: #759eff;
-            --primary-400: #4779ff;
-            --primary-500: #1954ff;
-            --primary-600: #042d62;
-            --primary-700: #032451;
-            --primary-800: #021b40;
-            --primary-900: #01122f;
-            --primary-950: #000a1e;
-
-            /* Gray colors based on onyx and bright snow */
-            --gray-50: #f9f9f9;
-            --gray-100: #f1f1f1;
-            --gray-200: #e4e4e4;
-            --gray-300: #d1d1d1;
-            --gray-400: #a8a8a8;
-            --gray-500: #7f7f7f;
-            --gray-600: #565656;
-            --gray-700: #3d3d3d;
-            --gray-800: #242424;
-            --gray-900: #121212;
-            --gray-950: #0a0a0a;
-
-            /* Success colors based on light green */
+            /* Extended palette for UI elements */
             --success-50: #e4fff6;
-            --success-100: #c9ffed;
-            --success-200: #93ffdb;
-            --success-300: #5dffc9;
-            --success-400: #27ffb7;
             --success-500: #7de19a;
-            --success-600: #64b47a;
-            --success-700: #4b875b;
-            --success-800: #325a3c;
-            --success-900: #192d1e;
+            --success-600: #5dd981;
 
-            /* Error colors */
             --error-50: #fef2f2;
             --error-500: #ef4444;
             --error-600: #dc2626;
 
-            /* Warning colors */
             --warning-50: #fffbeb;
             --warning-500: #f59e0b;
             --warning-600: #d97706;
@@ -173,8 +145,8 @@
             font-family: var(--font-family) !important;
             font-size: var(--font-size-base) !important;
             line-height: 1.6 !important;
-            color: var(--gray-900) !important;
-            background-color: var(--gray-50) !important;
+            color: var(--onyx) !important;
+            background-color: var(--bright-snow) !important;
             -webkit-font-smoothing: antialiased !important;
             -moz-osx-font-smoothing: grayscale !important;
             height: 100% !important;
@@ -185,13 +157,13 @@
         .auth-container {
             display: flex;
             min-height: 100vh;
-            background: linear-gradient(135deg, var(--light-turquoise) 0%, var(--gray-50) 100%);
+            background: linear-gradient(135deg, var(--light-turquoise) 0%, var(--bright-snow) 100%);
         }
 
         /* Mobile header */
         .mobile-header {
             display: none;
-            background: linear-gradient(135deg, var(--oxford-navy) 0%, var(--primary-800) 100%);
+            background: linear-gradient(135deg, var(--oxford-navy) 0%, var(--oxford-navy-dark) 100%);
             color: white;
             padding: var(--spacing-4) var(--spacing-6);
             text-align: center;
@@ -206,8 +178,8 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/><circle cx="10" cy="60" r="0.5" fill="white" opacity="0.1"/><circle cx="90" cy="40" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-            opacity: 0.3;
+            background: linear-gradient(45deg, var(--light-green) 0%, transparent 50%, var(--light-turquoise) 100%);
+            opacity: 0.1;
         }
 
         .mobile-logo {
@@ -216,6 +188,7 @@
             margin-bottom: var(--spacing-1);
             position: relative;
             z-index: 1;
+            color: var(--light-green);
         }
 
         .mobile-subtitle {
@@ -232,7 +205,7 @@
             align-items: center;
             justify-content: center;
             padding: var(--spacing-8);
-            background: var(--gray-50);
+            background: var(--bright-snow);
             position: relative;
         }
 
@@ -263,14 +236,14 @@
         .form-title {
             font-size: var(--font-size-3xl);
             font-weight: 700;
-            color: var(--gray-900);
+            color: var(--oxford-navy);
             margin-bottom: var(--spacing-2);
             letter-spacing: -0.025em;
         }
 
         .form-subtitle {
             font-size: var(--font-size-lg);
-            color: var(--gray-600);
+            color: var(--onyx-light);
             font-weight: 400;
         }
 
@@ -299,7 +272,7 @@
         .form-label {
             font-size: var(--font-size-sm);
             font-weight: 600;
-            color: var(--gray-700);
+            color: var(--oxford-navy);
             letter-spacing: 0.025em;
         }
 
@@ -312,7 +285,7 @@
         .form-input {
             width: 100%;
             padding: var(--spacing-3) var(--spacing-4);
-            border: 2px solid var(--gray-200);
+            border: 2px solid var(--light-turquoise-dark);
             border-radius: var(--radius-md);
             font-size: var(--font-size-base);
             font-family: var(--font-family);
@@ -329,8 +302,8 @@
         }
 
         .form-input:focus {
-            border-color: var(--oxford-navy);
-            box-shadow: 0 0 0 3px rgba(4, 45, 98, 0.1);
+            border-color: var(--light-green);
+            box-shadow: 0 0 0 3px var(--light-turquoise);
         }
 
         .form-input.error {
@@ -342,7 +315,7 @@
         }
 
         .form-input::placeholder {
-            color: var(--gray-400);
+            color: var(--onyx-light);
         }
 
         .input-icon {
@@ -350,13 +323,13 @@
             right: var(--spacing-3);
             width: 20px;
             height: 20px;
-            color: var(--gray-400);
+            color: var(--onyx-light);
             pointer-events: none;
             transition: color var(--transition-normal);
         }
 
         .form-input:focus + .input-icon {
-            color: var(--oxford-navy);
+            color: var(--light-green);
         }
 
         .password-toggle {
@@ -366,12 +339,12 @@
             border: none;
             cursor: pointer;
             padding: var(--spacing-1);
-            color: var(--gray-400);
+            color: var(--onyx-light);
             transition: color var(--transition-normal);
         }
 
         .password-toggle:hover {
-            color: var(--gray-600);
+            color: var(--oxford-navy);
         }
 
         .password-toggle .input-icon {
@@ -382,8 +355,8 @@
 
         /* Buttons */
         .btn-primary {
-            background: linear-gradient(135deg, var(--oxford-navy) 0%, var(--primary-700) 100%);
-            color: white;
+            background: linear-gradient(135deg, var(--light-green) 0%, var(--light-green-dark) 100%);
+            color: var(--oxford-navy);
             border: none;
             padding: var(--spacing-4) var(--spacing-6);
             border-radius: var(--radius-md);
@@ -397,7 +370,7 @@
         }
 
         .btn-primary:hover:not(:disabled) {
-            background: linear-gradient(135deg, var(--primary-700) 0%, var(--primary-800) 100%);
+            background: linear-gradient(135deg, var(--light-green-dark) 0%, var(--light-green) 100%);
             box-shadow: var(--shadow-md);
             transform: translateY(-1px);
         }
@@ -429,7 +402,7 @@
         }
 
         .btn-secondary:hover {
-            color: var(--primary-700);
+            color: var(--light-green);
             text-decoration: underline;
         }
 
@@ -437,11 +410,11 @@
             text-align: center;
             margin-top: var(--spacing-4);
             padding-top: var(--spacing-4);
-            border-top: 1px solid var(--gray-200);
+            border-top: 1px solid var(--light-turquoise-dark);
         }
 
         .form-footer-text {
-            color: var(--gray-600);
+            color: var(--onyx-light);
             font-size: var(--font-size-sm);
             margin-bottom: 0;
             display: inline;
@@ -454,7 +427,7 @@
         /* Illustration Section */
         .auth-illustration-section {
             flex: 1;
-            background: linear-gradient(135deg, var(--oxford-navy) 0%, var(--primary-800) 100%);
+            background: linear-gradient(135deg, var(--oxford-navy) 0%, var(--oxford-navy-dark) 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -472,8 +445,8 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/><circle cx="10" cy="60" r="0.5" fill="white" opacity="0.1"/><circle cx="90" cy="40" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-            opacity: 0.3;
+            background: linear-gradient(45deg, var(--light-green) 0%, transparent 50%, var(--light-turquoise) 100%);
+            opacity: 0.1;
         }
 
         .illustration-content {
@@ -491,7 +464,7 @@
         .illustration-title {
             font-size: var(--font-size-4xl);
             font-weight: 700;
-            color: white;
+            color: var(--light-green);
             margin-bottom: var(--spacing-3);
             letter-spacing: -0.025em;
         }
@@ -532,15 +505,15 @@
             align-items: center;
             gap: var(--spacing-2);
             padding: var(--spacing-2) var(--spacing-3);
-            background: rgba(228, 255, 246, 0.1);
+            background: rgba(125, 225, 154, 0.1);
             border-radius: var(--radius-md);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(228, 255, 246, 0.2);
+            border: 1px solid rgba(125, 225, 154, 0.2);
             transition: all var(--transition-normal);
         }
 
         .feature-item:hover {
-            background: rgba(228, 255, 246, 0.15);
+            background: rgba(125, 225, 154, 0.15);
             transform: translateY(-2px);
         }
 
@@ -580,13 +553,13 @@
         .alert-error {
             background-color: var(--error-50);
             color: var(--error-600);
-            border-color: var(--error-200);
+            border-color: var(--error-500);
         }
 
         .alert-success {
             background-color: var(--success-50);
             color: var(--success-600);
-            border-color: var(--success-200);
+            border-color: var(--success-500);
         }
 
         .alert-info {
