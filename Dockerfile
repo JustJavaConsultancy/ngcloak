@@ -12,6 +12,10 @@ ENV KC_DB_URL=jdbc:postgresql://dpg-cuu5ag1opnds739t6gs0-a.oregon-postgres.rende
 ENV KC_DB_USERNAME=techrunch
 ENV KC_DB_PASSWORD=ZfNqijcx0TcRIopJ5f46VNYxPZBaVFtZ
 
+ENV KC_SPI_EVENTS_LISTENER_ACCOUNT_LOCK_LISTENER_SERVERURL=https://ngcloak.onrender.com
+ENV KC_SPI_EVENTS_LISTENER_ACCOUNT_LOCK_LISTENER_CLIENTID=admin-client
+ENV KC_SPI_EVENTS_LISTENER_ACCOUNT_LOCK_LISTENER_CLIENTSECRET=Q9G8MRU3WRcIyw4prqVZeD2YNljvNFAh
+
 # Add custom theme
 COPY themes /opt/keycloak/themes
 COPY providers /opt/keycloak/providers
