@@ -1,0 +1,241 @@
+@import url("https://db.onlinewebfonts.com/c/3ddd0e3d1a076e112b27d8d9b7e20200?family=Basis+Grotesque+Pro");
+:root {
+  --primary-blue: #0c74b1;
+  --light-blue: #cfe5f2;
+  --dark-blue: #005a9e;
+  --text-color: #405979;
+  --light-gray: #fff;
+  --darker-blue: #062c5a;
+}
+
+.login-pf-page {
+  padding-top: 0;
+}
+.login-pf-page-header {
+  display: none;
+}
+.login-pf-page .card-pf {
+  padding: 0;
+  margin: 0;
+}
+
+.login-pf-page .login-pf-header {
+  margin-top: 0;
+  margin-bottom: 0;
+  display: none;
+}
+.login-pf-page .form-control {
+  height: AUTO;
+  box-shadow: none;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #fff;
+  font-family: "Basis Grotesque Pro";
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+/* CUSTOM STYLINGS */
+p {
+  font-size: 14px;
+}
+.darker-text {
+  color: #062c5a;
+}
+.dark-text {
+  color: #313957;
+}
+.input-field {
+  background: rgb(250, 250, 250);
+  color: #062c5a;
+  border: none;
+  padding: 1rem;
+  border-radius: 6px;
+}
+.input-field:focus {
+  background: rgb(250, 250, 250);
+  color: #062c5a;
+  border: none;
+  padding: 1rem;
+  border-radius: 6px;
+}
+
+.custom-span {
+  color: #828fa3;
+}
+
+.select-field {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-chevron-down' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  option {
+    background: white;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 10px;
+  }
+}
+.input-small-text {
+  font-size: 14px;
+}
+
+.login-pf-page .btn-primary {
+  margin-top: 0;
+  background-color: #0c74b1;
+  padding: 1rem;
+  font-weight: bold;
+  &:hover {
+    background-color: #2482b9;
+  }
+}
+
+.disabled-button {
+  background-color: #cfe5f2;
+}
+
+a {
+  color: #0c74b1;
+  text-decoration: none;
+}
+/* STYLING ONBOARDING PAGE */
+.form-container {
+  padding: 4rem 0;
+}
+.left-panel {
+  background: linear-gradient(#0c74b116, #0c74b1),
+    url("../img/blueImage.png") no-repeat center center/cover;
+  background-size: cover;
+  width: 25%;
+  display: block;
+}
+.right-panel {
+  margin-left: 25%;
+  width: 75%;
+}
+.form-container {
+  margin: auto auto;
+  padding: auto;
+  width: 50%;
+}
+
+/* Password Requirements Styling */
+.password-toggle {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: var(--primary-blue);
+}
+
+.password-requirements {
+  font-size: 0.75rem;
+  display: none;
+  margin-top: 0.5rem;
+  padding: 1rem;
+  background-color: var(--bs-light);
+  border-radius: 0.25rem;
+}
+
+.password-requirements.visible {
+  display: block;
+}
+
+.password-requirement {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.password-requirement.valid {
+  color: var(--bs-success);
+}
+
+.password-requirement.invalid {
+  color: var(--bs-body-color);
+}
+
+.password-toggle {
+  cursor: pointer;
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  color: var(--bs-primary);
+}
+
+.password-input-wrapper {
+  position: relative;
+}
+
+.password-error {
+  color: var(--bs-danger);
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  display: none;
+}
+
+.password-error.visible {
+  display: block;
+}
+
+.custom-dropdown {
+  position: relative;
+  .dropdown-list {
+    background-color: #fff;
+    border-radius: 6px;
+    position: absolute;
+    box-shadow: -2px 4px 4.6px rgba(0, 0, 0, 0.15);
+    display: none;
+    p {
+      padding: 1rem 2rem;
+      margin: 0;
+      border-bottom: 2px solid #efefef;
+      &:hover {
+        background-color: #efefef;
+      }
+    }
+  }
+  &.active .dropdown-list {
+    display: block;
+  }
+}
+
+/* SMALL SCREEN STYLING */
+@media (max-width: 900px) {
+  .left-panel {
+    display: none;
+  }
+
+  .right-panel {
+    width: 100%;
+    margin-left: 0;
+  }
+  .form-container {
+    width: 100%;
+    margin: 0 2rem;
+  }
+}
+
+/* Remove number input spinners (Chrome, Safari, Edge) */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Remove number input spinners (Firefox) */
+input[type="number"] {
+  -moz-appearance: textfield;
+}

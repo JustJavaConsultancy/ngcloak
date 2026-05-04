@@ -235,6 +235,19 @@
                 justify-content: center;
                 gap: 5px;
             }
+
+            /* Mobile form input styles with sharp edges */
+            .form-input {
+                border-radius: 0 !important;
+            }
+
+            .btn-primary {
+                border-radius: 0 !important;
+            }
+
+            .input-group-text {
+                border-radius: 0 !important;
+            }
         }
 
         /* Form Styles */
@@ -257,6 +270,37 @@
             font-weight: 500;
             color: #374151;
             font-size: 14px;
+        }
+
+        /* Mobile font size adjustments */
+        @media (max-width: 899px) {
+            .form-title {
+                font-size: 20px;
+            }
+
+            .form-subtitle {
+                font-size: 13px;
+            }
+
+            .form-label {
+                font-size: 12px;
+            }
+
+            .form-input {
+                font-size: 14px;
+            }
+
+            .btn-primary {
+                font-size: 14px;
+            }
+
+            .mobile-footer-link {
+                font-size: 12px;
+            }
+
+            .mobile-security-note {
+                font-size: 10px;
+            }
         }
 
         .form-input {
@@ -452,7 +496,7 @@
             }
 
             .form-title {
-                font-size: 22px;
+                font-size: 18px;
             }
 
             .row {

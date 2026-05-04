@@ -63,8 +63,11 @@
                                     <#elseif !realm.registrationEmailAsUsername>${msg("usernameOrEmail")}
                                     <#else>${msg("email")}</#if>
                                 </label>
-                                <input type="text" class="form-control custom-input " id="username" name="username" value="${(login.username!'')}" autofocus autocomplete="username"
-                                    aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>">
+                                <div class="input-wrapper">
+                                    <i class="fas fa-user input-icon d-lg-none"></i>
+                                    <input type="text" class="form-control custom-input" id="username" name="username" value="${(login.username!'')}" autofocus autocomplete="username"
+                                        aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>">
+                                </div>
                                 <#if messagesPerField.existsError('username','password')>
                                     <span id="input-error" class="form-error" aria-live="polite">
                                         ${kcSanitize(messagesPerField.getFirstError('username','password'))?no_esc}
@@ -76,11 +79,14 @@
                             <div class="mb-3">
                                 <label for="password" class="form-label">${msg("password")}</label>
                                 <div class="position-relative">
-                                    <input type="password" class="form-control custom-input" id="password" name="password" autocomplete="current-password"
-                                        aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>">
-                                    <span class="password-toggle" id="togglePassword">
-                                        <i class="fa-regular fa-eye"></i>
-                                    </span>
+                                    <div class="input-wrapper">
+                                        <i class="fas fa-lock input-icon d-lg-none"></i>
+                                        <input type="password" class="form-control custom-input" id="password" name="password" autocomplete="current-password"
+                                            aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>">
+                                        <span class="password-toggle" id="togglePassword">
+                                            <i class="fa-regular fa-eye"></i>
+                                        </span>
+                                    </div>
                                 </div>
                                 <#if messagesPerField.existsError('username','password')>
                                     <span id="input-error" class="form-error" aria-live="polite">
@@ -107,9 +113,14 @@
                                 </#if>
                             </div>
 
-
                             <!-- Login Button -->
-                            <button type="submit" class="btn btn-login w-100 mb-4" id="kc-login">${msg("doLogIn")}</button>
+                            <button type="submit" class="btn btn-login w-100 mb-4" id="kc-login">
+    ${msg("doLogIn")}
+</button>
+
+<button type="button" class="btn btn-outline-secondary w-100 mb-3" id="fingerprint-login">
+    <i class="fas fa-fingerprint"></i> Login with Fingerprint
+</button>
 
                             <!-- Registration Link -->
                             <div class="text-center">
@@ -138,8 +149,58 @@
             </div>
         </div>
 
+        <!-- Mobile Loading Overlay -->
+        <div id="mobile-loading-overlay" class="mobile-loading-overlay d-lg-none">
+            <div class="loading-content">
+                <div class="spinner"></div>
+                <p>Signing you in…</p>
+            </div>
+        </div>
+
         <!-- Bootstrap JS Bundle with Popper -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+
+document.addEventListener("deviceready", function () {
+
+    const fingerprintBtn = document.getElementById("fingerprint-login");
+
+    if (!fingerprintBtn) return;
+
+    fingerprintBtn.addEventListener("click", function () {
+
+        if (!window.Fingerprint) {
+            alert("Biometric authentication not supported on this device");
+            return;
+        }
+
+        Fingerprint.show({
+            title: "BluePay Login",
+            subtitle: "Authenticate to continue",
+            description: "Place your finger on the sensor",
+            disableBackup: false
+        },
+
+        function success() {
+
+            console.log("Fingerprint success");
+
+            document.getElementById("kc-form-login").submit();
+
+        },
+
+        function error(err) {
+
+            console.log("Fingerprint error:", err);
+            alert("Fingerprint authentication failed");
+
+        });
+
+    });
+
+});
+
+</script>
         <script src="${url.resourcesPath}/js/login.js"></script>
 
     </#if>

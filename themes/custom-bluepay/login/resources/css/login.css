@@ -267,7 +267,7 @@ body {
   }
 
   .login-header {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 600;
     margin-bottom: 8px;
     color: #1e293b;
@@ -276,7 +276,7 @@ body {
   .login-p {
     color: #64748b;
     margin-bottom: 30px;
-    font-size: 15px;
+    font-size: 13px;
   }
 
   /* Mobile Form Styles */
@@ -285,18 +285,39 @@ body {
     margin-bottom: 8px;
     font-weight: 500;
     color: #374151;
-    font-size: 14px;
+    font-size: 12px;
   }
 
   .custom-input {
     width: 100%;
     padding: 16px !important;
     border: 1px solid #e2e8f0 !important;
-    border-radius: 12px !important;
-    font-size: 16px !important;
+    border-radius: 0 !important;
+    font-size: 14px !important;
     transition: all 0.2s;
     background-color: #f8fafc !important;
     height: auto !important;
+  }
+
+  /* Input wrapper for icons */
+  .input-wrapper {
+    position: relative;
+  }
+
+  .input-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #64748b;
+    font-size: 14px;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  /* Adjust input padding when icon is present on mobile */
+  .input-wrapper .custom-input {
+    padding-left: 45px !important;
   }
 
   .custom-input:focus {
@@ -321,8 +342,8 @@ body {
     background-color: #0c74b1;
     color: white;
     border: none;
-    border-radius: 12px;
-    font-size: 16px;
+    border-radius: 0;
+    font-size: 14px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s;
@@ -344,7 +365,7 @@ body {
   .mobile-footer-link {
     color: #0c74b1;
     text-decoration: none;
-    font-size: 14px;
+    font-size: 12px;
     margin: 0 10px;
     font-weight: 500;
   }
@@ -356,7 +377,7 @@ body {
   .mobile-security-note {
     text-align: center;
     margin-top: 30px;
-    font-size: 12px;
+    font-size: 10px;
     color: #94a3b8;
     display: flex;
     align-items: center;
@@ -379,13 +400,14 @@ body {
     align-items: center;
     gap: 8px;
     color: #64748b;
+    font-size: 12px;
   }
 
   .forgot-password {
     color: #0c74b1;
     text-decoration: none;
     font-weight: 500;
-    font-size: 14px;
+    font-size: 12px;
   }
 
   .forgot-password:active {
@@ -427,7 +449,7 @@ body {
   }
 
   .login-header {
-    font-size: 22px;
+    font-size: 18px;
   }
 }
 
@@ -440,5 +462,58 @@ body {
 
   .login-container {
     padding: 20px 15px;
+  }
+}
+
+/* Mobile Loading Overlay */
+.mobile-loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.98);
+  z-index: 999999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  pointer-events: all;
+  touch-action: none;
+}
+
+.mobile-loading-overlay.show {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Ensure overlay stays on top of everything */
+.mobile-loading-overlay.show ~ * {
+  pointer-events: none;
+}
+
+.loading-content p {
+  margin-top: 16px;
+  font-size: 14px;
+  color: #1e293b;
+  font-weight: 500;
+}
+
+/* Spinner */
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid #e5e7eb;
+  border-top: 3px solid #0c74b1;
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
 }
