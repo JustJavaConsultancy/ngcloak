@@ -171,7 +171,7 @@
                     </svg>
                 </div>
             </div>
-            <h1 class="text-4xl font-bold mobile-gradient-text mb-2">Connect</h1>
+            <h1 class="text-4xl font-bold mobile-gradient-text mb-2">Clubknit</h1>
             <p class="text-gray-600 text-lg">Create your account</p>
         </div>
     </div>
