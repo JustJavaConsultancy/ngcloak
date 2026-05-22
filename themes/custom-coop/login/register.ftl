@@ -512,7 +512,7 @@
     <div class="mobile-header">
         <div class="text-center mobile-fade-in">
             <div class="inline-flex items-center justify-center mb-4">
-                <img src="${url.resourcesPath}/img/logo.jpg" class="w-16 h-16" alt="Friendship logo"/>
+                <img src="${url.resourcesPath}/img/logo.jpg" class="w-10 h-10 object-contain" alt="Friendship logo"/>
 <h1 class="text-3xl font-bold gradient-text mb-2">Friendship</h1>
             </div>
             <p class="text-gray-600 text-lg">Become a member</p>
