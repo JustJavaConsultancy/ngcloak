@@ -2,7 +2,7 @@
 <#import "user-profile-commons.ftl" as userProfileCommons>
 <@layout.registrationLayout displayMessage=messagesPerField.exists('global') displayRequiredFields=true; section>
 <#if section = "header">
-    <title>Cooperative Loans & Savings - Join Us</title>
+    <title>Friendship - Join Us</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
     <link rel="stylesheet" as="style" onload="this.rel='stylesheet'"
@@ -380,12 +380,8 @@
     <!-- Left branding panel (desktop only) -->
     <div class="desktop-left-panel w-1/2 p-12 bg-gradient-to-br from-emerald-600 to-teal-600 text-white">
         <div class="flex items-center gap-3 mb-12 animate-fade-in">
-            <div class="size-10 animate-pulse-slow">
-                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M24 4C35.0457 4 44 12.9543 44 24C44 35.0457 35.0457 44 24 44C12.9543 44 4 35.0457 4 24C4 12.9543 12.9543 4 24 4ZM24 8C15.1634 8 8 15.1634 8 24C8 32.8366 15.1634 40 24 40C32.8366 40 40 32.8366 40 24C40 15.1634 32.8366 8 24 8ZM24 12C28.4183 12 32 15.5817 32 20V22H34C35.1046 22 36 22.8954 36 24V34C36 35.1046 35.1046 36 34 36H14C12.8954 36 12 35.1046 12 34V24C12 22.8954 12.8954 22 14 22H16V20C16 15.5817 19.5817 12 24 12ZM32 26H16V32H32V26ZM24 16C21.7909 16 20 17.7909 20 20V22H28V20C28 17.7909 26.2091 16 24 16Z" fill="white"/>
-                </svg>
-            </div>
-            <h1 class="text-2xl font-bold">Cooperative Loans & Savings</h1>
+            <img src="${url.resourcesPath}/img/logo.jpg" class="size-10 animate-pulse-slow" alt="Friendship logo"/>
+<h1 class="text-2xl font-bold">Friendship</h1>
         </div>
         <div class="max-w-md animate-fade-in" style="animation-delay: 0.3s">
             <h2 class="text-4xl font-bold mb-6">Join our financial community</h2>
@@ -516,14 +512,9 @@
     <div class="mobile-header">
         <div class="text-center mobile-fade-in">
             <div class="inline-flex items-center justify-center mb-4">
-                <div class="w-16 h-16">
-                    <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M24 4C35.0457 4 44 12.9543 44 24C44 35.0457 35.0457 44 24 44C12.9543 44 4 35.0457 4 24C4 12.9543 12.9543 4 24 4ZM24 8C15.1634 8 8 15.1634 8 24C8 32.8366 15.1634 40 24 40C32.8366 40 40 32.8366 40 24C40 15.1634 32.8366 8 24 8ZM24 12C28.4183 12 32 15.5817 32 20V22H34C35.1046 22 36 22.8954 36 24V34C36 35.1046 35.1046 36 34 36H14C12.8954 36 12 35.1046 12 34V24C12 22.8954 12.8954 22 14 22H16V20C16 15.5817 19.5817 12 24 12ZM32 26H16V32H32V26ZM24 16C21.7909 16 20 17.7909 20 20V22H28V20C28 17.7909 26.2091 16 24 16Z" fill="#059669"/>
-                    </svg>
-                </div>
+                <img src="${url.resourcesPath}/img/logo.jpg" class="w-16 h-16" alt="Friendship logo"/>
+<h1 class="text-3xl font-bold gradient-text mb-2">Friendship</h1>
             </div>
-            <h1 class="text-3xl font-bold gradient-text mb-2">Cooperative</h1>
-            <h2 class="text-2xl font-bold gradient-text mb-2">Loans & Savings</h2>
             <p class="text-gray-600 text-lg">Become a member</p>
         </div>
     </div>
