@@ -2,7 +2,7 @@
 <#import "user-profile-commons.ftl" as userProfileCommons>
 <@layout.registrationLayout displayMessage=messagesPerField.exists('global') displayRequiredFields=true; section>
 <#if section = "header">
-    <title>Friendship - Join Us</title>
+    <title>The Friendship - Join Us</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
     <link rel="stylesheet" as="style" onload="this.rel='stylesheet'"
@@ -381,7 +381,7 @@
     <div class="desktop-left-panel w-1/2 p-12 bg-gradient-to-br from-emerald-600 to-teal-600 text-white">
         <div class="flex items-center gap-3 mb-12 animate-fade-in">
             <img src="${url.resourcesPath}/img/logo.jpg" class="size-10 animate-pulse-slow" alt="Friendship logo"/>
-<h1 class="text-2xl font-bold">Friendship</h1>
+<h1 class="text-2xl font-bold">The Friendship</h1>
         </div>
         <div class="max-w-md animate-fade-in" style="animation-delay: 0.3s">
             <h2 class="text-4xl font-bold mb-6">Join our financial community</h2>
@@ -513,7 +513,7 @@
         <div class="text-center mobile-fade-in">
             <div class="inline-flex items-center justify-center mb-4">
                 <img src="${url.resourcesPath}/img/logo.jpg" class="w-10 h-10 object-contain" alt="Friendship logo"/>
-<h1 class="text-3xl font-bold gradient-text mb-2">Friendship</h1>
+<h1 class="text-3xl font-bold gradient-text mb-2">The Friendship</h1>
             </div>
             <p class="text-gray-600 text-lg">Become a member</p>
         </div>
