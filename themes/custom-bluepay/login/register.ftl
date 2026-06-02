@@ -678,7 +678,7 @@
 
                     <div class="mt-3">
                         <#--Change url to environment specific                            -->
-                        <p>By clicking the "Create Account" button, you agree to <a href="https://bluepay-v0.onrender.com/privacy-policy" class="privacy-link" target="_blank">BluePay's privacy policy</a> and <a href="">terms of acceptable use and data processing.</a></p>
+                        <p>By clicking the "Create Account" button, you agree to <a href="https://bluepay-v0.onrender.com/privacy-policy" class="privacy-link" target="_blank">BluePay's privacy policy and terms of acceptable use and data processing.</a></p>
                         <hr style="margin: 20px 0; border: none; border-top: 1px solid #e2e8f0;" />
                         <p class="text-center">Already have an account? <a href="${url.loginUrl}">Sign in</a></p>
                     </div>
