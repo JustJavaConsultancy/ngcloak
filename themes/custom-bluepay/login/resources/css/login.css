@@ -193,6 +193,14 @@ body {
     height: 52px;
 }
 
+/* Error message styling */
+.form-error {
+  color: #dc2626;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+
 /* Mobile Styles */
 @media (max-width: 900px) {
   body {
