@@ -1,373 +1,501 @@
 <#import "template.ftl" as layout>
+<@layout.registrationLayout displayMessage=!messagesPerField.existsError('username','password') displayInfo=realm.password && realm.registrationAllowed && !registrationDisabled??; section>
+<#if section = "header">
+    <title>FAMS | Crimson Vault · Institutional Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              // FULL RED THEME — deep burgundy, crimson, scarlet
+              "primary": "#b91c1c",
+              "primary-container": "#dc2626",
+              "on-primary": "#ffffff",
+              "on-primary-container": "#ffefef",
+              "primary-fixed": "#ffdad8",
+              "primary-fixed-dim": "#faa8a2",
+              "surface-tint": "#c62828",
 
-<@layout.registrationLayout
-    displayMessage=!messagesPerField.existsError('username','password')
-    displayInfo=realm.password && realm.registrationAllowed && (!registrationDisabled!false)
-    ; section
->
+              "secondary": "#b45a5a",
+              "on-secondary": "#ffffff",
+              "secondary-container": "#ffe3e3",
+              "on-secondary-container": "#6e2e2e",
+              "secondary-fixed": "#ffdbd9",
+              "secondary-fixed-dim": "#efb0ae",
 
-    <#-- ============================================================ -->
-    <#-- HEADER: all meta, fonts, Tailwind, custom styles go here   -->
-    <#-- ============================================================ -->
-    <#if section = "header">
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>FAMS | Crimson Vault · Institutional Login</title>
+              "tertiary": "#d32f2f",
+              "on-tertiary": "#ffffff",
+              "tertiary-container": "#ffcdcd",
+              "on-tertiary-container": "#6e0000",
+              "tertiary-fixed": "#ffdad8",
+              "tertiary-fixed-dim": "#fbb5b0",
 
-        <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+              "error": "#c62828",
+              "error-container": "#ffd6d6",
+              "on-error": "#ffffff",
+              "on-error-container": "#8b0000",
 
-        <script id="tailwind-config">
-            tailwind.config = {
-                darkMode: "class",
-                theme: {
-                    extend: {
-                        colors: {
-                            "primary": "#b91c1c",
-                            "primary-container": "#dc2626",
-                            "on-primary": "#ffffff",
-                            "on-primary-container": "#ffefef",
-                            "primary-fixed": "#ffdad8",
-                            "primary-fixed-dim": "#faa8a2",
-                            "surface-tint": "#c62828",
-                            "secondary": "#b45a5a",
-                            "on-secondary": "#ffffff",
-                            "secondary-container": "#ffe3e3",
-                            "on-secondary-container": "#6e2e2e",
-                            "secondary-fixed": "#ffdbd9",
-                            "secondary-fixed-dim": "#efb0ae",
-                            "tertiary": "#d32f2f",
-                            "on-tertiary": "#ffffff",
-                            "tertiary-container": "#ffcdcd",
-                            "on-tertiary-container": "#6e0000",
-                            "error": "#c62828",
-                            "error-container": "#ffd6d6",
-                            "on-error": "#ffffff",
-                            "on-error-container": "#8b0000",
-                            "background": "#fef6f5",
-                            "on-background": "#2d1a1a",
-                            "surface": "#fef6f5",
-                            "on-surface": "#2d1a1a",
-                            "surface-variant": "#fde5e3",
-                            "on-surface-variant": "#5e3e3c",
-                            "surface-container-lowest": "#ffffff",
-                            "surface-container-low": "#fff6f5",
-                            "surface-container": "#feeceb",
-                            "surface-container-high": "#fde2e0",
-                            "surface-container-highest": "#fcd8d6",
-                            "surface-dim": "#efdad8",
-                            "surface-bright": "#fef6f5",
-                            "inverse-surface": "#2f1515",
-                            "inverse-on-surface": "#ffefef",
-                            "inverse-primary": "#ffb4ab",
-                            "outline": "#b77e7a",
-                            "outline-variant": "#eccbc8"
-                        },
-                        borderRadius: {
-                            DEFAULT: "0.25rem",
-                            lg: "10px",
-                            xl: "12px",
-                            full: "9999px"
-                        },
-                        spacing: {
-                            "margin-desktop": "64px",
-                            "gutter": "24px",
-                            "margin-mobile": "16px",
-                            "navbar-height": "72px",
-                            "section-padding": "80px"
-                        },
-                        fontFamily: {
-                            "body-md": ["Inter"],
-                            "section-headline": ["Inter"],
-                            "hero-display": ["Inter"],
-                            "asset-code": ["JetBrains Mono"],
-                            "label-sm": ["Inter"]
-                        },
-                        fontSize: {
-                            "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
-                            "section-headline": ["42px", {"lineHeight": "1.3", "fontWeight": "700"}],
-                            "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
-                            "hero-display": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
-                            "asset-code": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}],
-                            "label-sm": ["12px", {"lineHeight": "1.2", "fontWeight": "600"}]
-                        }
-                    }
-                }
+              "background": "#fef6f5",
+              "on-background": "#2d1a1a",
+              "surface": "#fef6f5",
+              "on-surface": "#2d1a1a",
+              "surface-variant": "#fde5e3",
+              "on-surface-variant": "#5e3e3c",
+              "surface-container-lowest": "#ffffff",
+              "surface-container-low": "#fff6f5",
+              "surface-container": "#feeceb",
+              "surface-container-high": "#fde2e0",
+              "surface-container-highest": "#fcd8d6",
+              "surface-dim": "#efdad8",
+              "surface-bright": "#fef6f5",
+              "inverse-surface": "#2f1515",
+              "inverse-on-surface": "#ffefef",
+              "inverse-primary": "#ffb4ab",
+
+              "outline": "#b77e7a",
+              "outline-variant": "#eccbc8",
+
+              "on-primary-fixed": "#410006",
+              "on-primary-fixed-variant": "#930019",
+              "on-secondary-fixed": "#2e1515",
+              "on-secondary-fixed-variant": "#5e2e2e",
+              "on-tertiary-fixed": "#410006",
+              "on-tertiary-fixed-variant": "#8f0f1e",
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "10px",
+              xl: "12px",
+              full: "9999px"
+            },
+            spacing: {
+              "margin-desktop": "64px",
+              "gutter": "24px",
+              "margin-mobile": "16px",
+              "navbar-height": "72px",
+              "section-padding": "80px"
+            },
+            fontFamily: {
+              "body-md": ["Inter"],
+              "section-headline": ["Inter"],
+              "hero-display": ["Inter"],
+              "asset-code": ["JetBrains Mono"],
+              "label-sm": ["Inter"]
+            },
+            fontSize: {
+              "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+              "section-headline": ["42px", {"lineHeight": "1.3", "fontWeight": "700"}],
+              "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+              "hero-display": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+              "asset-code": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}],
+              "label-sm": ["12px", {"lineHeight": "1.2", "fontWeight": "600"}]
             }
-        </script>
+          }
+        }
+      }
+    </script>
+    <style>
+        /* ===== Aggressive hide of default Keycloak elements ===== */
+        .login-pf-page-header,
+        .login-pf-header,
+        h1#kc-page-title,
+        .login-pf-signup,
+        #kc-page-title,
+        .kc-page-title,
+        .login-pf .container,
+        .login-pf-page .login-pf-signup,
+        .login-pf-page .login-pf-header,
+        .card-pf-title,
+        .login-pf-page .card-pf .card-pf-title {
+            display: none !important;
+            visibility: hidden !important;
+            height: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
 
-        <link rel="stylesheet" href="${url.resourcesPath}/css/login.css">
+        .login-pf-page {
+            padding: 0 !important;
+            margin: 0 !important;
+            border: none !important;
+            background: none !important;
+            min-height: 100vh !important;
+        }
 
-        <style>
-            /* Override Keycloak default chrome */
-            .login-pf-header,
-            .login-pf-page-header,
-            #kc-header,
-            #kc-header-wrapper { display: none !important; }
-            .login-pf-page { padding-top: 0 !important; }
-            html, body {
-                margin: 0;
-                padding: 0;
-                overflow-x: hidden;
-                background: #fef6f5;
-            }
-        </style>
-    </#if>
+        .login-pf-page .card-pf {
+            padding: 0 !important;
+            margin: 0 !important;
+            border: none !important;
+            max-width: none !important;
+            background: none !important;
+            box-shadow: none !important;
+        }
 
-    <#-- ============================================================ -->
-    <#-- FORM SECTION: main UI (left panel + right panel)            -->
-    <#-- ============================================================ -->
-    <#if section = "form">
-        <main class="flex min-h-screen red-pattern-dots">
+        #kc-content-wrapper {
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 100% !important;
+            height: 100vh !important;
+            overflow: auto !important;
+            background-color: transparent !important;
+        }
 
-            <!-- LEFT PANEL (desktop only) -->
-            <section class="hidden lg:flex flex-col w-1/2 relative overflow-hidden p-margin-desktop left-panel">
-                <div class="absolute inset-0 opacity-20 pointer-events-none hatch-overlay"></div>
-                <div class="relative z-10 flex flex-col h-full justify-between">
-                    <div class="flex flex-col gap-1">
-                        <div class="flex items-center gap-3">
-                            <span class="font-hero-display text-white font-black text-[32px] tracking-tighter drop-shadow-md">FAMS</span>
-                            <div class="h-6 w-[1px] bg-red-400/40"></div>
-                            <span class="font-asset-code text-red-200/70 text-[10px] tracking-widest uppercase">Institutional Hub</span>
-                        </div>
-                        <span class="font-label-sm text-red-300/50 tracking-wider">by JustJava Technologies</span>
+        #kc-content {
+            padding: 0 !important;
+            margin: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        html, body {
+            margin: 0 !important;
+            padding: 0 !important;
+            min-height: 100vh;
+        }
+
+        /* ===== Custom Red Theme Micro‑animations ===== */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-up { animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+        .form-container { perspective: 1000px; }
+        .form-flip-inner {
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .form-flipped { transform: rotateY(180deg); }
+        .form-front, .form-back {
+            backface-visibility: hidden;
+            width: 100%;
+        }
+        .form-back { transform: rotateY(180deg); position: absolute; top: 0; }
+
+        .loader-dots span {
+            animation: blink 1.4s infinite both;
+        }
+        .loader-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .loader-dots span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes blink {
+            0%, 100% { opacity: 0.2; }
+            20%      { opacity: 1; }
+        }
+
+        /* custom red checkbox using theme primary */
+        .custom-checkbox:checked {
+            background-color: #b91c1c;
+            border-color: #b91c1c;
+        }
+
+        /* right panel subtle pattern */
+        .red-pattern-dots {
+            background-image: radial-gradient(rgba(185, 28, 28, 0.04) 1.2px, transparent 1.2px);
+            background-size: 24px 24px;
+        }
+    </style>
+<#elseif section = "form">
+
+    <!-- ========== MAIN CONTENT (2‑panel layout) ========== -->
+    <main class="flex min-h-screen">
+
+        <!-- LEFT PANEL — Full crimson / dark red immersive theme -->
+        <section class="hidden lg:flex flex-col w-1/2 relative overflow-hidden p-margin-desktop" style="background: radial-gradient(ellipse at 20% 30%, #3d1111, #1f0505); box-shadow: inset 0 0 0 1000px rgba(0,0,0,0.15);">
+            <!-- abstract red texture -->
+            <div class="absolute inset-0 opacity-20 pointer-events-none" style="background-image: repeating-linear-gradient(45deg, #ff3a3a0c 0px, #ff3a3a0c 2px, transparent 2px, transparent 8px);"></div>
+
+            <div class="relative z-10 flex flex-col h-full justify-between">
+                <!-- Branding Header -->
+                <div class="flex flex-col gap-1">
+                    <div class="flex items-center gap-3">
+                        <span class="font-hero-display text-white font-black text-[32px] tracking-tighter drop-shadow-md">FAMS</span>
+                        <div class="h-6 w-[1px] bg-red-400/40"></div>
+                        <span class="font-asset-code text-red-200/70 text-[10px] tracking-widest uppercase">Institutional Hub</span>
                     </div>
-                    <div class="flex-grow flex items-center justify-center py-8">
-                        <div class="w-full rounded-2xl overflow-hidden relative shadow-2xl shadow-black/30" style="height: 420px;">
-                            <img src="https://images.unsplash.com/photo-1553413077-190dd305871c?w=900&q=85"
-                                 alt="Warehouse asset scanning"
-                                 class="w-full h-full object-cover"
-                                 onerror="this.onerror=null; this.src='${url.resourcesPath}/img/fallback-asset.jpg'">
-                            <div class="absolute inset-0 image-gradient-overlay"></div>
-                            <div class="absolute inset-0 image-vignette"></div>
-                            <div class="absolute bottom-0 left-0 right-0 p-5">
-                                <p class="font-asset-code text-red-200/80 text-[10px] tracking-widest uppercase mb-1.5">Asset Verification · RED SECURE</p>
-                                <p class="text-white font-semibold text-[15px] leading-snug drop-shadow-md">
-                                    Every asset tagged, scanned,<br>and accounted for — red standard.
-                                </p>
-                            </div>
+                    <span class="font-label-sm text-red-300/50 tracking-wider">by JustJava Technologies</span>
+                </div>
+
+                <!-- Central Image with red overlay -->
+                <div class="flex-grow flex items-center justify-center py-8">
+                    <div class="w-full rounded-2xl overflow-hidden relative shadow-2xl shadow-black/30" style="height: 420px;">
+                        <img src="https://images.unsplash.com/photo-1553413077-190dd305871c?w=900&q=85" alt="Warehouse asset scanning" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=900&q=85'">
+                        <div class="absolute inset-0" style="background: linear-gradient(to top, #3b0a0aee 0%, #9e2a2a66 50%, #b91c1c33 100%); mix-blend-mode: multiply;"></div>
+                        <div class="absolute inset-0" style="background: radial-gradient(transparent 30%, rgba(90, 0, 0, 0.4));"></div>
+                        <div class="absolute bottom-0 left-0 right-0 p-5">
+                            <p class="font-asset-code text-red-200/80 text-[10px] tracking-widest uppercase mb-1.5">Asset Verification · RED SECURE</p>
+                            <p class="text-white font-semibold text-[15px] leading-snug drop-shadow-md">Every asset tagged, scanned,<br/>and accounted for — red standard.</p>
                         </div>
                     </div>
-                    <div class="max-w-[440px] animate-fade-up" style="animation-delay: 400ms;">
-                        <div id="testimonial-container">
-                            <div class="testimonial-slide">
-                                <span class="material-symbols-outlined text-red-300 text-4xl mb-4 drop-shadow quote-icon">format_quote</span>
-                                <p class="text-white text-[20px] font-medium leading-relaxed mb-6 drop-shadow">
-                                    "The single source of truth for our entire infrastructure fleet. FAMS has redefined our asset reliability metrics."
-                                </p>
-                                <div class="flex items-center gap-3">
-                                    <div class="testimonial-avatar">ED</div>
-                                    <div>
-                                        <p class="text-white font-bold text-sm">Executive Director</p>
-                                        <p class="text-red-200/80 text-xs font-asset-code uppercase tracking-tighter">Federal Infrastructure Agency</p>
-                                    </div>
+                </div>
+
+                <!-- Testimonial Rotator -->
+                <div class="max-w-[440px] animate-fade-up" style="animation-delay: 400ms;">
+                    <div class="relative" id="testimonial-container">
+                        <div class="testimonial-slide opacity-100 transition-opacity duration-500">
+                            <span class="material-symbols-outlined text-red-300 text-4xl mb-4 drop-shadow" style="font-variation-settings: 'FILL' 1;">format_quote</span>
+                            <p class="text-white text-[20px] font-medium leading-relaxed mb-6 drop-shadow">"The single source of truth for our entire infrastructure fleet. FAMS has redefined our asset reliability metrics."</p>
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-red-800/60 flex items-center justify-center font-bold text-white text-xs border border-red-300/50 shadow">ED</div>
+                                <div>
+                                    <p class="text-white font-bold text-sm">Executive Director</p>
+                                    <p class="text-red-200/80 text-xs font-asset-code uppercase tracking-tighter">Federal Infrastructure Agency</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </section>
+            </div>
+        </section>
 
-            <!-- RIGHT PANEL (form) -->
-            <section class="w-full lg:w-1/2 flex flex-col justify-center items-center px-margin-mobile md:px-margin-desktop py-12 relative right-panel">
-                <div class="max-w-[420px] w-full animate-fade-up">
+        <!-- RIGHT PANEL — Login card on warm red background -->
+        <section class="w-full lg:w-1/2 flex flex-col justify-center items-center px-margin-mobile md:px-margin-desktop py-12 relative bg-gradient-to-br from-background via-surface-container-low to-background">
+            <div class="max-w-[420px] w-full animate-fade-up">
 
-                    <!-- Mobile branding -->
-                    <div class="lg:hidden mb-12 flex justify-center">
-                        <div class="flex flex-col items-center gap-2">
-                            <span class="font-hero-display text-primary font-black text-[40px] tracking-tighter">FAMS</span>
-                            <span class="font-label-sm text-secondary tracking-widest uppercase text-[10px]">by JustJava Technologies</span>
-                        </div>
-                    </div>
-
-                    <!-- Keycloak messages -->
-                    <#if message?has_content && (message.type != 'warning' || !isAppInitiatedAction??)>
-                        <div class="kc-alert kc-alert-${message.type} mb-6">
-                            <#if message.type = 'success'>
-                                <span class="material-symbols-outlined text-[18px]">check_circle</span>
-                            <#elseif message.type = 'warning'>
-                                <span class="material-symbols-outlined text-[18px]">warning</span>
-                            <#elseif message.type = 'error'>
-                                <span class="material-symbols-outlined text-[18px]">error</span>
-                            <#else>
-                                <span class="material-symbols-outlined text-[18px]">info</span>
-                            </#if>
-                            <span>${kcSanitize(message.summary)?no_esc}</span>
-                        </div>
-                    </#if>
-
-                    <!-- Flip card container -->
-                    <div class="form-container">
-                        <div class="form-flip-inner relative" id="form-inner">
-
-                            <!-- LOGIN FORM (front) -->
-                            <div class="form-front">
-                                <header class="mb-10">
-                                    <h1 class="font-section-headline text-[32px] text-on-surface mb-2">Welcome back.</h1>
-                                    <p class="text-secondary text-body-md">
-                                        Sign in to your organization's <span class="text-primary font-semibold">FAMS</span> workspace.
-                                    </p>
-                                </header>
-
-                                <form id="kc-form-login" class="space-y-6" action="${url.loginAction}" method="post">
-                                    <!-- Username / Email -->
-                                    <div>
-                                        <label class="block font-label-sm text-on-surface-variant mb-2" for="username">
-                                            <#if !realm.loginWithEmailAllowed>
-                                                ${msg("username")}
-                                            <#elseif !realm.registrationEmailAsUsername>
-                                                ${msg("usernameOrEmail")}
-                                            <#else>
-                                                Work Email
-                                            </#if>
-                                        </label>
-                                        <input class="fams-input <#if messagesPerField.existsError('username')>fams-input-error</#if>"
-                                               id="username" name="username" value="${(login.username!'')}"
-                                               placeholder="name@company.com" type="text" autofocus autocomplete="off"
-                                               aria-invalid="<#if messagesPerField.existsError('username')>true</#if>">
-                                        <#if messagesPerField.existsError('username')>
-                                            <p class="fams-field-error">
-                                                <span class="material-symbols-outlined text-[14px]">error</span>
-                                                ${kcSanitize(messagesPerField.get('username'))?no_esc}
-                                            </p>
-                                        </#if>
-                                    </div>
-
-                                    <!-- Password -->
-                                    <div>
-                                        <div class="flex justify-between items-end mb-2">
-                                            <label class="font-label-sm text-on-surface-variant" for="password">${msg("password")}</label>
-                                            <#if realm.resetPasswordAllowed>
-                                                <button class="text-primary font-label-sm hover:underline hover:text-red-700 transition" onclick="flipForm()" type="button">
-                                                    ${msg("doForgotPassword")}
-                                                </button>
-                                            </#if>
-                                        </div>
-                                        <div class="relative">
-                                            <input class="fams-input <#if messagesPerField.existsError('password')>fams-input-error</#if>"
-                                                   id="password" name="password" placeholder="••••••••" type="password" autocomplete="off"
-                                                   aria-invalid="<#if messagesPerField.existsError('password')>true</#if>">
-                                            <button class="absolute right-4 top-1/2 -translate-y-1/2 text-secondary hover:text-primary transition-colors"
-                                                    onclick="togglePassword()" type="button" aria-label="Toggle password visibility">
-                                                <span class="material-symbols-outlined text-[20px]" id="eye-icon">visibility</span>
-                                            </button>
-                                        </div>
-                                        <#if messagesPerField.existsError('password')>
-                                            <p class="fams-field-error">
-                                                <span class="material-symbols-outlined text-[14px]">error</span>
-                                                ${kcSanitize(messagesPerField.get('password'))?no_esc}
-                                            </p>
-                                        </#if>
-                                    </div>
-
-                                    <!-- Remember Me -->
-                                    <#if realm.rememberMe && !usernameEditDisabled??>
-                                        <div class="flex items-center gap-3">
-                                            <input class="custom-checkbox w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary focus:ring-1"
-                                                   id="rememberMe" name="rememberMe" type="checkbox" <#if login.rememberMe??>checked</#if>>
-                                            <label class="font-body-md text-secondary select-none" for="rememberMe">${msg("rememberMe")}</label>
-                                        </div>
-                                    </#if>
-
-                                    <input type="hidden" id="id-hidden-input" name="credentialId" <#if auth.selectedCredential?has_content>value="${auth.selectedCredential}"</#if>>
-
-                                    <button class="fams-btn-primary mt-2" id="kc-login" name="login" type="submit">
-                                        <span id="btn-text">${msg("doLogIn")} →</span>
-                                        <div class="hidden loader-dots flex gap-1" id="btn-loader">
-                                            <span class="w-1.5 h-1.5 bg-white rounded-full"></span>
-                                            <span class="w-1.5 h-1.5 bg-white rounded-full"></span>
-                                            <span class="w-1.5 h-1.5 bg-white rounded-full"></span>
-                                        </div>
-                                    </button>
-                                </form>
-
-                                <#if realm.password && realm.registrationAllowed && !registrationDisabled??>
-                                    <p class="text-center text-xs text-secondary mt-8">
-                                        ${msg("noAccount")}
-                                        <a class="font-medium text-primary hover:underline" href="${url.registrationUrl}">${msg("doRegister")}</a>
-                                    </p>
-                                </#if>
-                            </div>
-
-                            <!-- FORGOT PASSWORD FORM (back) - FIXED: POST method with stateChecker -->
-                            <div class="form-back">
-                                <header class="mb-10">
-                                    <h1 class="font-section-headline text-[32px] text-on-surface mb-2">Password Recovery.</h1>
-                                    <p class="text-secondary text-body-md">
-                                        Enter your work email and we'll send a secure link to reset your password.
-                                    </p>
-                                </header>
-
-                                <form class="space-y-6" action="${url.loginResetCredentialsUrl}" method="post">
-                                    <div>
-                                        <label class="block font-label-sm text-on-surface-variant mb-2" for="reset-email">Work Email</label>
-                                        <input class="fams-input" id="reset-email" name="username" placeholder="name@company.com" required type="email">
-                                    </div>
-                                    <!-- CRITICAL: include the stateChecker for Keycloak -->
-                                    <input type="hidden" id="stateChecker" name="stateChecker" value="${stateChecker!}">
-                                    <button class="fams-btn-primary" type="submit">
-                                        <span class="material-symbols-outlined text-[18px]">lock_reset</span>
-                                        Send Recovery Link
-                                    </button>
-                                    <button class="w-full flex items-center justify-center gap-2 text-secondary hover:text-primary transition-colors font-label-sm py-2"
-                                            onclick="flipForm()" type="button">
-                                        <span class="material-symbols-outlined text-[18px]">arrow_back</span>
-                                        Back to sign in
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Bottom access note -->
-                    <div class="mt-16 text-center border-t border-red-200/40 pt-8">
-                        <p class="text-secondary font-body-md mb-2">Don't have access?</p>
-                        <p class="text-on-surface-variant font-body-md mb-6 leading-relaxed">
-                            Access to FAMS is restricted to authorized institutional personnel. Contact your IT administrator for credentials.
-                        </p>
-                        <a class="inline-flex items-center gap-2 text-primary font-bold hover:gap-3 transition-all hover:text-red-800" href="#">
-                            Book a Demo
-                            <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
-                        </a>
+                <!-- Mobile Branding (visible only on small screens) -->
+                <div class="lg:hidden mb-12 flex justify-center">
+                    <div class="flex flex-col items-center gap-2">
+                        <span class="font-hero-display text-primary font-black text-[40px] tracking-tighter">FAMS</span>
+                        <span class="font-label-sm text-secondary tracking-widest uppercase text-[10px]">by JustJava Technologies</span>
                     </div>
                 </div>
 
-                <footer class="absolute bottom-6 w-full px-margin-desktop flex flex-col md:flex-row justify-between items-center text-[11px] font-asset-code text-secondary/80 tracking-tight">
-                    <p>© 2024 FAMS (Fixed Asset Management System) · Crimson Edition</p>
-                    <div class="flex gap-4 mt-2 md:mt-0">
-                        <a class="hover:text-primary transition-colors" href="#">PRIVACY POLICY</a>
-                        <a class="hover:text-primary transition-colors" href="#">SECURITY PROTOCOL</a>
-                        <a class="hover:text-primary transition-colors" href="#">COMPLIANCE</a>
+                <div class="form-container">
+                    <div class="form-flip-inner relative" id="form-inner">
+
+                        <!-- LOGIN FORM (FRONT) -->
+                        <div class="form-front">
+                            <header class="mb-10">
+                                <h1 class="font-section-headline text-[32px] text-on-surface mb-2">Welcome back.</h1>
+                                <p class="text-secondary text-body-md">Sign in to your organization's <span class="text-primary font-semibold">FAMS</span> workspace.</p>
+                            </header>
+
+                            <#-- Error display for username/password -->
+                            <#if messagesPerField.existsError('username','password')>
+                                <div class="mb-6 p-4 bg-error-container text-on-error-container rounded-lg text-sm font-medium">
+                                    ${kcSanitize(messagesPerField.getFirstError('username','password'))?no_esc}
+                                </div>
+                            </#if>
+
+                            <form class="space-y-6" action="${url.loginAction}" method="post">
+                                <div>
+                                    <label class="block font-label-sm text-on-surface-variant mb-2" for="username">
+                                        <#if !realm.loginWithEmailAllowed>${msg("username")}
+                                        <#elseif !realm.registrationEmailAsUsername>${msg("usernameOrEmail")}
+                                        <#else>${msg("email")}</#if>
+                                    </label>
+                                    <input
+                                        class="w-full h-[52px] rounded-lg border border-outline-variant px-4 bg-white focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all font-body-md text-on-surface"
+                                        id="username"
+                                        name="username"
+                                        type="email"
+                                        value="${(login.username!'')}"
+                                        placeholder="name@company.com"
+                                        autocomplete="username"
+                                        required
+                                        aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>"
+                                    >
+                                </div>
+
+                                <div class="relative">
+                                    <div class="flex justify-between items-end mb-2">
+                                        <label class="font-label-sm text-on-surface-variant" for="password">${msg("password")}</label>
+                                        <#if realm.resetPasswordAllowed>
+                                            <button class="text-primary font-label-sm hover:underline hover:text-red-700 transition" onclick="flipForm()" type="button">${msg("doForgotPassword")}</button>
+                                        </#if>
+                                    </div>
+                                    <div class="relative">
+                                        <input
+                                            class="w-full h-[52px] rounded-lg border border-outline-variant px-4 bg-white focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all font-body-md text-on-surface"
+                                            id="password"
+                                            name="password"
+                                            type="password"
+                                            placeholder="••••••••"
+                                            autocomplete="current-password"
+                                            required
+                                        >
+                                        <button class="absolute right-4 top-1/2 -translate-y-1/2 text-secondary hover:text-primary transition-colors" onclick="togglePassword()" type="button">
+                                            <span class="material-symbols-outlined text-[20px]" id="eye-icon">visibility</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <#if realm.rememberMe>
+                                    <div class="flex items-center gap-3">
+                                        <input class="custom-checkbox w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary focus:ring-1" id="remember" name="rememberMe" type="checkbox">
+                                        <label class="font-body-md text-secondary select-none" for="remember">${msg("rememberMe")}</label>
+                                    </div>
+                                </#if>
+
+                                <#if auth?has_content && auth.selectedCredential?has_content>
+                                    <input type="hidden" name="credentialId" value="${auth.selectedCredential}">
+                                </#if>
+
+                                <button
+                                    class="w-full h-[52px] bg-primary text-white font-bold rounded-lg shadow-md hover:bg-red-800 transition-all active:scale-[0.98] flex items-center justify-center gap-2 overflow-hidden focus:ring-2 focus:ring-red-300"
+                                    id="submit-btn"
+                                    type="submit"
+                                >
+                                    <span id="btn-text">${msg("doLogIn")} →</span>
+                                    <div class="hidden loader-dots flex gap-1" id="btn-loader">
+                                        <span class="w-1.5 h-1.5 bg-white rounded-full"></span>
+                                        <span class="w-1.5 h-1.5 bg-white rounded-full"></span>
+                                        <span class="w-1.5 h-1.5 bg-white rounded-full"></span>
+                                    </div>
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- FORGOT PASSWORD (BACK) – red theme consistency -->
+                        <#if realm.resetPasswordAllowed>
+                            <div class="form-back">
+                                <header class="mb-10">
+                                    <h1 class="font-section-headline text-[32px] text-on-surface mb-2">Password Recovery.</h1>
+                                    <p class="text-secondary text-body-md">Enter your work email and we'll send you a secure link to reset your password.</p>
+                                </header>
+                                <form class="space-y-6" id="reset-form">
+                                    <div>
+                                        <label class="block font-label-sm text-on-surface-variant mb-2" for="reset-email">Work Email</label>
+                                        <input
+                                            class="w-full h-[52px] rounded-lg border border-outline-variant px-4 bg-white focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+                                            id="reset-email"
+                                            placeholder="name@company.com"
+                                            required
+                                            type="email"
+                                        >
+                                    </div>
+                                    <button class="w-full h-[52px] bg-primary text-white font-bold rounded-lg shadow-md hover:bg-red-800 transition-all flex items-center justify-center gap-2" type="submit">
+                                        <span class="material-symbols-outlined text-[18px]">lock_reset</span> Send Recovery Link
+                                    </button>
+                                    <button class="w-full flex items-center justify-center gap-2 text-secondary hover:text-primary transition-colors font-label-sm py-2" onclick="flipForm()" type="button">
+                                        <span class="material-symbols-outlined text-[18px]">arrow_back</span> Back to login
+                                    </button>
+                                </form>
+                            </div>
+                        </#if>
                     </div>
-                </footer>
-            </section>
-        </main>
+                </div>
 
-        <!-- Custom JavaScript helpers (flip, toggle password) - safe fallbacks -->
-        <script>
-            function flipForm() {
-                const inner = document.getElementById('form-inner');
-                if (inner) {
-                    inner.classList.toggle('flipped');
-                }
+                <!-- Bottom Messaging (no registration, restricted access) -->
+                <div class="mt-16 text-center border-t border-red-200/40 pt-8">
+                    <p class="text-secondary font-body-md mb-2">Don't have access?</p>
+                    <p class="text-on-surface-variant font-body-md mb-6 leading-relaxed">
+                        Access to FAMS is strictly restricted to authorized institutional personnel. Please contact your organization's IT administrator for credentials.
+                    </p>
+                    <a class="inline-flex items-center gap-2 text-primary font-bold hover:gap-3 transition-all hover:text-red-800" href="#">
+                        Book a Demo
+                        <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <footer class="absolute bottom-6 w-full px-margin-desktop flex flex-col md:flex-row justify-between items-center text-[11px] font-asset-code text-secondary/80 tracking-tight">
+                <p>© 2024 FAMS (Fixed Asset Management System) · Crimson Edition</p>
+                <div class="flex gap-4 mt-2 md:mt-0">
+                    <a class="hover:text-primary transition-colors" href="#">PRIVACY POLICY</a>
+                    <a class="hover:text-primary transition-colors" href="#">SECURITY PROTOCOL</a>
+                    <a class="hover:text-primary transition-colors" href="#">COMPLIANCE</a>
+                </div>
+            </footer>
+        </section>
+    </main>
+
+    <script>
+        // Password visibility toggle
+        function togglePassword() {
+            const pwd = document.getElementById('password');
+            const eye = document.getElementById('eye-icon');
+            if (pwd.type === 'password') {
+                pwd.type = 'text';
+                eye.textContent = 'visibility_off';
+            } else {
+                pwd.type = 'password';
+                eye.textContent = 'visibility';
             }
-            function togglePassword() {
-                const pwdField = document.getElementById('password');
-                const eyeIcon = document.getElementById('eye-icon');
-                if (pwdField && eyeIcon) {
-                    const type = pwdField.getAttribute('type') === 'password' ? 'text' : 'password';
-                    pwdField.setAttribute('type', type);
-                    eyeIcon.textContent = type === 'password' ? 'visibility' : 'visibility_off';
+        }
+
+        // Flip between login and forgot password panels
+        function flipForm() {
+            const inner = document.getElementById('form-inner');
+            inner.classList.toggle('form-flipped');
+        }
+
+        // Forgot password form: redirect to Keycloak reset URL with username
+        <#if realm.resetPasswordAllowed>
+            document.getElementById('reset-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const email = document.getElementById('reset-email').value.trim();
+                if (email) {
+                    window.location.href = '${url.loginResetCredentialsUrl}?username=' + encodeURIComponent(email);
                 }
-            }
-            // Ensure that the form submission is never blocked (no preventDefault)
-            document.getElementById('kc-form-login')?.addEventListener('submit', function(e) {
-                // optional client-side validation here if needed, but don't break Keycloak
-                return true;
             });
-        </script>
+        </#if>
 
-        <script src="${url.resourcesPath}/js/login.js"></script>
-    </#if>
+        // Show loading state on login form submit (prevents double‑click)
+        document.querySelector('.form-front form').addEventListener('submit', function() {
+            const btn = document.getElementById('submit-btn');
+            const text = document.getElementById('btn-text');
+            const loader = document.getElementById('btn-loader');
+            text.classList.add('hidden');
+            loader.classList.remove('hidden');
+            btn.classList.add('opacity-80', 'cursor-not-allowed');
+            btn.disabled = true;
+        });
+
+        // Auto‑focus the username field if empty
+        window.addEventListener('load', function() {
+            const userField = document.getElementById('username');
+            if (userField && !userField.value) {
+                userField.focus();
+            }
+        });
+
+        // Testimonial rotator (left panel)
+        const testimonials = [
+            {
+                quote: "The single source of truth for our entire infrastructure fleet. FAMS has redefined our asset reliability metrics.",
+                name: "Executive Director",
+                org: "Federal Infrastructure Agency"
+            },
+            {
+                quote: "Security and auditability are second to none. We've achieved 100% compliance in our latest asset verification cycle.",
+                name: "Chief Technical Officer",
+                org: "Nigeria Petroleum Corp"
+            },
+            {
+                quote: "The red-secure infrastructure ensures zero blind spots. FAMS gives full asset lifecycle transparency.",
+                name: "VP Operations",
+                org: "Global Logistics Authority"
+            }
+        ];
+
+        let currentSlide = 0;
+        const testimonialContainer = document.getElementById('testimonial-container');
+
+        setInterval(() => {
+            currentSlide = (currentSlide + 1) % testimonials.length;
+            const slide = testimonials[currentSlide];
+            const initials = slide.name.split(' ').map(n => n[0]).join('');
+            const content =
+                '<div class="testimonial-slide animate-fade-up">' +
+                    '<span class="material-symbols-outlined text-red-300 text-4xl mb-4 drop-shadow" style="font-variation-settings: \'FILL\' 1;">format_quote</span>' +
+                    '<p class="text-white text-[20px] font-medium leading-relaxed mb-6 drop-shadow">"' + slide.quote + '"</p>' +
+                    '<div class="flex items-center gap-3">' +
+                        '<div class="w-10 h-10 rounded-full bg-red-800/70 flex items-center justify-center font-bold text-white text-xs border border-red-300/40 shadow">' + initials + '</div>' +
+                        '<div>' +
+                            '<p class="text-white font-bold text-sm">' + slide.name + '</p>' +
+                            '<p class="text-red-200/80 text-xs font-asset-code uppercase tracking-tighter">' + slide.org + '</p>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
+            testimonialContainer.innerHTML = content;
+        }, 5500);
+    </script>
+
+</#if>
 </@layout.registrationLayout>
