@@ -1,22 +1,104 @@
 <#import "template.ftl" as layout>
 <@layout.registrationLayout displayMessage=!messagesPerField.existsError('username','password') displayInfo=realm.password && realm.registrationAllowed && !registrationDisabled??; section>
 <#if section = "header">
-    <title>Just Java | Document Management System</title>
+    <title>Just Java DMS · Institutional Login</title>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#b91c1c",
+              "primary-container": "#dc2626",
+              "on-primary": "#ffffff",
+              "on-primary-container": "#ffefef",
+              "primary-fixed": "#ffdad8",
+              "primary-fixed-dim": "#faa8a2",
+              "surface-tint": "#c62828",
+              "secondary": "#b45a5a",
+              "on-secondary": "#ffffff",
+              "secondary-container": "#ffe3e3",
+              "on-secondary-container": "#6e2e2e",
+              "secondary-fixed": "#ffdbd9",
+              "secondary-fixed-dim": "#efb0ae",
+              "tertiary": "#d32f2f",
+              "on-tertiary": "#ffffff",
+              "tertiary-container": "#ffcdcd",
+              "on-tertiary-container": "#6e0000",
+              "tertiary-fixed": "#ffdad8",
+              "tertiary-fixed-dim": "#fbb5b0",
+              "error": "#c62828",
+              "error-container": "#ffd6d6",
+              "on-error": "#ffffff",
+              "on-error-container": "#8b0000",
+              "background": "#fef6f5",
+              "on-background": "#2d1a1a",
+              "surface": "#fef6f5",
+              "on-surface": "#2d1a1a",
+              "surface-variant": "#fde5e3",
+              "on-surface-variant": "#5e3e3c",
+              "surface-container-lowest": "#ffffff",
+              "surface-container-low": "#fff6f5",
+              "surface-container": "#feeceb",
+              "surface-container-high": "#fde2e0",
+              "surface-container-highest": "#fcd8d6",
+              "surface-dim": "#efdad8",
+              "surface-bright": "#fef6f5",
+              "inverse-surface": "#2f1515",
+              "inverse-on-surface": "#ffefef",
+              "inverse-primary": "#ffb4ab",
+              "outline": "#b77e7a",
+              "outline-variant": "#eccbc8",
+              "on-primary-fixed": "#410006",
+              "on-primary-fixed-variant": "#930019",
+              "on-secondary-fixed": "#2e1515",
+              "on-secondary-fixed-variant": "#5e2e2e",
+              "on-tertiary-fixed": "#410006",
+              "on-tertiary-fixed-variant": "#8f0f1e",
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "10px",
+              xl: "12px",
+              full: "9999px"
+            },
+            fontFamily: {
+              "body-md": ["Inter"],
+              "section-headline": ["Inter"],
+              "hero-display": ["Inter"],
+              "asset-code": ["JetBrains Mono"],
+              "label-sm": ["Inter"]
+            },
+            fontSize: {
+              "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+              "section-headline": ["42px", {"lineHeight": "1.3", "fontWeight": "700"}],
+              "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+              "hero-display": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+              "asset-code": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}],
+              "label-sm": ["12px", {"lineHeight": "1.2", "fontWeight": "600"}]
+            }
+          }
+        }
+      }
+    </script>
     <style>
-        /* Aggressive hiding of default Keycloak elements */
+        /* Hide ALL default Keycloak chrome */
         .login-pf-page-header,
         .login-pf-header,
         h1#kc-page-title,
-        .login-pf-signup,
-        #kc-page-title,
         .kc-page-title,
-        .login-pf .container,
-        .login-pf-page .login-pf-signup,
-        .login-pf-page .login-pf-header,
+        .login-pf-signup,
         .card-pf-title,
-        .login-pf-page .card-pf .card-pf-title {
+        .login-pf-page .card-pf .card-pf-title,
+        #kc-header,
+        .kc-header,
+        #kc-content-wrapper > .row,
+        .login-pf-page .card-pf {
             display: none !important;
             visibility: hidden !important;
             height: 0 !important;
@@ -24,660 +106,238 @@
             padding: 0 !important;
         }
 
-        /* Reset Keycloak page structure */
         .login-pf-page {
             padding: 0 !important;
             margin: 0 !important;
-            border: none !important;
             background: none !important;
-            min-height: 100vh !important;
         }
 
-        .login-pf-page .card-pf {
+        #kc-content {
             padding: 0 !important;
             margin: 0 !important;
-            border: none !important;
-            max-width: none !important;
-            background: none !important;
-            box-shadow: none !important;
         }
 
         #kc-content-wrapper {
             margin: 0 !important;
             padding: 0 !important;
             width: 100% !important;
-            height: 100vh !important;
-            overflow: auto !important;
-            background-color: white !important;
+            background: transparent !important;
+            overflow: visible !important;
         }
 
-        #kc-content {
-            padding: 0 !important;
-            margin: 0 !important;
-            width: 100% !important;
-            height: 100% !important;
+        body, html {
+            background-color: #fef6f5 !important;
+            font-family: 'Inter', sans-serif;
         }
 
-         .comtext {
-            color: white !important;
+        /* animation */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-up { animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+        .red-pattern-dots {
+            background-image: radial-gradient(rgba(185, 28, 28, 0.04) 1.2px, transparent 1.2px);
+            background-size: 24px 24px;
         }
 
-        /* Custom styles */
-        :root {
-            --rich-black: #070f29;
-            --ultramarine-blue: #255bec;
-            --violet: #780aff;
-            --maya-blue: #5ecaf9;
-            --white: #ffffff;
-            --light-gray: #f8fafc;
-            --medium-gray: #e2e8f0;
-            --dark-gray: #64748b;
-            --text-dark: #1e293b;
+        .custom-checkbox:checked {
+            background-color: #b91c1c;
+            border-color: #b91c1c;
         }
 
-        * {
-            box-sizing: border-box;
+        .loader-dots span {
+            animation: blink 1.4s infinite both;
         }
-
-        html, body {
-            margin: 0 !important;
-            padding: 0 !important;
-            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important;
-            background-color: var(--light-gray) !important;
-            color: var(--text-dark) !important;
-            line-height: 1.6 !important;
-            height: 100% !important;
-            overflow-x: hidden !important;
-        }
-
-        .custom-login-container {
-            display: flex;
-            width: 100%;
-            max-width: 1400px;
-            margin: 0 auto;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            border-radius: 12px;
-            overflow: hidden;
-            margin: 20px auto;
-            min-height: calc(100vh - 40px);
-        }
-
-        .brand-section {
-            flex: 1.2;
-            background: linear-gradient(135deg, var(--rich-black) 0%, var(--violet) 100%);
-            color: var(--white);
-            padding: 3rem 4rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .brand-section::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23780aff' fill-opacity='0.08' fill-rule='evenodd'/%3E%3C/svg%3E");
-            opacity: 0.4;
-        }
-
-        .logo-container {
-            display: flex;
-            align-items: center;
-            margin-bottom: 2.5rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .logo {
-            height: 50px;
-            width: 38px;
-            margin-right: 15px;
-        }
-
-        .logo-text {
-            font-size: 1.8rem;
-            font-weight: 700;
-        }
-
-        .tagline {
-            font-size: 2.2rem;
-            font-weight: 300;
-            margin-bottom: 2.5rem;
-            line-height: 1.3;
-            position: relative;
-            z-index: 1;
-        }
-
-        .system-description {
-            margin-bottom: 3rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .system-description h2 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            font-weight: 600;
-        }
-
-        .system-description p {
-            opacity: 0.9;
-            font-size: 1.05rem;
-            max-width: 500px;
-        }
-
-        .features {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            margin-top: 2rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .feature {
-            display: flex;
-            align-items: flex-start;
-        }
-
-        .feature-icon {
-            background-color: rgba(255, 255, 255, 0.15);
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 12px;
-            flex-shrink: 0;
-        }
-
-        .feature-text h3 {
-            font-size: 1rem;
-            margin-bottom: 4px;
-            font-weight: 600;
-        }
-
-        .feature-text p {
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
-
-        .copyright {
-            margin-top: 3rem;
-            font-size: 0.85rem;
-            opacity: 0.7;
-            position: relative;
-            z-index: 1;
-        }
-
-        .login-section {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 3rem 4rem;
-            background-color: var(--white);
-        }
-
-        .login-container {
-            max-width: 420px;
-            width: 100%;
-            margin: 0 auto;
-        }
-
-        .login-header {
-            margin-bottom: 2.5rem;
-            text-align: center;
-        }
-
-        .login-header h1 {
-            font-size: 2.2rem;
-            margin-bottom: 0.5rem;
-            color: var(--rich-black);
-            font-weight: 700;
-        }
-
-        .login-header p {
-            color: var(--dark-gray);
-            font-size: 1.05rem;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: var(--text-dark);
-            font-size: 0.95rem;
-        }
-
-        .input-with-icon {
-            position: relative;
-        }
-
-        .input-icon {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--dark-gray);
-        }
-
-        .password-toggle {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--dark-gray);
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-
-        .password-toggle:hover {
-            color: var(--ultramarine-blue);
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 0.85rem 1rem 0.85rem 45px;
-            border: 1px solid var(--medium-gray);
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: all 0.3s;
-            background-color: var(--light-gray);
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: var(--ultramarine-blue);
-            box-shadow: 0 0 0 3px rgba(37, 91, 236, 0.1);
-            background-color: var(--white);
-        }
-
-        .forgot-password-container {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 1.5rem;
-        }
-
-        .forgot-password {
-            color: var(--ultramarine-blue);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.9rem;
-            transition: color 0.2s;
-        }
-
-        .forgot-password:hover {
-            color: var(--violet);
-            text-decoration: underline;
-        }
-
-        .login-button {
-            width: 100%;
-            padding: 0.9rem;
-            background: linear-gradient(135deg, var(--ultramarine-blue) 0%, var(--violet) 100%);
-            color: var(--white);
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 4px 12px rgba(37, 91, 236, 0.2);
-        }
-
-        .login-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(37, 91, 236, 0.3);
-        }
-
-        .signup-link {
-            text-align: center;
-            margin-top: 2rem;
-            color: var(--dark-gray);
-            font-size: 0.95rem;
-        }
-
-        .signup-link a {
-            color: var(--ultramarine-blue);
-            text-decoration: none;
-            font-weight: 600;
-            transition: color 0.2s;
-        }
-
-        .signup-link a:hover {
-            color: var(--violet);
-            text-decoration: underline;
-        }
-
-        .security-notice {
-            margin-top: 2rem;
-            padding: 1rem;
-            background-color: rgba(37, 91, 236, 0.05);
-            border-radius: 8px;
-            border-left: 4px solid var(--ultramarine-blue);
-            font-size: 0.85rem;
-            color: var(--dark-gray);
-        }
-
-        .error-message {
-            color: #dc2626;
-            font-size: 0.875rem;
-            margin-top: 0.5rem;
-        }
-
-        /* Mobile-specific styles */
-        .mobile-header {
-            display: none;
-            background: linear-gradient(135deg, var(--rich-black) 0%, var(--violet) 100%);
-            color: var(--white);
-            padding: 2rem 1.5rem 1.5rem;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .mobile-header::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23780aff' fill-opacity='0.08' fill-rule='evenodd'/%3E%3C/svg%3E");
-            opacity: 0.4;
-        }
-
-        .mobile-logo-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .mobile-logo {
-            height: 40px;
-            width: 30px;
-            margin-right: 12px;
-        }
-
-        .mobile-logo-text {
-            font-size: 1.5rem;
-            font-weight: 700;
-        }
-
-        .mobile-subtitle {
-            font-size: 0.9rem;
-            opacity: 0.9;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Responsive design */
-        @media (max-width: 1024px) {
-            .custom-login-container {
-                flex-direction: column;
-                margin: 0;
-                border-radius: 0;
-                min-height: 100vh;
-                box-shadow: none;
-            }
-
-            .brand-section {
-                display: none;
-            }
-
-            .mobile-header {
-                display: block;
-            }
-
-            .login-section {
-                padding: 2rem 1.5rem;
-                flex: 1;
-                justify-content: flex-start;
-            }
-
-            .login-container {
-                max-width: 400px;
-            }
-
-            .login-header {
-                margin-bottom: 2rem;
-            }
-
-            .login-header h1 {
-                font-size: 1.8rem;
-            }
-
-            .form-input {
-                padding: 1rem 1rem 1rem 45px;
-                font-size: 16px; /* Prevent zoom on iOS */
-            }
-
-            .login-button {
-                padding: 1rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .login-section {
-                padding: 1.5rem 1rem;
-            }
-
-            .mobile-header {
-                padding: 1.5rem 1rem 1rem;
-            }
-
-            .login-header h1 {
-                font-size: 1.6rem;
-            }
-
-            .security-notice {
-                font-size: 0.8rem;
-                padding: 0.8rem;
-            }
+        .loader-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .loader-dots span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes blink {
+            0%, 100% { opacity: 0.2; }
+            20% { opacity: 1; }
         }
     </style>
 <#elseif section = "form">
 
-<!-- Mobile header (only visible on mobile) -->
-<div class="mobile-header">
-    <div class="mobile-logo-container">
-       <img src="${url.resourcesPath}/img/justjava-logo.svg" alt="Just Java Logo" class="mobile-logo">
-        <div class="mobile-logo-text">Just Java</div>
-    </div>
-    <div class="mobile-subtitle">Document Management System</div>
-</div>
+<main class="flex min-h-screen red-pattern-dots">
+    <!-- LEFT PANEL: Crimson/Dark Red Immersive (hidden on mobile) -->
+    <section class="hidden lg:flex flex-col w-1/2 relative overflow-hidden p-margin-desktop" style="background: radial-gradient(ellipse at 20% 30%, #3d1111, #1f0505); box-shadow: inset 0 0 0 1000px rgba(0,0,0,0.15);">
+        <div class="absolute inset-0 opacity-20 pointer-events-none" style="background-image: repeating-linear-gradient(45deg, #ff3a3a0c 0px, #ff3a3a0c 2px, transparent 2px, transparent 8px);"></div>
 
-<div class="custom-login-container">
-    <div class="brand-section">
-        <div>
-            <div class="logo-container">
-                <img src="${url.resourcesPath}/img/justjava-logo.svg" alt="Just Java Logo" class="logo">
-                <div class="logo-text">Just Java</div>
+        <div class="relative z-10 flex flex-col h-full justify-between">
+            <!-- Branding -->
+            <div class="flex flex-col gap-1">
+                <div class="flex items-center gap-3">
+                    <span class="font-hero-display text-white font-black text-[32px] tracking-tighter drop-shadow-md">Just Java DMS</span>
+                    <div class="h-6 w-[1px] bg-red-400/40"></div>
+                    <span class="font-asset-code text-red-200/70 text-[10px] tracking-widest uppercase">Document Management</span>
+                </div>
+                <span class="font-label-sm text-red-300/50 tracking-wider">by JustJava Technologies</span>
             </div>
 
-            <div class="tagline">Innovate,<br />Develop,<br />Empower.</div>
-
-            <div class="system-description">
-                <h2>Document Management System</h2>
-                <p class="comtext">
-                    A secure, scalable platform for organizing, storing, and
-                    retrieving your digital documents with enterprise-grade security
-                    and compliance.
-                </p>
-            </div>
-
-            <div class="features">
-                <div class="feature">
-                    <div class="feature-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <div class="feature-text">
-                        <h3>Secure Storage</h3>
-                        <p class="comtext">Enterprise-grade security for all your documents</p>
-                    </div>
-                </div>
-
-                <div class="feature">
-                    <div class="feature-icon">
-                        <i class="fas fa-search"></i>
-                    </div>
-                    <div class="feature-text">
-                        <h3>Advanced Search</h3>
-                        <p class="comtext">Find documents quickly with powerful search</p>
-                    </div>
-                </div>
-
-                <div class="feature">
-                    <div class="feature-icon">
-                        <i class="fas fa-tags"></i>
-                    </div>
-                    <div class="feature-text">
-                        <h3>Smart Tagging</h3>
-                        <p class="comtext">Organize documents with custom tags</p>
-                    </div>
-                </div>
-
-                <div class="feature">
-                    <div class="feature-icon">
-                        <i class="fas fa-expand-arrows-alt"></i>
-                    </div>
-                    <div class="feature-text">
-                        <h3>Scalable</h3>
-                        <p class="comtext">Grows with your business needs</p>
+            <!-- Central Image Overlay -->
+            <div class="flex-grow flex items-center justify-center py-8">
+                <div class="w-full rounded-2xl overflow-hidden relative shadow-2xl shadow-black/30" style="height: 420px;">
+                    <img src="https://images.unsplash.com/photo-1553413077-190dd305871c?w=900&q=85" alt="Secure document management" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=900&q=85'">
+                    <div class="absolute inset-0" style="background: linear-gradient(to top, #3b0a0aee 0%, #9e2a2a66 50%, #b91c1c33 100%); mix-blend-mode: multiply;"></div>
+                    <div class="absolute inset-0" style="background: radial-gradient(transparent 30%, rgba(90, 0, 0, 0.4));"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-5">
+                        <p class="font-asset-code text-red-200/80 text-[10px] tracking-widest uppercase mb-1.5">Zero-trust · Enterprise Ready</p>
+                        <p class="text-white font-semibold text-[15px] leading-snug drop-shadow-md">Secure, scalable, and compliant document orchestration.</p>
                     </div>
                 </div>
             </div>
+
+            <!-- Feature Teasers (red-themed) -->
+            <div class="max-w-[440px] animate-fade-up" style="animation-delay: 200ms;">
+                <div class="grid grid-cols-2 gap-4 text-white/80">
+                    <div class="flex items-center gap-2"><span class="material-symbols-outlined text-red-300 text-xl">shield_lock</span><span class="text-sm font-medium">Encrypted Vault</span></div>
+                    <div class="flex items-center gap-2"><span class="material-symbols-outlined text-red-300 text-xl">search</span><span class="text-sm font-medium">Advanced Discovery</span></div>
+                    <div class="flex items-center gap-2"><span class="material-symbols-outlined text-red-300 text-xl">inventory_2</span><span class="text-sm font-medium">Smart Tagging</span></div>
+                    <div class="flex items-center gap-2"><span class="material-symbols-outlined text-red-300 text-xl">trending_up</span><span class="text-sm font-medium">Scalable</span></div>
+                </div>
+            </div>
+            <div class="mt-4 text-red-200/40 text-[10px] font-asset-code">© 2025 Just Java. All rights reserved.</div>
         </div>
+    </section>
 
-        <div class="copyright comtext">&copy; 2025 Just Java. All rights reserved.</div>
-    </div>
-
-    <div class="login-section">
-        <div class="login-container">
-            <div class="login-header">
-                <h1>Secure Login</h1>
-                <p>Access your document management system</p>
+    <!-- RIGHT PANEL: Login Form (Red-theme, no flip, standard forgot password link) -->
+    <section class="w-full lg:w-1/2 flex flex-col justify-center items-center px-6 md:px-12 py-12 relative bg-gradient-to-br from-background via-surface-container-low to-background">
+        <div class="max-w-[420px] w-full animate-fade-up">
+            <!-- Mobile Branding -->
+            <div class="lg:hidden mb-12 flex justify-center">
+                <div class="flex flex-col items-center gap-2">
+                    <span class="font-hero-display text-primary font-black text-[40px] tracking-tighter">Just Java</span>
+                    <span class="font-label-sm text-secondary tracking-widest uppercase text-[10px]">Document Management System</span>
+                </div>
             </div>
 
-            <form id="kc-form-login" action="${url.loginAction}" method="post">
-                <div class="form-group">
-                    <label class="form-label" for="username">
-                        <#if !realm.loginWithEmailAllowed>${msg("username")}
-                        <#elseif !realm.registrationEmailAsUsername>${msg("usernameOrEmail")}
-                        <#else>${msg("email")}</#if>
-                    </label>
-                    <div class="input-with-icon">
-                        <i class="fas fa-envelope input-icon"></i>
-                        <input
-                            type="text"
-                            id="username"
-                            name="username"
-                            class="form-input"
-                            value="${(login.username!'')}"
-                            placeholder="Enter your corporate email"
-                            autocomplete="username"
-                            required
-                            aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>"
-                        />
-                    </div>
-                    <#if messagesPerField.existsError('username','password')>
-                        <div class="error-message">
-                            ${kcSanitize(messagesPerField.getFirstError('username','password'))?no_esc}
-                        </div>
-                    </#if>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label" for="password">${msg("password")}</label>
-                    <div class="input-with-icon">
-                        <i class="fas fa-lock input-icon"></i>
-                        <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            class="form-input"
-                            placeholder="Enter your password"
-                            autocomplete="current-password"
-                            required
-                        />
-                        <i class="fas fa-eye password-toggle" id="togglePassword"></i>
-                    </div>
-                </div>
-
-                <#if realm.resetPasswordAllowed>
-                    <div class="forgot-password-container">
-                        <a href="${url.loginResetCredentialsUrl}" class="forgot-password">${msg("doForgotPassword")}</a>
-                    </div>
-                </#if>
-
-                <input type="hidden" name="credentialId"
-                       <#if auth.selectedCredential?has_content>value="${auth.selectedCredential}"</#if>/>
-
-                <button type="submit" class="login-button">
-                    ${msg("doLogIn")}
-                </button>
-            </form>
-
-            <#if realm.password && realm.registrationAllowed && !registrationDisabled??>
-                <div class="signup-link">
-                    Need an account? <a href="${url.registrationUrl}">Sign up</a>
+            <!-- error alert (global) -->
+            <#if message?has_content && message.type = 'error' && !messagesPerField.existsError('username','password')>
+                <div class="mb-6 p-3 rounded-lg bg-error-container text-on-error-container text-sm border-l-4 border-error flex items-start gap-2">
+                    <span class="material-symbols-outlined text-error text-base">error</span>
+                    <span>${kcSanitize(message.summary)?no_esc}</span>
                 </div>
             </#if>
 
-            <div class="security-notice">
-                <i class="fas fa-info-circle"></i> This system is protected by
-                advanced security measures. Your data is safe with us.
+            <div>
+                <header class="mb-10">
+                    <h1 class="font-section-headline text-[32px] text-on-surface mb-2">Secure Access</h1>
+                    <p class="text-secondary text-body-md">Sign in to your <span class="text-primary font-semibold">Just Java DMS</span> workspace.</p>
+                </header>
+
+                <form id="kc-form-login" action="${url.loginAction}" method="post" class="space-y-6">
+                    <div>
+                        <label class="block font-label-sm text-on-surface-variant mb-2" for="username">
+                            <#if !realm.loginWithEmailAllowed>${msg("username")}
+                            <#elseif !realm.registrationEmailAsUsername>${msg("usernameOrEmail")}
+                            <#else>${msg("email")}</#if>
+                        </label>
+                        <input type="text" id="username" name="username"
+                               class="w-full h-[52px] rounded-lg border border-outline-variant px-4 bg-white focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all font-body-md text-on-surface"
+                               value="${(login.username!'')}" placeholder="name@company.com" autocomplete="username" required />
+                        <#if messagesPerField.existsError('username','password')>
+                            <div class="mt-1 text-sm text-error flex items-center gap-1">
+                                <span class="material-symbols-outlined text-base">warning</span>
+                                ${kcSanitize(messagesPerField.getFirstError('username','password'))?no_esc}
+                            </div>
+                        </#if>
+                    </div>
+
+                    <div class="relative">
+                        <div class="flex justify-between items-end mb-2">
+                            <label class="font-label-sm text-on-surface-variant" for="password">${msg("password")}</label>
+                            <#if realm.resetPasswordAllowed>
+                                <a href="${url.loginResetCredentialsUrl}" class="text-primary font-label-sm hover:underline hover:text-red-700 transition">${msg("doForgotPassword")}</a>
+                            </#if>
+                        </div>
+                        <div class="relative">
+                            <input type="password" id="password" name="password"
+                                   class="w-full h-[52px] rounded-lg border border-outline-variant px-4 bg-white focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all font-body-md text-on-surface"
+                                   placeholder="••••••••" autocomplete="current-password" required />
+                            <button type="button" class="absolute right-4 top-1/2 -translate-y-1/2 text-secondary hover:text-primary transition-colors" onclick="togglePassword()">
+                                <span class="material-symbols-outlined text-[20px]" id="eye-icon">visibility</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <#if realm.rememberMe>
+                        <div class="flex items-center gap-3">
+                            <input type="checkbox" id="rememberMe" name="rememberMe" class="custom-checkbox w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary focus:ring-1" <#if login.rememberMe??>checked</#if>>
+                            <label class="font-body-md text-secondary select-none" for="rememberMe">${msg("rememberMe")}</label>
+                        </div>
+                    </#if>
+
+                    <input type="hidden" name="credentialId" <#if auth.selectedCredential?has_content>value="${auth.selectedCredential}"</#if> />
+
+                    <button type="submit" id="submit-btn" class="w-full h-[52px] bg-primary text-white font-bold rounded-lg shadow-md hover:bg-red-800 transition-all active:scale-[0.98] flex items-center justify-center gap-2 overflow-hidden focus:ring-2 focus:ring-red-300">
+                        <span id="btn-text">${msg("doLogIn")} →</span>
+                        <div class="hidden loader-dots flex gap-1" id="btn-loader">
+                            <span class="w-1.5 h-1.5 bg-white rounded-full"></span>
+                            <span class="w-1.5 h-1.5 bg-white rounded-full"></span>
+                            <span class="w-1.5 h-1.5 bg-white rounded-full"></span>
+                        </div>
+                    </button>
+                </form>
+
+                <#if realm.password && realm.registrationAllowed && !registrationDisabled??>
+                    <div class="mt-8 text-center border-t border-red-200/40 pt-6">
+                        <p class="text-secondary font-body-md">${msg("noAccount")} <a href="${url.registrationUrl}" class="text-primary font-bold hover:underline">${msg("doRegister")}</a></p>
+                    </div>
+                </#if>
+
+                <div class="mt-6 p-4 rounded-lg bg-primary/5 border-l-4 border-primary text-sm text-secondary">
+                    <div class="flex items-start gap-2">
+                        <span class="material-symbols-outlined text-primary text-sm">info</span>
+                        <span>This system is protected by advanced security measures. Your data is encrypted and audited.</span>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
+
+        <footer class="absolute bottom-6 w-full px-6 md:px-12 flex flex-col md:flex-row justify-between items-center text-[11px] font-asset-code text-secondary/80 tracking-tight">
+            <p>© 2025 Just Java · Crimson Secure Edition</p>
+            <div class="flex gap-4 mt-2 md:mt-0">
+                <a href="#" class="hover:text-primary transition-colors">PRIVACY</a>
+                <a href="#" class="hover:text-primary transition-colors">SECURITY</a>
+                <a href="#" class="hover:text-primary transition-colors">COMPLIANCE</a>
+            </div>
+        </footer>
+    </section>
+</main>
 
 <script>
-    // Password visibility toggle
-    document.getElementById("togglePassword").addEventListener("click", function () {
-        const passwordField = document.getElementById("password");
-        const toggleIcon = this;
-
-        if (passwordField.type === "password") {
-            passwordField.type = "text";
-            toggleIcon.classList.remove("fa-eye");
-            toggleIcon.classList.add("fa-eye-slash");
+    function togglePassword() {
+        const pwdField = document.getElementById('password');
+        const eyeIcon = document.getElementById('eye-icon');
+        if (pwdField.type === 'password') {
+            pwdField.type = 'text';
+            eyeIcon.textContent = 'visibility_off';
         } else {
-            passwordField.type = "password";
-            toggleIcon.classList.remove("fa-eye-slash");
-            toggleIcon.classList.add("fa-eye");
+            pwdField.type = 'password';
+            eyeIcon.textContent = 'visibility';
         }
-    });
+    }
 
-    // Form validation and loading state
-    document.getElementById("kc-form-login").addEventListener("submit", function(e) {
-        const submitButton = document.querySelector(".login-button");
-        const username = document.getElementById("username").value;
-        const password = document.getElementById("password").value;
+    // loader effect on submit without breaking actual form submission
+    const loginForm = document.getElementById('kc-form-login');
+    const submitBtn = document.getElementById('submit-btn');
+    const btnText = document.getElementById('btn-text');
+    const btnLoader = document.getElementById('btn-loader');
 
-        if (username && password) {
-            submitButton.disabled = true;
-            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
-        }
-    });
+    if (loginForm) {
+        loginForm.addEventListener('submit', function() {
+            btnText.classList.add('hidden');
+            btnLoader.classList.remove('hidden');
+            submitBtn.disabled = true;
+            submitBtn.classList.add('opacity-80', 'cursor-not-allowed');
+            // form submits naturally — browser will navigate
+        });
+    }
 
-    // Auto-focus username field
-    window.addEventListener("load", function() {
-        const usernameField = document.getElementById("username");
+    // auto-focus
+    window.addEventListener('load', function() {
+        const usernameField = document.getElementById('username');
         if (usernameField && !usernameField.value) {
             usernameField.focus();
         }
