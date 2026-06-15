@@ -175,7 +175,7 @@
         </section>
 
         <section class="copyright-text">
-          © Bluepay Ltd. 2025 | Modern Day Payment
+          © Bluepay Ltd. 2026 | Modern Day Payment
         </section>
       </main>
 
