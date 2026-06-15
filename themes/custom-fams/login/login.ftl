@@ -1,13 +1,12 @@
 <#import "template.ftl" as layout>
 <@layout.registrationLayout displayMessage=!messagesPerField.existsError('username','password') displayInfo=realm.password && realm.registrationAllowed && !registrationDisabled??; section>
 <#if section = "header">
-    <title>Just Java | Document Management System</title>
+    <title>FAMS | Fixed Asset Management System</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
 
     <script id="tailwind-config">
       tailwind.config = {
@@ -49,24 +48,13 @@
             overflow-x: hidden !important;
         }
 
-        .login-pf-page-header,
-        .login-pf-header,
-        #kc-page-title,
-        .kc-page-title,
-        .login-pf-signup,
-        .card-pf-title,
-        .login-pf .container,
-        .pf-c-page__header,
-        .pf-c-brand,
-        .pf-c-page {
+        .login-pf-page-header, .login-pf-header, #kc-page-title, .kc-page-title,
+        .login-pf-signup, .card-pf-title, .login-pf .container {
             display: none !important;
             visibility: hidden !important;
             height: 0 !important;
-            margin: 0 !important;
-            padding: 0 !important;
         }
 
-        /* Force full takeover */
         #kc-content-wrapper {
             position: fixed !important;
             top: 0 !important;
@@ -74,14 +62,13 @@
             right: 0 !important;
             bottom: 0 !important;
             z-index: 9999 !important;
+            overflow-y: auto !important; /* Make whole page scrollable */
         }
 
-        /* Custom Layout */
         .custom-login-container {
             display: flex;
-            width: 100vw;
-            height: 100vh;
             min-height: 100vh;
+            width: 100%;
         }
 
         /* Left Brand Panel - Crimson */
@@ -109,7 +96,6 @@
             height: 100%;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
         }
 
         /* Right Login Panel */
@@ -121,6 +107,7 @@
             justify-content: center;
             padding: 2rem;
             position: relative;
+            min-height: 100vh;
         }
 
         .login-card {
@@ -132,6 +119,7 @@
             height: 52px;
             border: 1px solid #eccbc8;
             background: white;
+            font-size: 1rem;
         }
 
         .form-input:focus {
@@ -144,12 +132,11 @@
             height: 52px;
             background-color: #b91c1c;
             font-weight: 700;
-            transition: all 0.2s;
+            font-size: 1.1rem;
         }
 
         .login-button:hover {
             background-color: #991b1b;
-            transform: translateY(-1px);
         }
 
         .error-message {
@@ -160,21 +147,13 @@
 
         /* Mobile */
         @media (max-width: 1024px) {
-            .brand-section {
-                display: none !important;
-            }
-            .custom-login-container {
-                flex-direction: column;
-            }
-            .login-section {
-                padding: 1.5rem 1rem;
-            }
+            .brand-section { display: none !important; }
+            .custom-login-container { flex-direction: column; }
+            .login-section { padding: 2rem 1rem; min-height: auto; }
         }
 
         @media (min-width: 1025px) {
-            .brand-section {
-                display: flex !important;
-            }
+            .brand-section { display: flex !important; }
         }
     </style>
 <#elseif section = "form">
@@ -184,26 +163,34 @@
     <!-- LEFT PANEL -->
     <section class="brand-section">
         <div>
-            <div class="flex items-center gap-3 mb-8">
-                <img src="${url.resourcesPath}/img/justjava-logo.svg" alt="Just Java" class="h-12">
-                <span class="font-bold text-4xl tracking-tighter">JUST JAVA</span>
+            <div class="mb-12">
+                <div class="flex items-center gap-3">
+                    <span class="font-bold text-5xl tracking-tighter">FAMS</span>
+                </div>
+                <span class="block text-red-200/80 text-sm tracking-[3px] uppercase font-mono mt-1">FIXED ASSET MANAGEMENT SYSTEM</span>
             </div>
 
             <div class="mb-12">
-                <h2 class="text-4xl font-bold leading-tight">Document Management<br>System</h2>
-                <p class="mt-4 text-red-100/90 text-lg">Secure. Organized. Enterprise-ready.</p>
+                <h2 class="text-4xl font-bold leading-tight">Track. Manage.<br>Optimize.</h2>
+                <p class="mt-4 text-red-100/90 text-lg">Enterprise-grade fixed asset tracking with full lifecycle visibility.</p>
             </div>
 
-            <div class="flex-grow flex items-center justify-center">
-                <div class="w-full max-w-md rounded-3xl overflow-hidden shadow-2xl relative">
-                    <img src="https://images.unsplash.com/photo-1553413077-190dd305871c?w=900&q=85"
-                         class="w-full h-96 object-cover" alt="DMS">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+            <div class="flex-1 flex items-center justify-center py-8">
+                <div class="w-full max-w-md rounded-3xl overflow-hidden shadow-2xl relative bg-white/10 backdrop-blur-sm">
+                    <!-- 2D Illustration for Asset Management -->
+                    <img src="https://picsum.photos/id/1015/800/620"
+                         class="w-full h-auto object-cover rounded-3xl"
+                         alt="Fixed Asset Management Illustration"
+                         onerror="this.src='https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=85'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent rounded-3xl"></div>
+                    <div class="absolute bottom-6 left-6 text-white">
+                        <p class="text-xs uppercase tracking-widest text-red-200">Real-time Asset Dashboard</p>
+                    </div>
                 </div>
             </div>
 
-            <div class="mt-12 text-sm opacity-75">
-                © 2025 Just Java Technologies
+            <div class="text-sm opacity-70 mt-auto">
+                © 2025 FAMS • Fixed Asset Management System
             </div>
         </div>
     </section>
@@ -214,15 +201,15 @@
 
             <!-- Mobile Branding -->
             <div class="lg:hidden flex justify-center mb-10">
-                <div class="flex items-center gap-3">
-                    <img src="${url.resourcesPath}/img/justjava-logo.svg" alt="Just Java" class="h-10">
-                    <span class="font-bold text-3xl tracking-tight text-primary">JUST JAVA</span>
+                <div>
+                    <span class="font-bold text-5xl tracking-tighter text-primary">FAMS</span>
+                    <span class="block text-xs tracking-widest text-secondary mt-1 text-center">FIXED ASSET MANAGEMENT</span>
                 </div>
             </div>
 
-            <header class="mb-10">
-                <h1 class="text-4xl font-bold text-on-surface">Welcome back</h1>
-                <p class="text-secondary mt-3">Sign in to your document vault</p>
+            <header class="mb-10 text-center lg:text-left">
+                <h1 class="text-4xl font-bold text-on-surface tracking-tight">Welcome back</h1>
+                <p class="text-secondary mt-3 text-lg">Sign in to manage your organization's fixed assets</p>
             </header>
 
             <form id="kc-form-login" action="${url.loginAction}" method="post" class="space-y-6">
@@ -264,18 +251,21 @@
                 </div>
 
                 <button type="submit" id="submit-btn"
-                        class="login-button w-full rounded-2xl text-white flex items-center justify-center gap-3 text-base">
+                        class="login-button w-full rounded-2xl text-white flex items-center justify-center gap-3">
                     <span id="btn-text">Sign In</span>
                     <span id="btn-loader" class="hidden w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
                 </button>
             </form>
 
             <#if realm.password && realm.registrationAllowed && !registrationDisabled??>
-                <p class="text-center mt-8 text-sm">
-                    Don't have an account?
-                    <a href="${url.registrationUrl}" class="text-primary font-medium hover:underline">Sign up</a>
+                <p class="text-center mt-8 text-sm text-on-surface-variant">
+                    Need access? Contact your administrator.
                 </p>
             </#if>
+
+            <div class="mt-12 text-center text-xs text-on-surface-variant">
+                Secure access to FAMS — Fixed Asset Management System
+            </div>
         </div>
     </section>
 </div>
@@ -293,7 +283,7 @@
         }
     });
 
-    // Loading state
+    // Form submit loading
     document.getElementById("kc-form-login").addEventListener("submit", function() {
         const btn = document.getElementById("submit-btn");
         document.getElementById("btn-text").classList.add("hidden");
@@ -301,7 +291,7 @@
         btn.disabled = true;
     });
 
-    // Auto focus
+    // Auto-focus
     window.addEventListener("load", () => {
         document.getElementById("username").focus();
     });
