@@ -6,13 +6,12 @@
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
-    <script id="tailwind-config">
+    <script id="tailwind-config"><#noparse>
       tailwind.config = {
         darkMode: "class",
         theme: {
           extend: {
             colors: {
-              // FULL RED THEME — deep burgundy, crimson, scarlet
               "primary": "#b91c1c",
               "primary-container": "#dc2626",
               "on-primary": "#ffffff",
@@ -98,7 +97,7 @@
           }
         }
       }
-    </script>
+    </#noparse></script>
     <style>
         /* ===== Aggressive hide of default Keycloak elements ===== */
         .login-pf-page-header,
@@ -187,13 +186,11 @@
             20%      { opacity: 1; }
         }
 
-        /* custom red checkbox using theme primary */
         .custom-checkbox:checked {
             background-color: #b91c1c;
             border-color: #b91c1c;
         }
 
-        /* right panel subtle pattern */
         .red-pattern-dots {
             background-image: radial-gradient(rgba(185, 28, 28, 0.04) 1.2px, transparent 1.2px);
             background-size: 24px 24px;
@@ -201,16 +198,13 @@
     </style>
 <#elseif section = "form">
 
-    <!-- ========== MAIN CONTENT (2‑panel layout) ========== -->
     <main class="flex min-h-screen">
 
-        <!-- LEFT PANEL — Full crimson / dark red immersive theme -->
+        <!-- LEFT PANEL -->
         <section class="hidden lg:flex flex-col w-1/2 relative overflow-hidden p-margin-desktop" style="background: radial-gradient(ellipse at 20% 30%, #3d1111, #1f0505); box-shadow: inset 0 0 0 1000px rgba(0,0,0,0.15);">
-            <!-- abstract red texture -->
             <div class="absolute inset-0 opacity-20 pointer-events-none" style="background-image: repeating-linear-gradient(45deg, #ff3a3a0c 0px, #ff3a3a0c 2px, transparent 2px, transparent 8px);"></div>
 
             <div class="relative z-10 flex flex-col h-full justify-between">
-                <!-- Branding Header -->
                 <div class="flex flex-col gap-1">
                     <div class="flex items-center gap-3">
                         <span class="font-hero-display text-white font-black text-[32px] tracking-tighter drop-shadow-md">FAMS</span>
@@ -220,7 +214,6 @@
                     <span class="font-label-sm text-red-300/50 tracking-wider">by JustJava Technologies</span>
                 </div>
 
-                <!-- Central Image with red overlay -->
                 <div class="flex-grow flex items-center justify-center py-8">
                     <div class="w-full rounded-2xl overflow-hidden relative shadow-2xl shadow-black/30" style="height: 420px;">
                         <img src="https://images.unsplash.com/photo-1553413077-190dd305871c?w=900&q=85" alt="Warehouse asset scanning" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=900&q=85'">
@@ -233,7 +226,6 @@
                     </div>
                 </div>
 
-                <!-- Testimonial Rotator -->
                 <div class="max-w-[440px] animate-fade-up" style="animation-delay: 400ms;">
                     <div class="relative" id="testimonial-container">
                         <div class="testimonial-slide opacity-100 transition-opacity duration-500">
@@ -252,11 +244,10 @@
             </div>
         </section>
 
-        <!-- RIGHT PANEL — Login card on warm red background -->
+        <!-- RIGHT PANEL -->
         <section class="w-full lg:w-1/2 flex flex-col justify-center items-center px-margin-mobile md:px-margin-desktop py-12 relative bg-gradient-to-br from-background via-surface-container-low to-background">
             <div class="max-w-[420px] w-full animate-fade-up">
 
-                <!-- Mobile Branding (visible only on small screens) -->
                 <div class="lg:hidden mb-12 flex justify-center">
                     <div class="flex flex-col items-center gap-2">
                         <span class="font-hero-display text-primary font-black text-[40px] tracking-tighter">FAMS</span>
@@ -267,14 +258,12 @@
                 <div class="form-container">
                     <div class="form-flip-inner relative" id="form-inner">
 
-                        <!-- LOGIN FORM (FRONT) -->
                         <div class="form-front">
                             <header class="mb-10">
                                 <h1 class="font-section-headline text-[32px] text-on-surface mb-2">Welcome back.</h1>
                                 <p class="text-secondary text-body-md">Sign in to your organization's <span class="text-primary font-semibold">FAMS</span> workspace.</p>
                             </header>
 
-                            <#-- Error display for username/password -->
                             <#if messagesPerField.existsError('username','password')>
                                 <div class="mb-6 p-4 bg-error-container text-on-error-container rounded-lg text-sm font-medium">
                                     ${kcSanitize(messagesPerField.getFirstError('username','password'))?no_esc}
@@ -350,7 +339,6 @@
                             </form>
                         </div>
 
-                        <!-- FORGOT PASSWORD (BACK) – red theme consistency -->
                         <#if realm.resetPasswordAllowed>
                             <div class="form-back">
                                 <header class="mb-10">
@@ -380,7 +368,6 @@
                     </div>
                 </div>
 
-                <!-- Bottom Messaging (no registration, restricted access) -->
                 <div class="mt-16 text-center border-t border-red-200/40 pt-8">
                     <p class="text-secondary font-body-md mb-2">Don't have access?</p>
                     <p class="text-on-surface-variant font-body-md mb-6 leading-relaxed">
@@ -393,7 +380,6 @@
                 </div>
             </div>
 
-            <!-- Footer -->
             <footer class="absolute bottom-6 w-full px-margin-desktop flex flex-col md:flex-row justify-between items-center text-[11px] font-asset-code text-secondary/80 tracking-tight">
                 <p>© 2024 FAMS (Fixed Asset Management System) · Crimson Edition</p>
                 <div class="flex gap-4 mt-2 md:mt-0">
@@ -406,7 +392,6 @@
     </main>
 
     <script>
-        // Password visibility toggle
         function togglePassword() {
             const pwd = document.getElementById('password');
             const eye = document.getElementById('eye-icon');
@@ -419,13 +404,11 @@
             }
         }
 
-        // Flip between login and forgot password panels
         function flipForm() {
             const inner = document.getElementById('form-inner');
             inner.classList.toggle('form-flipped');
         }
 
-        // Forgot password form: redirect to Keycloak reset URL with username
         <#if realm.resetPasswordAllowed>
             document.getElementById('reset-form').addEventListener('submit', function(e) {
                 e.preventDefault();
@@ -436,7 +419,6 @@
             });
         </#if>
 
-        // Show loading state on login form submit (prevents double‑click)
         document.querySelector('.form-front form').addEventListener('submit', function() {
             const btn = document.getElementById('submit-btn');
             const text = document.getElementById('btn-text');
@@ -447,7 +429,6 @@
             btn.disabled = true;
         });
 
-        // Auto‑focus the username field if empty
         window.addEventListener('load', function() {
             const userField = document.getElementById('username');
             if (userField && !userField.value) {
@@ -455,7 +436,6 @@
             }
         });
 
-        // Testimonial rotator (left panel)
         const testimonials = [
             {
                 quote: "The single source of truth for our entire infrastructure fleet. FAMS has redefined our asset reliability metrics.",
