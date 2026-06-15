@@ -164,18 +164,6 @@
         }
         .animate-fade-up { animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
-        .form-container { perspective: 1000px; }
-        .form-flip-inner {
-            transition: transform 0.6s;
-            transform-style: preserve-3d;
-        }
-        .form-flipped { transform: rotateY(180deg); }
-        .form-front, .form-back {
-            backface-visibility: hidden;
-            width: 100%;
-        }
-        .form-back { transform: rotateY(180deg); position: absolute; top: 0; }
-
         .loader-dots span {
             animation: blink 1.4s infinite both;
         }
@@ -200,7 +188,7 @@
 
     <main class="flex min-h-screen">
 
-        <!-- LEFT PANEL -->
+        <!-- LEFT PANEL (unchanged) -->
         <section class="hidden lg:flex flex-col w-1/2 relative overflow-hidden p-margin-desktop" style="background: radial-gradient(ellipse at 20% 30%, #3d1111, #1f0505); box-shadow: inset 0 0 0 1000px rgba(0,0,0,0.15);">
             <div class="absolute inset-0 opacity-20 pointer-events-none" style="background-image: repeating-linear-gradient(45deg, #ff3a3a0c 0px, #ff3a3a0c 2px, transparent 2px, transparent 8px);"></div>
 
@@ -244,7 +232,7 @@
             </div>
         </section>
 
-        <!-- RIGHT PANEL -->
+        <!-- RIGHT PANEL – login only, no flip -->
         <section class="w-full lg:w-1/2 flex flex-col justify-center items-center px-margin-mobile md:px-margin-desktop py-12 relative bg-gradient-to-br from-background via-surface-container-low to-background">
             <div class="max-w-[420px] w-full animate-fade-up">
 
@@ -255,118 +243,80 @@
                     </div>
                 </div>
 
-                <div class="form-container">
-                    <div class="form-flip-inner relative" id="form-inner">
+                <!-- Simple login form without flip -->
+                <header class="mb-10">
+                    <h1 class="font-section-headline text-[32px] text-on-surface mb-2">Welcome back.</h1>
+                    <p class="text-secondary text-body-md">Sign in to your organization's <span class="text-primary font-semibold">FAMS</span> workspace.</p>
+                </header>
 
-                        <div class="form-front">
-                            <header class="mb-10">
-                                <h1 class="font-section-headline text-[32px] text-on-surface mb-2">Welcome back.</h1>
-                                <p class="text-secondary text-body-md">Sign in to your organization's <span class="text-primary font-semibold">FAMS</span> workspace.</p>
-                            </header>
-
-                            <#if messagesPerField.existsError('username','password')>
-                                <div class="mb-6 p-4 bg-error-container text-on-error-container rounded-lg text-sm font-medium">
-                                    ${kcSanitize(messagesPerField.getFirstError('username','password'))?no_esc}
-                                </div>
-                            </#if>
-
-                            <form class="space-y-6" action="${url.loginAction}" method="post">
-                                <div>
-                                    <label class="block font-label-sm text-on-surface-variant mb-2" for="username">
-                                        <#if !realm.loginWithEmailAllowed>${msg("username")}
-                                        <#elseif !realm.registrationEmailAsUsername>${msg("usernameOrEmail")}
-                                        <#else>${msg("email")}</#if>
-                                    </label>
-                                    <input
-                                        class="w-full h-[52px] rounded-lg border border-outline-variant px-4 bg-white focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all font-body-md text-on-surface"
-                                        id="username"
-                                        name="username"
-                                        type="email"
-                                        value="${(login.username!'')}"
-                                        placeholder="name@company.com"
-                                        autocomplete="username"
-                                        required
-                                        aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>"
-                                    >
-                                </div>
-
-                                <div class="relative">
-                                    <div class="flex justify-between items-end mb-2">
-                                        <label class="font-label-sm text-on-surface-variant" for="password">${msg("password")}</label>
-                                        <#if realm.resetPasswordAllowed>
-                                            <button class="text-primary font-label-sm hover:underline hover:text-red-700 transition" onclick="flipForm()" type="button">${msg("doForgotPassword")}</button>
-                                        </#if>
-                                    </div>
-                                    <div class="relative">
-                                        <input
-                                            class="w-full h-[52px] rounded-lg border border-outline-variant px-4 bg-white focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all font-body-md text-on-surface"
-                                            id="password"
-                                            name="password"
-                                            type="password"
-                                            placeholder="••••••••"
-                                            autocomplete="current-password"
-                                            required
-                                        >
-                                        <button class="absolute right-4 top-1/2 -translate-y-1/2 text-secondary hover:text-primary transition-colors" onclick="togglePassword()" type="button">
-                                            <span class="material-symbols-outlined text-[20px]" id="eye-icon">visibility</span>
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <#if realm.rememberMe>
-                                    <div class="flex items-center gap-3">
-                                        <input class="custom-checkbox w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary focus:ring-1" id="remember" name="rememberMe" type="checkbox">
-                                        <label class="font-body-md text-secondary select-none" for="remember">${msg("rememberMe")}</label>
-                                    </div>
-                                </#if>
-
-                                <#if auth?has_content && auth.selectedCredential?has_content>
-                                    <input type="hidden" name="credentialId" value="${auth.selectedCredential}">
-                                </#if>
-
-                                <button
-                                    class="w-full h-[52px] bg-primary text-white font-bold rounded-lg shadow-md hover:bg-red-800 transition-all active:scale-[0.98] flex items-center justify-center gap-2 overflow-hidden focus:ring-2 focus:ring-red-300"
-                                    id="submit-btn"
-                                    type="submit"
-                                >
-                                    <span id="btn-text">${msg("doLogIn")} →</span>
-                                    <div class="hidden loader-dots flex gap-1" id="btn-loader">
-                                        <span class="w-1.5 h-1.5 bg-white rounded-full"></span>
-                                        <span class="w-1.5 h-1.5 bg-white rounded-full"></span>
-                                        <span class="w-1.5 h-1.5 bg-white rounded-full"></span>
-                                    </div>
-                                </button>
-                            </form>
-                        </div>
-
-                        <#if realm.resetPasswordAllowed>
-                            <div class="form-back">
-                                <header class="mb-10">
-                                    <h1 class="font-section-headline text-[32px] text-on-surface mb-2">Password Recovery.</h1>
-                                    <p class="text-secondary text-body-md">Enter your work email and we'll send you a secure link to reset your password.</p>
-                                </header>
-                                <form class="space-y-6" id="reset-form">
-                                    <div>
-                                        <label class="block font-label-sm text-on-surface-variant mb-2" for="reset-email">Work Email</label>
-                                        <input
-                                            class="w-full h-[52px] rounded-lg border border-outline-variant px-4 bg-white focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
-                                            id="reset-email"
-                                            placeholder="name@company.com"
-                                            required
-                                            type="email"
-                                        >
-                                    </div>
-                                    <button class="w-full h-[52px] bg-primary text-white font-bold rounded-lg shadow-md hover:bg-red-800 transition-all flex items-center justify-center gap-2" type="submit">
-                                        <span class="material-symbols-outlined text-[18px]">lock_reset</span> Send Recovery Link
-                                    </button>
-                                    <button class="w-full flex items-center justify-center gap-2 text-secondary hover:text-primary transition-colors font-label-sm py-2" onclick="flipForm()" type="button">
-                                        <span class="material-symbols-outlined text-[18px]">arrow_back</span> Back to login
-                                    </button>
-                                </form>
-                            </div>
-                        </#if>
+                <#if messagesPerField.existsError('username','password')>
+                    <div class="mb-6 p-4 bg-error-container text-on-error-container rounded-lg text-sm font-medium">
+                        ${kcSanitize(messagesPerField.getFirstError('username','password'))?no_esc}
                     </div>
-                </div>
+                </#if>
+
+                <form class="space-y-6" action="${url.loginAction}" method="post">
+                    <div>
+                        <label class="block font-label-sm text-on-surface-variant mb-2" for="username">
+                            <#if !realm.loginWithEmailAllowed>${msg("username")}
+                            <#elseif !realm.registrationEmailAsUsername>${msg("usernameOrEmail")}
+                            <#else>${msg("email")}</#if>
+                        </label>
+                        <input
+                            class="w-full h-[52px] rounded-lg border border-outline-variant px-4 bg-white focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all font-body-md text-on-surface"
+                            id="username"
+                            name="username"
+                            type="email"
+                            value="${(login.username!'')}"
+                            placeholder="name@company.com"
+                            autocomplete="username"
+                            required
+                            aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>"
+                        >
+                    </div>
+
+                    <div class="relative">
+                        <label class="font-label-sm text-on-surface-variant mb-2 block" for="password">${msg("password")}</label>
+                        <div class="relative">
+                            <input
+                                class="w-full h-[52px] rounded-lg border border-outline-variant px-4 bg-white focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all font-body-md text-on-surface"
+                                id="password"
+                                name="password"
+                                type="password"
+                                placeholder="••••••••"
+                                autocomplete="current-password"
+                                required
+                            >
+                            <button class="absolute right-4 top-1/2 -translate-y-1/2 text-secondary hover:text-primary transition-colors" onclick="togglePassword()" type="button">
+                                <span class="material-symbols-outlined text-[20px]" id="eye-icon">visibility</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <#if realm.rememberMe>
+                        <div class="flex items-center gap-3">
+                            <input class="custom-checkbox w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary focus:ring-1" id="remember" name="rememberMe" type="checkbox">
+                            <label class="font-body-md text-secondary select-none" for="remember">${msg("rememberMe")}</label>
+                        </div>
+                    </#if>
+
+                    <#if auth?has_content && auth.selectedCredential?has_content>
+                        <input type="hidden" name="credentialId" value="${auth.selectedCredential}">
+                    </#if>
+
+                    <button
+                        class="w-full h-[52px] bg-primary text-white font-bold rounded-lg shadow-md hover:bg-red-800 transition-all active:scale-[0.98] flex items-center justify-center gap-2 overflow-hidden focus:ring-2 focus:ring-red-300"
+                        id="submit-btn"
+                        type="submit"
+                    >
+                        <span id="btn-text">${msg("doLogIn")} →</span>
+                        <div class="hidden loader-dots flex gap-1" id="btn-loader">
+                            <span class="w-1.5 h-1.5 bg-white rounded-full"></span>
+                            <span class="w-1.5 h-1.5 bg-white rounded-full"></span>
+                            <span class="w-1.5 h-1.5 bg-white rounded-full"></span>
+                        </div>
+                    </button>
+                </form>
 
                 <div class="mt-16 text-center border-t border-red-200/40 pt-8">
                     <p class="text-secondary font-body-md mb-2">Don't have access?</p>
@@ -404,22 +354,7 @@
             }
         }
 
-        function flipForm() {
-            const inner = document.getElementById('form-inner');
-            inner.classList.toggle('form-flipped');
-        }
-
-        <#if realm.resetPasswordAllowed>
-            document.getElementById('reset-form').addEventListener('submit', function(e) {
-                e.preventDefault();
-                const email = document.getElementById('reset-email').value.trim();
-                if (email) {
-                    window.location.href = '${url.loginResetCredentialsUrl}?username=' + encodeURIComponent(email);
-                }
-            });
-        </#if>
-
-        document.querySelector('.form-front form').addEventListener('submit', function() {
+        document.querySelector('form').addEventListener('submit', function() {
             const btn = document.getElementById('submit-btn');
             const text = document.getElementById('btn-text');
             const loader = document.getElementById('btn-loader');
