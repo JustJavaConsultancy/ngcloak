@@ -1,0 +1,330 @@
+/* ═══════════════════════════════════════════════════════════════
+   FAMS — Crimson Vault · Keycloak Theme Stylesheet
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Animations ── */
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 0.2; }
+    20%       { opacity: 1; }
+}
+
+.animate-fade-up {
+    animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ── Loader dots ── */
+.loader-dots span {
+    animation: blink 1.4s infinite both;
+}
+.loader-dots span:nth-child(2) { animation-delay: 0.2s; }
+.loader-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+/* ── 3-D flip container ── */
+.form-container {
+    perspective: 1000px;
+}
+
+.form-flip-inner {
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+.form-flipped {
+    transform: rotateY(180deg);
+}
+
+.form-front,
+.form-back {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    width: 100%;
+}
+
+.form-back {
+    transform: rotateY(180deg);
+    position: absolute;
+    top: 0;
+}
+
+/* ── Right panel background ── */
+.right-panel {
+    background: linear-gradient(
+            135deg,
+            #fef6f5 0%,
+            #fff6f5 50%,
+            #fef6f5 100%
+    );
+}
+
+/* ── Dot-pattern background ── */
+.red-pattern-dots {
+    background-image: radial-gradient(
+            rgba(185, 28, 28, 0.04) 1.2px,
+            transparent 1.2px
+    );
+    background-size: 24px 24px;
+}
+
+/* ── Left panel ── */
+.left-panel {
+    background: radial-gradient(ellipse at 20% 30%, #3d1111, #1f0505);
+    box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.15);
+}
+
+.hatch-overlay {
+    background-image: repeating-linear-gradient(
+            45deg,
+            #ff3a3a0c 0px,
+            #ff3a3a0c 2px,
+            transparent 2px,
+            transparent 8px
+    );
+}
+
+/* ── Image overlays ── */
+.image-gradient-overlay {
+    background: linear-gradient(
+            to top,
+            #3b0a0aee 0%,
+            #9e2a2a66 50%,
+            #b91c1c33 100%
+    );
+    mix-blend-mode: multiply;
+}
+
+.image-vignette {
+    background: radial-gradient(transparent 30%, rgba(90, 0, 0, 0.4));
+}
+
+/* ── Testimonial components ── */
+.quote-icon {
+    font-variation-settings: 'FILL' 1;
+    display: block;
+}
+
+.testimonial-slide {
+    transition: opacity 0.5s ease;
+}
+
+.testimonial-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 9999px;
+    background: rgba(153, 27, 27, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: white;
+    font-size: 12px;
+    border: 1px solid rgba(252, 165, 165, 0.5);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    flex-shrink: 0;
+}
+
+/* ── Form inputs ── */
+.fams-input {
+    width: 100%;
+    height: 52px;
+    border-radius: 10px;
+    border: 1px solid #eccbc8;
+    padding: 0 16px;
+    background: #ffffff;
+    color: #2d1a1a;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+    display: block;
+}
+
+.fams-input:focus {
+    border-color: #b91c1c;
+    box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.15);
+}
+
+.fams-input:hover:not(:focus) {
+    border-color: #b77e7a;
+}
+
+.fams-input-error {
+    border-color: #c62828;
+}
+
+.fams-input-error:focus {
+    border-color: #c62828;
+    box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.15);
+}
+
+/* ── Field-level error message ── */
+.fams-field-error {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #c62828;
+    font-family: 'Inter', sans-serif;
+}
+
+/* ── Alert banners (Keycloak message types) ── */
+.kc-alert {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+}
+
+.kc-alert-error {
+    background: #ffd6d6;
+    color: #8b0000;
+    border: 1px solid rgba(198, 40, 40, 0.25);
+}
+
+.kc-alert-success {
+    background: #dcfce7;
+    color: #166534;
+    border: 1px solid rgba(22, 101, 52, 0.25);
+}
+
+.kc-alert-warning {
+    background: #fef9c3;
+    color: #854d0e;
+    border: 1px solid rgba(133, 77, 14, 0.25);
+}
+
+.kc-alert-info {
+    background: #dbeafe;
+    color: #1e40af;
+    border: 1px solid rgba(30, 64, 175, 0.25);
+}
+
+/* ── Primary button ── */
+.fams-btn-primary {
+    width: 100%;
+    height: 52px;
+    background-color: #b91c1c;
+    color: #ffffff;
+    font-weight: 700;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(185, 28, 28, 0.25);
+    transition: background-color 0.2s, box-shadow 0.2s, transform 0.1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    border: none;
+}
+
+.fams-btn-primary:hover {
+    background-color: #991b1b;
+    box-shadow: 0 6px 18px rgba(185, 28, 28, 0.35);
+}
+
+.fams-btn-primary:active {
+    transform: scale(0.98);
+}
+
+.fams-btn-primary:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(252, 165, 165, 0.6);
+}
+
+.fams-btn-primary.loading {
+    opacity: 0.8;
+    cursor: not-allowed;
+}
+
+/* ── Custom red checkbox ── */
+.custom-checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #eccbc8;
+    border-radius: 4px;
+    background: #fff;
+    cursor: pointer;
+    transition: background-color 0.15s, border-color 0.15s;
+    flex-shrink: 0;
+    position: relative;
+}
+
+.custom-checkbox:checked {
+    background-color: #b91c1c;
+    border-color: #b91c1c;
+}
+
+.custom-checkbox:checked::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: 2px solid #ffffff;
+    border-top: none;
+    border-left: none;
+    transform: rotate(45deg);
+}
+
+.custom-checkbox:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.2);
+}
+
+/* ── Keycloak chrome suppression ── */
+.login-pf-header,
+.login-pf-page-header,
+#kc-header,
+#kc-header-wrapper {
+    display: none !important;
+}
+
+.login-pf-page {
+    padding-top: 0 !important;
+    background: transparent !important;
+}
+
+/* ── Responsive: shrink padding on smaller viewports ── */
+@media (max-width: 1023px) {
+    .left-panel {
+        display: none;
+    }
+}
+
+@media (max-width: 640px) {
+    .fams-input,
+    .fams-btn-primary {
+        height: 48px;
+    }
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+    .animate-fade-up {
+        animation: none;
+        opacity: 1;
+    }
+    .form-flip-inner {
+        transition: none;
+    }
+    .loader-dots span {
+        animation: none;
+        opacity: 1;
+    }
+}
