@@ -137,22 +137,17 @@
             min-height: 100vh;
         }
 
-        /* Login card – matches dashboard card style */
-        .login-card {
+        /* Login container – flat, no card styling */
+        .login-container {
             width: 100%;
-            max-width: 440px;
-            background: #FFFFFF;
-            border: 1px solid #E4E6EA;
-            border-radius: 0.75rem;
-            padding: 2rem;
-            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
         }
 
         /* Form inputs – match dashboard height and styling */
         .form-input {
             height: 48px;
             border: 1px solid #E4E6EA;
-            background: #F4F5F7;
+            background: #FFFFFF;
             font-size: 0.875rem;
             border-radius: 0.5rem;
             transition: all 0.2s;
@@ -186,7 +181,7 @@
             .brand-section { display: none !important; }
             .custom-login-container { flex-direction: column; }
             .login-section { padding: 1.5rem; min-height: auto; }
-            .login-card { padding: 1.5rem; }
+            .login-container { max-width: 100%; }
         }
         @media (min-width: 1025px) {
             .brand-section { display: flex !important; }
@@ -202,7 +197,7 @@
             <div class="mb-12">
                 <div class="flex items-center gap-3">
                     <span class="material-symbols-outlined text-4xl text-white/90" style="font-variation-settings:'FILL'1;">inventory_2</span>
-                    <span class="font-bold text-3xl tracking-tight">JustJava FAMS</span>
+                    <span class="font-bold text-3xl tracking-tight">FAMS</span>
                 </div>
                 <span class="block text-white/60 text-xs tracking-[3px] uppercase font-technical-data mt-2">FIXED ASSET MANAGEMENT SYSTEM</span>
             </div>
@@ -222,21 +217,21 @@
             </div>
 
             <div class="text-xs text-white/40 mt-auto">
-                © 2025 JustJava Technologies • All rights reserved
+                © 2026 JustJava Technologies • All rights reserved
             </div>
         </div>
     </section>
 
-    <!-- RIGHT PANEL – LOGIN FORM -->
+    <!-- RIGHT PANEL – FLAT LOGIN FORM (no card background, border, or shadow) -->
     <section class="login-section">
-        <div class="login-card">
+        <div class="login-container">
 
             <!-- Mobile Branding (visible only on small screens) -->
             <div class="lg:hidden flex justify-center mb-8">
                 <div class="text-center">
                     <div class="flex items-center justify-center gap-2">
                         <span class="material-symbols-outlined text-3xl text-primary" style="font-variation-settings:'FILL'1;">inventory_2</span>
-                        <span class="font-bold text-2xl tracking-tight text-on-surface">JustJava FAMS</span>
+                        <span class="font-bold text-2xl tracking-tight text-on-surface">FAMS</span>
                     </div>
                     <span class="block text-secondary text-[10px] tracking-widest uppercase font-technical-data mt-1">FIXED ASSET MANAGEMENT</span>
                 </div>
