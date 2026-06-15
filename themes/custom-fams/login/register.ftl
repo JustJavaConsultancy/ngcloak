@@ -1,7 +1,8 @@
 <#import "template.ftl" as layout>
-<@layout.registrationLayout displayMessage=!messagesPerField.existsError('username','password') displayInfo=realm.password && realm.registrationAllowed && !registrationDisabled??; section>
+<#import "user-profile-commons.ftl" as userProfileCommons>
+<@layout.registrationLayout displayMessage=messagesPerField.exists('global') displayRequiredFields=true; section>
 <#if section = "header">
-    <title>Just Java | Document Management System</title>
+    <title>Just Java | Sign Up - Document Management System</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -58,7 +59,7 @@
             height: 100% !important;
         }
 
-         .comtext {
+        .comtext {
             color: white !important;
         }
 
@@ -90,7 +91,7 @@
             overflow-x: hidden !important;
         }
 
-        .custom-login-container {
+        .custom-register-container {
             display: flex;
             width: 100%;
             max-width: 1400px;
@@ -216,7 +217,7 @@
             z-index: 1;
         }
 
-        .login-section {
+        .register-section {
             flex: 1;
             display: flex;
             flex-direction: column;
@@ -225,31 +226,40 @@
             background-color: var(--white);
         }
 
-        .login-container {
+        .register-container {
             max-width: 420px;
             width: 100%;
             margin: 0 auto;
         }
 
-        .login-header {
+        .register-header {
             margin-bottom: 2.5rem;
             text-align: center;
         }
 
-        .login-header h1 {
+        .register-header h1 {
             font-size: 2.2rem;
             margin-bottom: 0.5rem;
             color: var(--rich-black);
             font-weight: 700;
         }
 
-        .login-header p {
+        .register-header p {
             color: var(--dark-gray);
             font-size: 1.05rem;
         }
 
         .form-group {
             margin-bottom: 1.5rem;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .form-row .form-group {
+            flex: 1;
         }
 
         .form-label {
@@ -288,12 +298,20 @@
 
         .form-input {
             width: 100%;
-            padding: 0.85rem 1rem 0.85rem 45px;
+            padding: 0.85rem 1rem;
             border: 1px solid var(--medium-gray);
             border-radius: 8px;
             font-size: 1rem;
             transition: all 0.3s;
             background-color: var(--light-gray);
+        }
+
+        .form-input.with-icon {
+            padding-left: 45px;
+        }
+
+        .form-input.with-toggle {
+            padding-right: 45px;
         }
 
         .form-input:focus {
@@ -303,26 +321,12 @@
             background-color: var(--white);
         }
 
-        .forgot-password-container {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 1.5rem;
+        .form-input.error {
+            border-color: #dc2626;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
         }
 
-        .forgot-password {
-            color: var(--ultramarine-blue);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.9rem;
-            transition: color 0.2s;
-        }
-
-        .forgot-password:hover {
-            color: var(--violet);
-            text-decoration: underline;
-        }
-
-        .login-button {
+        .register-button {
             width: 100%;
             padding: 0.9rem;
             background: linear-gradient(135deg, var(--ultramarine-blue) 0%, var(--violet) 100%);
@@ -334,28 +338,35 @@
             cursor: pointer;
             transition: all 0.3s;
             box-shadow: 0 4px 12px rgba(37, 91, 236, 0.2);
+            margin-top: 15px;
         }
 
-        .login-button:hover {
+        .register-button:hover:not(:disabled) {
             transform: translateY(-2px);
             box-shadow: 0 6px 16px rgba(37, 91, 236, 0.3);
         }
 
-        .signup-link {
+        .register-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .login-link {
             text-align: center;
             margin-top: 2rem;
             color: var(--dark-gray);
             font-size: 0.95rem;
         }
 
-        .signup-link a {
+        .login-link a {
             color: var(--ultramarine-blue);
             text-decoration: none;
             font-weight: 600;
             transition: color 0.2s;
         }
 
-        .signup-link a:hover {
+        .login-link a:hover {
             color: var(--violet);
             text-decoration: underline;
         }
@@ -374,6 +385,11 @@
             color: #dc2626;
             font-size: 0.875rem;
             margin-top: 0.5rem;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
         }
 
         /* Mobile-specific styles */
@@ -427,7 +443,7 @@
 
         /* Responsive design */
         @media (max-width: 1024px) {
-            .custom-login-container {
+            .custom-register-container {
                 flex-direction: column;
                 margin: 0;
                 border-radius: 0;
@@ -443,36 +459,49 @@
                 display: block;
             }
 
-            .login-section {
+            .register-section {
                 padding: 2rem 1.5rem;
                 flex: 1;
                 justify-content: flex-start;
             }
 
-            .login-container {
+            .register-container {
                 max-width: 400px;
             }
 
-            .login-header {
+            .register-header {
                 margin-bottom: 2rem;
             }
 
-            .login-header h1 {
+            .register-header h1 {
                 font-size: 1.8rem;
             }
 
             .form-input {
-                padding: 1rem 1rem 1rem 45px;
+                padding: 1rem;
                 font-size: 16px; /* Prevent zoom on iOS */
             }
 
-            .login-button {
+            .form-input.with-icon {
+                padding-left: 45px;
+            }
+
+            .form-input.with-toggle {
+                padding-right: 45px;
+            }
+
+            .register-button {
                 padding: 1rem;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 0;
             }
         }
 
         @media (max-width: 480px) {
-            .login-section {
+            .register-section {
                 padding: 1.5rem 1rem;
             }
 
@@ -480,7 +509,7 @@
                 padding: 1.5rem 1rem 1rem;
             }
 
-            .login-header h1 {
+            .register-header h1 {
                 font-size: 1.6rem;
             }
 
@@ -495,17 +524,17 @@
 <!-- Mobile header (only visible on mobile) -->
 <div class="mobile-header">
     <div class="mobile-logo-container">
-       <img src="${url.resourcesPath}/img/justjava-logo.svg" alt="Just Java Logo" class="mobile-logo">
+        <img src="${url.resourcesPath}/img/justjava-logo.svg" alt="Just Java Logo" class="mobile-logo">
         <div class="mobile-logo-text">Just Java</div>
     </div>
     <div class="mobile-subtitle">Document Management System</div>
 </div>
 
-<div class="custom-login-container">
+<div class="custom-register-container">
     <div class="brand-section">
         <div>
             <div class="logo-container">
-                <img src="${url.resourcesPath}/img/justjava-logo.svg" alt="Just Java Logo" class="logo">
+               <img src="${url.resourcesPath}/img/justjava-logo.svg" alt="Just Java Logo" class="logo">
                 <div class="logo-text">Just Java</div>
             </div>
 
@@ -514,7 +543,7 @@
             <div class="system-description">
                 <h2>Document Management System</h2>
                 <p class="comtext">
-                    A secure, scalable platform for organizing, storing, and
+                    Join our secure, scalable platform for organizing, storing, and
                     retrieving your digital documents with enterprise-grade security
                     and compliance.
                 </p>
@@ -563,40 +592,81 @@
             </div>
         </div>
 
-        <div class="copyright comtext">&copy; 2025 Just Java. All rights reserved.</div>
+        <div class="copyright">&copy; 2025 Just Java. All rights reserved.</div>
     </div>
 
-    <div class="login-section">
-        <div class="login-container">
-            <div class="login-header">
-                <h1>Secure Login</h1>
-                <p>Access your document management system</p>
+    <div class="register-section">
+        <div class="register-container">
+            <div class="register-header">
+                <h1>Create Account</h1>
+                <p>Join our document management system</p>
             </div>
 
-            <form id="kc-form-login" action="${url.loginAction}" method="post">
+            <form id="kc-register-form" action="${url.registrationAction}" method="post">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="firstName">${msg("firstName")}</label>
+                        <input
+                            type="text"
+                            id="firstName"
+                            name="firstName"
+                            class="form-input"
+                            value="${(register.formData.firstName!'')}"
+                            placeholder="First name"
+                            autocomplete="given-name"
+                            required
+                            aria-invalid="<#if messagesPerField.existsError('firstName')>true</#if>"
+                        />
+                        <div class="error-message" id="firstNameError">Please enter your first name.</div>
+                        <#if messagesPerField.existsError('firstName')>
+                            <div class="error-message show">
+                                ${kcSanitize(messagesPerField.get('firstName'))?no_esc}
+                            </div>
+                        </#if>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="lastName">${msg("lastName")}</label>
+                        <input
+                            type="text"
+                            id="lastName"
+                            name="lastName"
+                            class="form-input"
+                            value="${(register.formData.lastName!'')}"
+                            placeholder="Last name"
+                            autocomplete="family-name"
+                            required
+                            aria-invalid="<#if messagesPerField.existsError('lastName')>true</#if>"
+                        />
+                        <div class="error-message" id="lastNameError">Please enter your last name.</div>
+                        <#if messagesPerField.existsError('lastName')>
+                            <div class="error-message show">
+                                ${kcSanitize(messagesPerField.get('lastName'))?no_esc}
+                            </div>
+                        </#if>
+                    </div>
+                </div>
+
                 <div class="form-group">
-                    <label class="form-label" for="username">
-                        <#if !realm.loginWithEmailAllowed>${msg("username")}
-                        <#elseif !realm.registrationEmailAsUsername>${msg("usernameOrEmail")}
-                        <#else>${msg("email")}</#if>
-                    </label>
+                    <label class="form-label" for="email">${msg("email")}</label>
                     <div class="input-with-icon">
                         <i class="fas fa-envelope input-icon"></i>
                         <input
-                            type="text"
-                            id="username"
-                            name="username"
-                            class="form-input"
-                            value="${(login.username!'')}"
-                            placeholder="Enter your corporate email"
-                            autocomplete="username"
+                            type="email"
+                            id="email"
+                            name="email"
+                            class="form-input with-icon"
+                            value="${(register.formData.email!'')}"
+                            placeholder="Enter your email address"
+                            autocomplete="email"
                             required
-                            aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>"
+                            aria-invalid="<#if messagesPerField.existsError('email')>true</#if>"
                         />
                     </div>
-                    <#if messagesPerField.existsError('username','password')>
-                        <div class="error-message">
-                            ${kcSanitize(messagesPerField.getFirstError('username','password'))?no_esc}
+                    <div class="error-message" id="emailError">Please enter a valid email address.</div>
+                    <#if messagesPerField.existsError('email')>
+                        <div class="error-message show">
+                            ${kcSanitize(messagesPerField.get('email'))?no_esc}
                         </div>
                     </#if>
                 </div>
@@ -609,48 +679,77 @@
                             type="password"
                             id="password"
                             name="password"
-                            class="form-input"
-                            placeholder="Enter your password"
-                            autocomplete="current-password"
+                            class="form-input with-icon with-toggle"
+                            placeholder="Create a strong password"
+                            autocomplete="new-password"
                             required
+                            aria-invalid="<#if messagesPerField.existsError('password')>true</#if>"
                         />
                         <i class="fas fa-eye password-toggle" id="togglePassword"></i>
                     </div>
+                    <div class="error-message" id="passwordLengthError">Password must be at least 8 characters long.</div>
+                    <div class="error-message" id="passwordUppercaseError">Password must contain at least one uppercase letter.</div>
+                    <div class="error-message" id="passwordLowercaseError">Password must contain at least one lowercase letter.</div>
+                    <div class="error-message" id="passwordSpecialError">Password must contain at least one special character.</div>
+                    <#if messagesPerField.existsError('password')>
+                        <div class="error-message show">
+                            ${kcSanitize(messagesPerField.get('password'))?no_esc}
+                        </div>
+                    </#if>
                 </div>
 
-                <#if realm.resetPasswordAllowed>
-                    <div class="forgot-password-container">
-                        <a href="${url.loginResetCredentialsUrl}" class="forgot-password">${msg("doForgotPassword")}</a>
+                <div class="form-group">
+                    <label class="form-label" for="password-confirm">${msg("passwordConfirm")}</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input
+                            type="password"
+                            id="password-confirm"
+                            name="password-confirm"
+                            class="form-input with-icon with-toggle"
+                            placeholder="Confirm your password"
+                            autocomplete="new-password"
+                            required
+                            aria-invalid="<#if messagesPerField.existsError('password-confirm')>true</#if>"
+                        />
+                        <i class="fas fa-eye password-toggle" id="togglePasswordConfirm"></i>
                     </div>
-                </#if>
+                    <div class="error-message" id="passwordConfirmError">Passwords do not match.</div>
+                    <#if messagesPerField.existsError('password-confirm')>
+                        <div class="error-message show">
+                            ${kcSanitize(messagesPerField.get('password-confirm'))?no_esc}
+                        </div>
+                    </#if>
+                </div>
 
-                <input type="hidden" name="credentialId"
-                       <#if auth.selectedCredential?has_content>value="${auth.selectedCredential}"</#if>/>
-
-                <button type="submit" class="login-button">
-                    ${msg("doLogIn")}
+                <button type="submit" class="register-button" id="registerBtn" disabled>
+                    ${msg("doRegister")}
                 </button>
             </form>
 
-            <#if realm.password && realm.registrationAllowed && !registrationDisabled??>
-                <div class="signup-link">
-                    Need an account? <a href="${url.registrationUrl}">Sign up</a>
-                </div>
-            </#if>
+            <div class="login-link">
+                Already have an account? <a href="${url.loginUrl}">Sign in</a>
+            </div>
 
             <div class="security-notice">
-                <i class="fas fa-info-circle"></i> This system is protected by
-                advanced security measures. Your data is safe with us.
+                <i class="fas fa-info-circle"></i> By creating an account, you agree to our terms of service and privacy policy. Your data is protected with enterprise-grade security.
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    // Password visibility toggle
+    // Password visibility toggles
     document.getElementById("togglePassword").addEventListener("click", function () {
-        const passwordField = document.getElementById("password");
-        const toggleIcon = this;
+        togglePasswordVisibility("password", this);
+    });
+
+    document.getElementById("togglePasswordConfirm").addEventListener("click", function () {
+        togglePasswordVisibility("password-confirm", this);
+    });
+
+    function togglePasswordVisibility(inputId, toggleIcon) {
+        const passwordField = document.getElementById(inputId);
 
         if (passwordField.type === "password") {
             passwordField.type = "text";
@@ -661,28 +760,201 @@
             toggleIcon.classList.remove("fa-eye-slash");
             toggleIcon.classList.add("fa-eye");
         }
-    });
+    }
 
-    // Form validation and loading state
-    document.getElementById("kc-form-login").addEventListener("submit", function(e) {
-        const submitButton = document.querySelector(".login-button");
-        const username = document.getElementById("username").value;
-        const password = document.getElementById("password").value;
+    // Validation functions
+    function validateFirstName() {
+        const input = document.getElementById("firstName");
+        const error = document.getElementById("firstNameError");
+        const isValid = input.value.trim().length > 0;
 
-        if (username && password) {
-            submitButton.disabled = true;
-            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
+        if (input.value.length > 0 && !isValid) {
+            error.classList.add("show");
+            input.classList.add("error");
+        } else {
+            error.classList.remove("show");
+            input.classList.remove("error");
         }
+
+        return isValid;
+    }
+
+    function validateLastName() {
+        const input = document.getElementById("lastName");
+        const error = document.getElementById("lastNameError");
+        const isValid = input.value.trim().length > 0;
+
+        if (input.value.length > 0 && !isValid) {
+            error.classList.add("show");
+            input.classList.add("error");
+        } else {
+            error.classList.remove("show");
+            input.classList.remove("error");
+        }
+
+        return isValid;
+    }
+
+    function validateEmail() {
+        const input = document.getElementById("email");
+        const error = document.getElementById("emailError");
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const isValid = emailRegex.test(input.value);
+
+        if (input.value.length > 0 && !isValid) {
+            error.classList.add("show");
+            input.classList.add("error");
+        } else {
+            error.classList.remove("show");
+            input.classList.remove("error");
+        }
+
+        return isValid;
+    }
+
+    function validatePassword() {
+        const input = document.getElementById("password");
+        const password = input.value;
+
+        const lengthError = document.getElementById("passwordLengthError");
+        const uppercaseError = document.getElementById("passwordUppercaseError");
+        const lowercaseError = document.getElementById("passwordLowercaseError");
+        const specialError = document.getElementById("passwordSpecialError");
+
+        let hasErrors = false;
+
+        if (password.length > 0) {
+            // Check length
+            if (password.length < 8) {
+                lengthError.classList.add("show");
+                hasErrors = true;
+            } else {
+                lengthError.classList.remove("show");
+            }
+
+            // Check uppercase
+            if (!/[A-Z]/.test(password)) {
+                uppercaseError.classList.add("show");
+                hasErrors = true;
+            } else {
+                uppercaseError.classList.remove("show");
+            }
+
+            // Check lowercase
+            if (!/[a-z]/.test(password)) {
+                lowercaseError.classList.add("show");
+                hasErrors = true;
+            } else {
+                lowercaseError.classList.remove("show");
+            }
+
+            // Check special character
+            if (!/[^a-zA-Z0-9]/.test(password)) {
+                specialError.classList.add("show");
+                hasErrors = true;
+            } else {
+                specialError.classList.remove("show");
+            }
+
+            if (hasErrors) {
+                input.classList.add("error");
+            } else {
+                input.classList.remove("error");
+            }
+        } else {
+            // Hide all errors when field is empty
+            lengthError.classList.remove("show");
+            uppercaseError.classList.remove("show");
+            lowercaseError.classList.remove("show");
+            specialError.classList.remove("show");
+            input.classList.remove("error");
+        }
+
+        return !hasErrors && password.length >= 8;
+    }
+
+    function validatePasswordConfirm() {
+        const passwordInput = document.getElementById("password");
+        const confirmInput = document.getElementById("password-confirm");
+        const error = document.getElementById("passwordConfirmError");
+        const isValid = confirmInput.value === passwordInput.value;
+
+        if (confirmInput.value.length > 0 && !isValid) {
+            error.classList.add("show");
+            confirmInput.classList.add("error");
+        } else {
+            error.classList.remove("show");
+            confirmInput.classList.remove("error");
+        }
+
+        return isValid;
+    }
+
+    function validateForm() {
+        const firstNameValid = validateFirstName();
+        const lastNameValid = validateLastName();
+        const emailValid = validateEmail();
+        const passwordValid = validatePassword();
+        const confirmValid = validatePasswordConfirm();
+
+        const registerBtn = document.getElementById("registerBtn");
+        const allValid = firstNameValid && lastNameValid && emailValid && passwordValid && confirmValid;
+
+        registerBtn.disabled = !allValid;
+
+        return allValid;
+    }
+
+    // Event listeners
+    document.getElementById("firstName").addEventListener("input", function() {
+        validateFirstName();
+        validateForm();
     });
 
-    // Auto-focus username field
+    document.getElementById("lastName").addEventListener("input", function() {
+        validateLastName();
+        validateForm();
+    });
+
+    document.getElementById("email").addEventListener("input", function() {
+        validateEmail();
+        validateForm();
+    });
+
+    document.getElementById("password").addEventListener("input", function() {
+        validatePassword();
+        validatePasswordConfirm(); // Re-validate confirm password when password changes
+        validateForm();
+    });
+
+    document.getElementById("password-confirm").addEventListener("input", function() {
+        validatePasswordConfirm();
+        validateForm();
+    });
+
+    // Form submission
+    document.getElementById("kc-register-form").addEventListener("submit", function(e) {
+        if (!validateForm()) {
+            e.preventDefault();
+            return;
+        }
+
+        const registerBtn = document.getElementById("registerBtn");
+        registerBtn.disabled = true;
+        registerBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating account...';
+    });
+
+    // Auto-focus first field
     window.addEventListener("load", function() {
-        const usernameField = document.getElementById("username");
-        if (usernameField && !usernameField.value) {
-            usernameField.focus();
+        const firstNameField = document.getElementById("firstName");
+        if (firstNameField) {
+            firstNameField.focus();
         }
     });
 </script>
 
 </#if>
 </@layout.registrationLayout>
+
+
+
