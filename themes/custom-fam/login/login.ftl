@@ -1,5 +1,5 @@
 <#import "template.ftl" as layout>
-<@layout.registrationLayout displayMessage=!messagesPerField.existsError('username','password') displayInfo=realm.password && realm.registrationAllowed && !registrationDisabled??; section>
+<@layout.registrationLayout displayMessage=!messagesPerField.existsError('username','password') displayInfo=false; section>
 <#if section = "header">
     <title>FAMS | Crimson Vault · Institutional Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -165,18 +165,6 @@
         }
         .animate-fade-up { animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
-        .form-container { perspective: 1000px; }
-        .form-flip-inner {
-            transition: transform 0.6s;
-            transform-style: preserve-3d;
-        }
-        .form-flipped { transform: rotateY(180deg); }
-        .form-front, .form-back {
-            backface-visibility: hidden;
-            width: 100%;
-        }
-        .form-back { transform: rotateY(180deg); position: absolute; top: 0; }
-
         .loader-dots span {
             animation: blink 1.4s infinite both;
         }
@@ -264,8 +252,8 @@
                     </div>
                 </div>
 
-                <div class="form-container">
-                    <div class="form-flip-inner relative" id="form-inner">
+                <div>
+                    <div>
 
                         <!-- LOGIN FORM (FRONT) -->
                         <div class="form-front">
@@ -292,7 +280,7 @@
                                         class="w-full h-[52px] rounded-lg border border-outline-variant px-4 bg-white focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all font-body-md text-on-surface"
                                         id="username"
                                         name="username"
-                                        type="email"
+                                        type="text"
                                         value="${(login.username!'')}"
                                         placeholder="name@company.com"
                                         autocomplete="username"
@@ -304,9 +292,7 @@
                                 <div class="relative">
                                     <div class="flex justify-between items-end mb-2">
                                         <label class="font-label-sm text-on-surface-variant" for="password">${msg("password")}</label>
-                                        <#if realm.resetPasswordAllowed>
-                                            <button class="text-primary font-label-sm hover:underline hover:text-red-700 transition" onclick="flipForm()" type="button">${msg("doForgotPassword")}</button>
-                                        </#if>
+
                                     </div>
                                     <div class="relative">
                                         <input
@@ -351,32 +337,7 @@
                         </div>
 
                         <!-- FORGOT PASSWORD (BACK) – red theme consistency -->
-                        <#if realm.resetPasswordAllowed>
-                            <div class="form-back">
-                                <header class="mb-10">
-                                    <h1 class="font-section-headline text-[32px] text-on-surface mb-2">Password Recovery.</h1>
-                                    <p class="text-secondary text-body-md">Enter your work email and we'll send you a secure link to reset your password.</p>
-                                </header>
-                                <form class="space-y-6" id="reset-form">
-                                    <div>
-                                        <label class="block font-label-sm text-on-surface-variant mb-2" for="reset-email">Work Email</label>
-                                        <input
-                                            class="w-full h-[52px] rounded-lg border border-outline-variant px-4 bg-white focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
-                                            id="reset-email"
-                                            placeholder="name@company.com"
-                                            required
-                                            type="email"
-                                        >
-                                    </div>
-                                    <button class="w-full h-[52px] bg-primary text-white font-bold rounded-lg shadow-md hover:bg-red-800 transition-all flex items-center justify-center gap-2" type="submit">
-                                        <span class="material-symbols-outlined text-[18px]">lock_reset</span> Send Recovery Link
-                                    </button>
-                                    <button class="w-full flex items-center justify-center gap-2 text-secondary hover:text-primary transition-colors font-label-sm py-2" onclick="flipForm()" type="button">
-                                        <span class="material-symbols-outlined text-[18px]">arrow_back</span> Back to login
-                                    </button>
-                                </form>
-                            </div>
-                        </#if>
+
                     </div>
                 </div>
 
@@ -419,22 +380,9 @@
             }
         }
 
-        // Flip between login and forgot password panels
-        function flipForm() {
-            const inner = document.getElementById('form-inner');
-            inner.classList.toggle('form-flipped');
-        }
 
         // Forgot password form: redirect to Keycloak reset URL with username
-        <#if realm.resetPasswordAllowed>
-            document.getElementById('reset-form').addEventListener('submit', function(e) {
-                e.preventDefault();
-                const email = document.getElementById('reset-email').value.trim();
-                if (email) {
-                    window.location.href = '${url.loginResetCredentialsUrl}?username=' + encodeURIComponent(email);
-                }
-            });
-        </#if>
+
 
         // Show loading state on login form submit (prevents double‑click)
         document.querySelector('.form-front form').addEventListener('submit', function() {
