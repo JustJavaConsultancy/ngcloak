@@ -1,12 +1,14 @@
 <#import "template.ftl" as layout>
 <@layout.registrationLayout displayMessage=!messagesPerField.existsError('username','password') displayInfo=realm.password && realm.registrationAllowed && !registrationDisabled??; section>
 <#if section = "header">
-    <title>FAMS | Fixed Asset Management System</title>
+    <title>JustJava FAMS | Fixed Asset Management System</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- Google Fonts + Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet">
 
     <script id="tailwind-config">
       tailwind.config = {
@@ -14,22 +16,47 @@
         theme: {
           extend: {
             colors: {
-              primary: "#b91c1c",
-              "primary-container": "#dc2626",
+              "primary": "#98001a",
+              "brand-primary-dark": "#8F0F1E",
+              "primary-container": "#c0182a",
               "on-primary": "#ffffff",
-              secondary: "#b45a5a",
+              "secondary": "#5d5e65",
               "on-secondary": "#ffffff",
-              background: "#fef6f5",
-              "on-background": "#2d1a1a",
-              surface: "#fef6f5",
-              "on-surface": "#2d1a1a",
-              "surface-variant": "#fde5e3",
-              "on-surface-variant": "#5e3e3c",
-              "surface-container-low": "#fff6f5",
-              "surface-container": "#feeceb",
-              "inverse-surface": "#2f1515",
-              outline: "#b77e7a",
-              "outline-variant": "#eccbc8",
+              "error": "#ba1a1a",
+              "error-container": "#ffdad6",
+              "on-error": "#ffffff",
+              "background": "#F4F5F7",
+              "surface-canvas": "#F4F5F7",
+              "surface-card": "#FFFFFF",
+              "surface-variant": "#dde2f5",
+              "on-surface": "#151b29",
+              "on-surface-variant": "#5b403e",
+              "border-default": "#E4E6EA",
+              "border-strong": "#CBD0D8",
+              "status-success": "#1A7A4A",
+              "status-warning": "#A05C00",
+              "status-info": "#1558A8",
+            },
+            fontFamily: {
+              "technical-data": ["JetBrains Mono", "monospace"],
+              "body-default": ["Inter", "sans-serif"],
+              "page-title": ["Inter", "sans-serif"],
+              "card-header": ["Inter", "sans-serif"],
+              "section-header": ["Inter", "sans-serif"],
+            },
+            fontSize: {
+              "technical-data": ["12px", { lineHeight: "16px", fontWeight: "400" }],
+              "body-default": ["13px", { lineHeight: "18px", fontWeight: "400" }],
+              "page-title": ["28px", { lineHeight: "36px", letterSpacing: "-0.02em", fontWeight: "600" }],
+              "card-header": ["15px", { lineHeight: "20px", fontWeight: "500" }],
+              "section-header": ["18px", { lineHeight: "24px", fontWeight: "500" }],
+            },
+            borderRadius: {
+              xl: "0.75rem",
+              "2xl": "1rem",
+            },
+            spacing: {
+              "container-padding": "1.25rem",
             }
           }
         }
@@ -37,7 +64,7 @@
     </script>
 
     <style>
-        /* === AGGRESSIVE KEYCLOAK RESET === */
+        /* === Keycloak Overrides – keep functionality but allow our layout === */
         html, body, #kc-page, .login-pf-page, #kc-content-wrapper, #kc-content, .card-pf, .login-pf {
             margin: 0 !important;
             padding: 0 !important;
@@ -62,34 +89,34 @@
             right: 0 !important;
             bottom: 0 !important;
             z-index: 9999 !important;
-            overflow-y: auto !important; /* Make whole page scrollable */
+            overflow-y: auto !important;
         }
 
+        /* Custom login container – matches dashboard layout */
         .custom-login-container {
             display: flex;
             min-height: 100vh;
             width: 100%;
+            background-color: #F4F5F7;
         }
 
-        /* Left Brand Panel - Crimson */
+        /* Left Brand Panel – JustJava branded */
         .brand-section {
             flex: 1;
-            background: radial-gradient(ellipse at 20% 30%, #3d1111, #1f0505);
+            background: linear-gradient(135deg, #1a0508 0%, #2c0a0f 100%);
             position: relative;
             overflow: hidden;
             color: white;
-            padding: 4rem 3.5rem;
+            padding: 3rem 2.5rem;
             display: none;
         }
-
         .brand-section::before {
             content: "";
             position: absolute;
             inset: 0;
-            background-image: repeating-linear-gradient(45deg, #ff3a3a0c 0px, #ff3a3a0c 2px, transparent 2px, transparent 8px);
+            background-image: repeating-linear-gradient(45deg, #98001a15 0px, #98001a15 2px, transparent 2px, transparent 8px);
             pointer-events: none;
         }
-
         .brand-section > div {
             position: relative;
             z-index: 2;
@@ -98,10 +125,10 @@
             flex-direction: column;
         }
 
-        /* Right Login Panel */
+        /* Right Login Panel – uses dashboard surface colour */
         .login-section {
             flex: 1;
-            background: linear-gradient(to bottom right, #fef6f5, #feeceb);
+            background: #F4F5F7;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -110,48 +137,57 @@
             min-height: 100vh;
         }
 
+        /* Login card – matches dashboard card style */
         .login-card {
             width: 100%;
             max-width: 440px;
+            background: #FFFFFF;
+            border: 1px solid #E4E6EA;
+            border-radius: 0.75rem;
+            padding: 2rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
         }
 
+        /* Form inputs – match dashboard height and styling */
         .form-input {
-            height: 52px;
-            border: 1px solid #eccbc8;
-            background: white;
-            font-size: 1rem;
+            height: 48px;
+            border: 1px solid #E4E6EA;
+            background: #F4F5F7;
+            font-size: 0.875rem;
+            border-radius: 0.5rem;
+            transition: all 0.2s;
         }
-
         .form-input:focus {
-            border-color: #b91c1c;
-            box-shadow: 0 0 0 4px rgba(185, 28, 28, 0.15);
+            border-color: #98001a;
+            box-shadow: 0 0 0 3px rgba(152, 0, 26, 0.15);
             outline: none;
+            background: white;
         }
 
         .login-button {
-            height: 52px;
-            background-color: #b91c1c;
-            font-weight: 700;
-            font-size: 1.1rem;
+            height: 48px;
+            background-color: #98001a;
+            font-weight: 600;
+            border-radius: 0.5rem;
+            transition: background 0.2s;
         }
-
         .login-button:hover {
-            background-color: #991b1b;
+            background-color: #8F0F1E;
         }
 
         .error-message {
-            color: #b91c1c;
-            font-size: 0.875rem;
-            margin-top: 0.4rem;
+            color: #ba1a1a;
+            font-size: 0.75rem;
+            margin-top: 0.5rem;
         }
 
         /* Mobile */
         @media (max-width: 1024px) {
             .brand-section { display: none !important; }
             .custom-login-container { flex-direction: column; }
-            .login-section { padding: 2rem 1rem; min-height: auto; }
+            .login-section { padding: 1.5rem; min-height: auto; }
+            .login-card { padding: 1.5rem; }
         }
-
         @media (min-width: 1025px) {
             .brand-section { display: flex !important; }
         }
@@ -160,70 +196,69 @@
 
 <div class="custom-login-container">
 
-    <!-- LEFT PANEL -->
+    <!-- LEFT PANEL – JustJava FAMS branding -->
     <section class="brand-section">
         <div>
             <div class="mb-12">
                 <div class="flex items-center gap-3">
-                    <span class="font-bold text-5xl tracking-tighter">FAMS</span>
+                    <span class="material-symbols-outlined text-4xl text-white/90" style="font-variation-settings:'FILL'1;">inventory_2</span>
+                    <span class="font-bold text-3xl tracking-tight">JustJava FAMS</span>
                 </div>
-                <span class="block text-red-200/80 text-sm tracking-[3px] uppercase font-mono mt-1">FIXED ASSET MANAGEMENT SYSTEM</span>
+                <span class="block text-white/60 text-xs tracking-[3px] uppercase font-technical-data mt-2">FIXED ASSET MANAGEMENT SYSTEM</span>
             </div>
 
             <div class="mb-12">
-                <h2 class="text-4xl font-bold leading-tight">Track. Manage.<br>Optimize.</h2>
-                <p class="mt-4 text-red-100/90 text-lg">Enterprise-grade fixed asset tracking with full lifecycle visibility.</p>
+                <h2 class="text-3xl font-bold leading-tight">Full Lifecycle<br>Asset Control</h2>
+                <p class="mt-4 text-white/80 text-base">Enterprise-grade tracking, depreciation, audit trails, and maintenance scheduling – all in one platform.</p>
             </div>
 
             <div class="flex-1 flex items-center justify-center py-8">
-                <div class="w-full max-w-md rounded-3xl overflow-hidden shadow-2xl relative bg-white/10 backdrop-blur-sm">
-                    <!-- 2D Illustration for Asset Management -->
-                    <img src="https://picsum.photos/id/1015/800/620"
-                         class="w-full h-auto object-cover rounded-3xl"
-                         alt="Fixed Asset Management Illustration"
-                         onerror="this.src='https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=85'">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent rounded-3xl"></div>
-                    <div class="absolute bottom-6 left-6 text-white">
-                        <p class="text-xs uppercase tracking-widest text-red-200">Real-time Asset Dashboard</p>
+                <div class="w-full max-w-md rounded-2xl overflow-hidden shadow-2xl relative bg-white/5 backdrop-blur-sm border border-white/10">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+                    <div class="absolute bottom-5 left-5 text-white/80">
+                        <p class="text-xs uppercase tracking-wider font-technical-data">Real-time Asset Dashboard</p>
                     </div>
                 </div>
             </div>
 
-            <div class="text-sm opacity-70 mt-auto">
-                © 2025 FAMS • Fixed Asset Management System
+            <div class="text-xs text-white/40 mt-auto">
+                © 2025 JustJava Technologies • All rights reserved
             </div>
         </div>
     </section>
 
-    <!-- RIGHT PANEL -->
+    <!-- RIGHT PANEL – LOGIN FORM -->
     <section class="login-section">
         <div class="login-card">
 
-            <!-- Mobile Branding -->
-            <div class="lg:hidden flex justify-center mb-10">
-                <div>
-                    <span class="font-bold text-5xl tracking-tighter text-primary">FAMS</span>
-                    <span class="block text-xs tracking-widest text-secondary mt-1 text-center">FIXED ASSET MANAGEMENT</span>
+            <!-- Mobile Branding (visible only on small screens) -->
+            <div class="lg:hidden flex justify-center mb-8">
+                <div class="text-center">
+                    <div class="flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined text-3xl text-primary" style="font-variation-settings:'FILL'1;">inventory_2</span>
+                        <span class="font-bold text-2xl tracking-tight text-on-surface">JustJava FAMS</span>
+                    </div>
+                    <span class="block text-secondary text-[10px] tracking-widest uppercase font-technical-data mt-1">FIXED ASSET MANAGEMENT</span>
                 </div>
             </div>
 
-            <header class="mb-10 text-center lg:text-left">
-                <h1 class="text-4xl font-bold text-on-surface tracking-tight">Welcome back</h1>
-                <p class="text-secondary mt-3 text-lg">Sign in to manage your organization's fixed assets</p>
+            <header class="mb-8 text-center lg:text-left">
+                <h1 class="font-page-title text-page-title text-on-surface tracking-tight">Welcome back</h1>
+                <p class="text-body-default text-secondary mt-2">Sign in to manage your organization's assets</p>
             </header>
 
-            <form id="kc-form-login" action="${url.loginAction}" method="post" class="space-y-6">
+            <form id="kc-form-login" action="${url.loginAction}" method="post" class="space-y-5">
                 <div>
-                    <label class="block text-sm font-medium mb-2 text-on-surface-variant" for="username">
+                    <label class="block text-label-small font-label-small mb-1.5 text-secondary" for="username">
                         <#if !realm.loginWithEmailAllowed>${msg("username")}
                         <#elseif !realm.registrationEmailAsUsername>${msg("usernameOrEmail")}
                         <#else>${msg("email")}</#if>
                     </label>
                     <div class="relative">
-                        <i class="fas fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        <i class="fas fa-envelope absolute left-3 top-1/2 -translate-y-1/2 text-secondary text-sm"></i>
                         <input type="text" id="username" name="username"
-                               class="form-input w-full pl-11 rounded-2xl border border-outline-variant px-5"
-                               value="${(login.username!'')}" placeholder="name@company.com" required>
+                               class="form-input w-full pl-10 pr-3"
+                               value="${(login.username!'')}" placeholder="name@justjava.com" required>
                     </div>
                     <#if messagesPerField.existsError('username','password')>
                         <div class="error-message">
@@ -233,38 +268,38 @@
                 </div>
 
                 <div>
-                    <div class="flex justify-between mb-2">
-                        <label class="block text-sm font-medium text-on-surface-variant" for="password">${msg("password")}</label>
+                    <div class="flex justify-between mb-1.5">
+                        <label class="block text-label-small font-label-small text-secondary" for="password">${msg("password")}</label>
                         <#if realm.resetPasswordAllowed>
-                            <a href="${url.loginResetCredentialsUrl}" class="text-primary hover:underline text-sm">Forgot password?</a>
+                            <a href="${url.loginResetCredentialsUrl}" class="text-primary hover:underline text-label-small">Forgot password?</a>
                         </#if>
                     </div>
                     <div class="relative">
-                        <i class="fas fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        <i class="fas fa-lock absolute left-3 top-1/2 -translate-y-1/2 text-secondary text-sm"></i>
                         <input type="password" id="password" name="password"
-                               class="form-input w-full pl-11 pr-12 rounded-2xl border border-outline-variant px-5"
+                               class="form-input w-full pl-10 pr-10"
                                placeholder="••••••••" required>
-                        <button type="button" id="togglePassword" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-primary">
+                        <button type="button" id="togglePassword" class="absolute right-3 top-1/2 -translate-y-1/2 text-secondary hover:text-primary transition-colors">
                             <i class="fas fa-eye"></i>
                         </button>
                     </div>
                 </div>
 
                 <button type="submit" id="submit-btn"
-                        class="login-button w-full rounded-2xl text-white flex items-center justify-center gap-3">
+                        class="login-button w-full text-white font-body-medium flex items-center justify-center gap-2 mt-6">
                     <span id="btn-text">Sign In</span>
-                    <span id="btn-loader" class="hidden w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                    <span id="btn-loader" class="hidden w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
                 </button>
             </form>
 
             <#if realm.password && realm.registrationAllowed && !registrationDisabled??>
-                <p class="text-center mt-8 text-sm text-on-surface-variant">
-                    Need access? Contact your administrator.
+                <p class="text-center mt-6 text-label-small text-secondary">
+                    Need access? Contact your system administrator.
                 </p>
             </#if>
 
-            <div class="mt-12 text-center text-xs text-on-surface-variant">
-                Secure access to FAMS — Fixed Asset Management System
+            <div class="mt-8 text-center text-label-small text-secondary/70">
+                Secure access to JustJava FAMS
             </div>
         </div>
     </section>
@@ -272,28 +307,35 @@
 
 <script>
     // Password toggle
-    document.getElementById("togglePassword").addEventListener("click", function() {
-        const pwd = document.getElementById("password");
-        if (pwd.type === "password") {
-            pwd.type = "text";
-            this.innerHTML = '<i class="fas fa-eye-slash"></i>';
-        } else {
-            pwd.type = "password";
-            this.innerHTML = '<i class="fas fa-eye"></i>';
-        }
-    });
+    const toggleBtn = document.getElementById("togglePassword");
+    const pwdField = document.getElementById("password");
+    if (toggleBtn) {
+        toggleBtn.addEventListener("click", function() {
+            if (pwdField.type === "password") {
+                pwdField.type = "text";
+                this.innerHTML = '<i class="fas fa-eye-slash"></i>';
+            } else {
+                pwdField.type = "password";
+                this.innerHTML = '<i class="fas fa-eye"></i>';
+            }
+        });
+    }
 
-    // Form submit loading
-    document.getElementById("kc-form-login").addEventListener("submit", function() {
-        const btn = document.getElementById("submit-btn");
-        document.getElementById("btn-text").classList.add("hidden");
-        document.getElementById("btn-loader").classList.remove("hidden");
-        btn.disabled = true;
-    });
+    // Loading state on submit
+    const loginForm = document.getElementById("kc-form-login");
+    if (loginForm) {
+        loginForm.addEventListener("submit", function() {
+            const btn = document.getElementById("submit-btn");
+            document.getElementById("btn-text").classList.add("hidden");
+            document.getElementById("btn-loader").classList.remove("hidden");
+            btn.disabled = true;
+        });
+    }
 
-    // Auto-focus
+    // Auto-focus username field
     window.addEventListener("load", () => {
-        document.getElementById("username").focus();
+        const usernameField = document.getElementById("username");
+        if (usernameField) usernameField.focus();
     });
 </script>
 
