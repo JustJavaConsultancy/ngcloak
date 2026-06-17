@@ -333,6 +333,5 @@
         if (usernameField) usernameField.focus();
     });
 </script>
-
 </#if>
 </@layout.registrationLayout>
