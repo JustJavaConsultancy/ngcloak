@@ -441,6 +441,7 @@
             z-index: 1;
         }
 
+
         /* Responsive design */
         @media (max-width: 1024px) {
             .custom-register-container {
