@@ -1,4 +1,4 @@
-// To build
+// To build from the source
 docker build -t kazeemakinrinde/ngcloak .
 
 
