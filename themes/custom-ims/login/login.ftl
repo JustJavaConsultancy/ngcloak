@@ -521,7 +521,7 @@
                 </div>
 
                 <div class="ims-brand-main">
-                    <img class="ims-hero-frame" src="${url.resourcesPath}/img/crimson-warehouse-illustration.png" alt="Real-time inventory intelligence illustration">
+                    <img class="ims-hero-frame" src="${url.resourcesPath}/img/login-img.png" alt="Real-time inventory intelligence illustration">
                     <div class="ims-brand-copy">
                         <h2>Commanding Precision</h2>
                         <p>Real-time inventory intelligence for high-velocity global supply chains.</p>
