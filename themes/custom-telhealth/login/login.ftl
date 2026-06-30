@@ -11,6 +11,77 @@
 
     <#elseif section = "form">
         <style>
+            /* ============================================================
+               Aggressive hiding of default Keycloak elements
+               (mirrors the working Kleek override block)
+               ============================================================ */
+            .login-pf-page-header,
+            .login-pf-header,
+            h1#kc-page-title,
+            .login-pf-signup,
+            #kc-page-title,
+            .kc-page-title,
+            .login-pf .container,
+            .login-pf-page .login-pf-signup,
+            .login-pf-page .login-pf-header,
+            .card-pf-title,
+            .login-pf-page .card-pf .card-pf-title,
+            #kc-info-wrapper {
+                display: none !important;
+                visibility: hidden !important;
+                height: 0 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+
+            /* Reset Keycloak page structure */
+            .login-pf-page {
+                padding: 0 !important;
+                margin: 0 !important;
+                border: none !important;
+                background: none !important;
+                min-height: 100vh !important;
+            }
+
+            .login-pf-page .card-pf {
+                padding: 0 !important;
+                margin: 0 !important;
+                border: none !important;
+                max-width: none !important;
+                background: none !important;
+                box-shadow: none !important;
+                border-top: none !important;
+            }
+
+            #kc-content-wrapper {
+                margin: 0 !important;
+                padding: 0 !important;
+                width: 100% !important;
+                height: 100vh !important;
+                overflow: auto !important;
+            }
+
+            #kc-content {
+                padding: 0 !important;
+                margin: 0 !important;
+                width: 100% !important;
+                height: 100% !important;
+            }
+
+            #kc-info {
+                margin: 0 !important;
+            }
+
+            html, body {
+                margin: 0 !important;
+                padding: 0 !important;
+                height: 100% !important;
+                overflow-x: hidden !important;
+            }
+
+            /* ============================================================
+               Tel Health custom styles (original)
+               ============================================================ */
             :root {
                 --surface-container-highest: #e0e3e5;
                 --primary-fixed: #dbe1ff;
