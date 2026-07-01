@@ -26,34 +26,15 @@
                     <h1 class="font-display text-3xl md:text-4xl text-rev-ink uppercase text-center tracking-tight">Editor Login</h1>
                     <p class="text-sm text-rev-muted text-center mt-2 mb-8">Access the revolutionary press management system</p>
 
-                    <#if displayMessage && message?has_content>
-                        <div class="rev-alert rev-alert-${message.type} mb-5" role="alert">
-                            <span class="mono-label rev-alert-label">${message.type}</span>
-                            <p class="rev-alert-text">${kcSanitize(message.summary)?no_esc}</p>
-                        </div>
-                    </#if>
-
                     <form id="kc-form-login" action="${url.loginAction}" method="post" class="space-y-5">
                         <div>
                             <label for="username" class="mono-label block mb-2">Email or Username</label>
-                            <input type="text" id="username" name="username" placeholder="you@example.com"
-                                   class="form-input <#if messagesPerField.existsError('username')>form-input-error</#if>"
-                                   autocomplete="username" required value="${(login.username!'')}"
-                                   aria-invalid="<#if messagesPerField.existsError('username')>true<#else>false</#if>">
-                            <#if messagesPerField.existsError('username')>
-                                <span class="input-error-message" aria-live="polite">${kcSanitize(messagesPerField.get('username'))?no_esc}</span>
-                            </#if>
+                            <input type="text" id="username" name="username" placeholder="you@example.com" class="form-input" autocomplete="username" required value="${(login.username!'')}">
                         </div>
 
                         <div>
                             <label for="password" class="mono-label block mb-2">Password</label>
-                            <input type="password" id="password" name="password" placeholder="••••••••"
-                                   class="form-input <#if messagesPerField.existsError('password')>form-input-error</#if>"
-                                   autocomplete="current-password" required
-                                   aria-invalid="<#if messagesPerField.existsError('password')>true<#else>false</#if>">
-                            <#if messagesPerField.existsError('password')>
-                                <span class="input-error-message" aria-live="polite">${kcSanitize(messagesPerField.get('password'))?no_esc}</span>
-                            </#if>
+                            <input type="password" id="password" name="password" placeholder="••••••••" class="form-input" autocomplete="current-password" required>
                         </div>
 
                         <button type="submit" class="red-btn w-full mt-2" id="kc-login">Sign In →</button>
@@ -70,3 +51,4 @@
 
     </#if>
 </@layout.registrationLayout>
+
