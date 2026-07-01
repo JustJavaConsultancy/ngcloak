@@ -103,6 +103,7 @@
                 transition: background 0.2s;
                 border: none;
                 cursor: pointer;
+                border-radius: 0;
             }
             button.red-btn:hover {
                 background-color: #8B0E1C;
@@ -179,6 +180,18 @@
                     <p class="text-sm text-rev-muted text-center mt-2 mb-8">
                         Access the revolutionary press management system
                     </p>
+
+                    <!-- Error Message Display -->
+                    <#if messagesPerField.existsError('username','password')>
+                        <div class="mb-6 px-4 py-3 border border-[#C0182A] bg-[#F9E8EA] rounded-none">
+                            <p class="text-[#C0182A] font-mono font-semibold text-sm leading-relaxed">
+                                Invalid credentials
+                            </p>
+                            <p class="text-[#1E1E1E] text-xs mt-1 leading-relaxed">
+                                ${kcSanitize(messagesPerField.getFirstError('username','password'))?no_esc}
+                            </p>
+                        </div>
+                    </#if>
 
                     <!-- Keycloak Login Form -->
                     <form id="kc-form-login" action="${url.loginAction}" method="post" class="space-y-5">
