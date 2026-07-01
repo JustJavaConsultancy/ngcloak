@@ -13,12 +13,28 @@
   --rev-subtle: #F0EBE4;
 }
 
-/* Make sure the Keycloak default white background does not show through
-   Target common wrappers and html/body to guarantee full-viewport coverage */
-html, body, .login-pf-page, .kc-login, .kc-page { height: 100%; min-height: 100vh; background-color: var(--rev-page) !important; }
-body { font-family: 'Inter', sans-serif; background-color: var(--rev-page); color: var(--rev-ink); overflow-x: hidden; margin: 0; }
+/* --- Full-bleed background override ---
+   A fixed pseudo-layer painted behind everything so Keycloak's own
+   base-theme markup (whatever wraps our content) can never show through,
+   regardless of DOM structure or height quirks. */
+html, body { margin: 0; padding: 0; min-height: 100%; }
+body { position: relative; font-family: 'Inter', sans-serif; color: var(--rev-ink); overflow-x: hidden; background-color: var(--rev-page) !important; background-image: none !important; }
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-color: var(--rev-page);
+  background-image: radial-gradient(circle, rgba(192,24,42,0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+  z-index: -1;
+}
+/* Belt-and-braces: neutralize common Keycloak/PatternFly wrapper backgrounds */
+html, .login-pf, .login-pf-page, .kc-page, .kc-login, #kc-container, #kc-container-wrapper, .pf-c-page, .pf-c-login {
+  background: transparent !important;
+  background-image: none !important;
+}
 
-/* subtle dot pattern on background */
+/* subtle dot pattern on the in-flow wrapper too (redundant with body::before, kept for parity with the static HTML) */
 .bg-dot-pattern { background-image: radial-gradient(circle, rgba(192,24,42,0.08) 1px, transparent 1px); background-size: 24px 24px; }
 
 .mono-label { font-family: 'JetBrains Mono', monospace; font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--rev-muted); }
@@ -35,15 +51,33 @@ button.red-btn:disabled, button.red-btn[disabled]{ background-color: #d4a0a7; cu
 input.form-input { background-color: var(--rev-subtle); border: 1px solid var(--rev-border); padding: 0.75rem 1rem; font-size: 0.875rem; color: var(--rev-ink); outline: none; width: 100%; border-radius: 0.375rem; transition: border-color 0.2s, background-color 0.2s; }
 input.form-input:hover { border-color: var(--rev-red); }
 input.form-input:focus { border-color: var(--rev-red); background-color: var(--rev-surface); }
+input.form-input-error { border-color: var(--rev-red); background-color: var(--rev-red-light); }
 
 /* Card shadow soft */
 .login-card { box-shadow: 0 8px 30px rgba(0,0,0,0.06); }
 
-@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+/* Keycloak field-level error text */
+.input-error-message, .kc-feedback-text, .form-error {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6875rem;
+  color: var(--rev-red);
+  margin-top: 0.375rem;
+}
 
-/* small utility tweaks for Keycloak wrappers */
-.kc-feedback-text, .form-error { color: var(--rev-red); }
+/* Keycloak general alert (invalid credentials, account disabled, etc.) */
+.rev-alert {
+  border: 1px solid var(--rev-red);
+  background-color: var(--rev-red-light);
+  border-radius: 0.375rem;
+  padding: 0.75rem 1rem;
+}
+.rev-alert-label { color: var(--rev-red); }
+.rev-alert-text { font-size: 0.8125rem; color: var(--rev-ink); margin-top: 0.25rem; line-height: 1.4; }
+.rev-alert-success { border-color: var(--rev-gold); background-color: #FBF3E0; }
+.rev-alert-warning { border-color: var(--rev-gold); background-color: #FBF3E0; }
+
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
 
 /* Provide a default logo spacing if image missing */
 img[alt="RCN Logo"]{ max-height:48px; }
-
