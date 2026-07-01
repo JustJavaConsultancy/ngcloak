@@ -14,12 +14,19 @@
 }
 
 /* Force full white background across entire page and all Keycloak wrappers */
-html { background-color: #FFFFFF !important; background-image: none !important; height: 100%; margin: 0; padding: 0; }
-body { background-color: #FFFFFF !important; background-image: none !important; height: 100%; min-height: 100vh; margin: 0; padding: 0; font-family: 'Inter', sans-serif; color: var(--rev-ink); overflow-x: hidden; }
-.login-pf-page, .kc-login, .kc-page, .kc-form-login, #kc-container, #kc-container-wrapper, .login-pf, .pf-c-page, .pf-c-login { background-color: #FFFFFF !important; background-image: none !important; }
+html { background-color: #FFFFFF !important; background-image: none !important; height: 100%; margin: 0 !important; padding: 0 !important; }
+body { background-color: #FFFFFF !important; background-image: none !important; height: 100%; min-height: 100vh; margin: 0 !important; padding: 0 !important; font-family: 'Inter', sans-serif; color: var(--rev-ink); overflow-x: hidden; }
+.login-pf-page, .kc-login, .kc-page, .kc-form-login, #kc-container, #kc-container-wrapper, .login-pf, .pf-c-page, .pf-c-login { background-color: #FFFFFF !important; background-image: none !important; margin: 0 !important; padding: 0 !important; border: none !important; }
 .bg-dot-pattern { background-color: #FFFFFF !important; background-image: none !important; }
+div { margin-top: 0 !important; }
 
 .mono-label { font-family: 'JetBrains Mono', monospace; font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--rev-muted); }
+
+/* Remove margins from main layout divs to eliminate gaps */
+.min-h-screen { margin: 0 !important; padding: 0 !important; }
+
+/* Ensure the red top bar is fixed at the very top with no gaps */
+.bg-rev-red { position: fixed !important; top: 0 !important; left: 0 !important; right: 0 !important; height: 4px !important; background-color: var(--rev-red) !important; z-index: 9999 !important; margin: 0 !important; padding: 0 !important; }
 
 button.red-btn { background-color: var(--rev-red); color: white; font-family: 'JetBrains Mono', monospace; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; font-size: 0.875rem; padding: 0.75rem 1.5rem; transition: background 0.2s; border: none; cursor: pointer; border-radius: 0.375rem; }
 button.red-btn:hover { background-color: var(--rev-red-dark); }
