@@ -20,7 +20,7 @@
             <div class="w-full max-w-md">
                 <div class="login-card bg-rev-surface rounded-xl border border-rev-border p-8 md:p-10">
                     <div class="flex justify-center mb-6">
-                        <img src="${url.resourcesPath}/img/logo-red.png" alt="RCN Logo" class="h-12 w-auto" onerror="this.style.display='none'">
+                        <img src="https://res.cloudinary.com/dsyqibqxg/image/upload/v1782735910/rcn/homepage/aquajdc38jvnghzduquo.png" alt="RCN Logo" class="h-12 w-auto" onerror="this.style.display='none'">
                     </div>
 
                     <h1 class="font-display text-3xl md:text-4xl text-rev-ink uppercase text-center tracking-tight">Editor Login</h1>
