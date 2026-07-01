@@ -77,6 +77,7 @@ input.form-input-error { border-color: var(--rev-red); background-color: var(--r
 .rev-alert-success { border-color: var(--rev-gold); background-color: #FBF3E0; }
 .rev-alert-warning { border-color: var(--rev-gold); background-color: #FBF3E0; }
 
+
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
 
 
