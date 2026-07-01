@@ -1,0 +1,46 @@
+/* RCN custom theme styles (keeps classes used by login.ftl) */
+:root{
+  --rev-red: #C0182A;
+  --rev-red-dark: #8B0E1C;
+  --rev-red-light: #F9E8EA;
+  --rev-black: #111111;
+  --rev-ink: #1E1E1E;
+  --rev-gold: #A07800;
+  --rev-page: #F7F4F0;
+  --rev-surface: #FFFFFF;
+  --rev-border: #E0DAD3;
+  --rev-muted: #7A726A;
+  --rev-subtle: #F0EBE4;
+}
+
+body { font-family: 'Inter', sans-serif; background-color: var(--rev-page); color: var(--rev-ink); overflow-x: hidden; }
+
+/* subtle dot pattern on background */
+.bg-dot-pattern { background-image: radial-gradient(circle, rgba(192,24,42,0.08) 1px, transparent 1px); background-size: 24px 24px; }
+
+.mono-label { font-family: 'JetBrains Mono', monospace; font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--rev-muted); }
+
+button.red-btn { background-color: var(--rev-red); color: white; font-family: 'JetBrains Mono', monospace; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; font-size: 0.875rem; padding: 0.75rem 1.5rem; transition: background 0.2s; border: none; cursor: pointer; border-radius: 0.375rem; }
+button.red-btn:hover { background-color: var(--rev-red-dark); }
+button.red-btn:disabled, button.red-btn[disabled]{ background-color: #d4a0a7; cursor: default; opacity: 0.9; }
+
+.red-link { color: var(--rev-red); text-decoration: none; position: relative; }
+.red-link::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 1px; background: var(--rev-red); transition: width 0.3s ease; }
+.red-link:hover::after { width: 100%; }
+
+/* Form input styling consistent with dashboard */
+input.form-input { background-color: var(--rev-subtle); border: 1px solid var(--rev-border); padding: 0.75rem 1rem; font-size: 0.875rem; color: var(--rev-ink); outline: none; width: 100%; border-radius: 0.375rem; transition: border-color 0.2s, background-color 0.2s; }
+input.form-input:hover { border-color: var(--rev-red); }
+input.form-input:focus { border-color: var(--rev-red); background-color: var(--rev-surface); }
+
+/* Card shadow soft */
+.login-card { box-shadow: 0 8px 30px rgba(0,0,0,0.06); }
+
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+
+/* small utility tweaks for Keycloak wrappers */
+.kc-feedback-text, .form-error { color: var(--rev-red); }
+
+/* Provide a default logo spacing if image missing */
+img[alt="RCN Logo"]{ max-height:48px; }
+
