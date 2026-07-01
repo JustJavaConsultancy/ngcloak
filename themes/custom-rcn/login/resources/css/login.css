@@ -1,4 +1,4 @@
-/* RCN custom theme styles (keeps classes used by login.ftl) */
+/* RCN custom theme styles */
 :root{
   --rev-red: #C0182A;
   --rev-red-dark: #8B0E1C;
@@ -6,36 +6,18 @@
   --rev-black: #111111;
   --rev-ink: #1E1E1E;
   --rev-gold: #A07800;
-  --rev-page: #F7F4F0;
+  --rev-page: #FFFFFF;
   --rev-surface: #FFFFFF;
   --rev-border: #E0DAD3;
   --rev-muted: #7A726A;
   --rev-subtle: #F0EBE4;
 }
 
-/* --- Full-bleed background override ---
-   A fixed pseudo-layer painted behind everything so Keycloak's own
-   base-theme markup (whatever wraps our content) can never show through,
-   regardless of DOM structure or height quirks. */
-html, body { margin: 0; padding: 0; min-height: 100%; }
-body { position: relative; font-family: 'Inter', sans-serif; color: var(--rev-ink); overflow-x: hidden; background-color: var(--rev-page) !important; background-image: none !important; }
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background-color: var(--rev-page);
-  background-image: radial-gradient(circle, rgba(192,24,42,0.08) 1px, transparent 1px);
-  background-size: 24px 24px;
-  z-index: -1;
-}
-/* Belt-and-braces: neutralize common Keycloak/PatternFly wrapper backgrounds */
-html, .login-pf, .login-pf-page, .kc-page, .kc-login, #kc-container, #kc-container-wrapper, .pf-c-page, .pf-c-login {
-  background: transparent !important;
-  background-image: none !important;
-}
-
-/* subtle dot pattern on the in-flow wrapper too (redundant with body::before, kept for parity with the static HTML) */
-.bg-dot-pattern { background-image: radial-gradient(circle, rgba(192,24,42,0.08) 1px, transparent 1px); background-size: 24px 24px; }
+/* Force full white background across entire page and all Keycloak wrappers */
+html { background-color: #FFFFFF !important; background-image: none !important; height: 100%; margin: 0; padding: 0; }
+body { background-color: #FFFFFF !important; background-image: none !important; height: 100%; min-height: 100vh; margin: 0; padding: 0; font-family: 'Inter', sans-serif; color: var(--rev-ink); overflow-x: hidden; }
+.login-pf-page, .kc-login, .kc-page, .kc-form-login, #kc-container, #kc-container-wrapper, .login-pf, .pf-c-page, .pf-c-login { background-color: #FFFFFF !important; background-image: none !important; }
+.bg-dot-pattern { background-color: #FFFFFF !important; background-image: none !important; }
 
 .mono-label { font-family: 'JetBrains Mono', monospace; font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--rev-muted); }
 

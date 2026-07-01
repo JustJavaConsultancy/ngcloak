@@ -14,7 +14,7 @@
         <link rel="stylesheet" href="${url.resourcesPath}/css/login.css">
     <#elseif section = "form">
 
-        <div class="min-h-screen flex items-center justify-center p-4 bg-rev-page bg-dot-pattern">
+        <div class="min-h-screen flex items-center justify-center p-4 bg-white">
             <div class="fixed top-0 left-0 right-0 h-1 bg-rev-red z-50"></div>
 
             <div class="w-full max-w-md">
