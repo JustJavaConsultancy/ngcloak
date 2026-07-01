@@ -11,6 +11,47 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 
+        <style>
+            /* === Keycloak Wrapper Overrides – eliminate black background === */
+            html, body, #kc-page, #kc-page-title, .login-pf-page, #kc-content, #kc-content-wrapper, .card-pf, .login-pf, .pf-c-page {
+                margin: 0 !important;
+                padding: 0 !important;
+                width: 100% !important;
+                height: 100% !important;
+                min-height: 100vh !important;
+                background: transparent !important;
+                background-color: #FFFFFF !important;
+                background-image: none !important;
+                overflow-x: hidden !important;
+            }
+
+            /* Hide Keycloak page headers and titles that may have background */
+            .login-pf-page-header, .login-pf-header, #kc-page-title, .kc-page-title, .login-pf-signup, .card-pf-title {
+                display: none !important;
+                visibility: hidden !important;
+                height: 0 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+
+            /* Ensure content wrapper takes full screen */
+            #kc-content-wrapper {
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                right: 0 !important;
+                bottom: 0 !important;
+                z-index: 9999 !important;
+                overflow-y: auto !important;
+                background-color: #FFFFFF !important;
+            }
+
+            body {
+                background-color: #FFFFFF !important;
+                background-image: none !important;
+            }
+        </style>
+
         <link rel="stylesheet" href="${url.resourcesPath}/css/login.css">
     <#elseif section = "form">
 
