@@ -440,6 +440,43 @@
                 <p class="text-gray-600 mb-6 text-sm">Create an account to start connecting</p>
 
                 <form id="kc-register-form-desktop" action="${url.registrationAction}" method="post" class="space-y-5">
+                    <!-- Hidden club-creation attributes (enabled by JS only when ?intent=create-club) -->
+                    <input type="hidden" name="user.attributes.pendingClubCreation" id="attr-pendingClubCreation-desktop" value="" disabled/>
+                    <input type="hidden" name="user.attributes.clubName" id="attr-clubName-desktop" value="" disabled/>
+                    <input type="hidden" name="user.attributes.clubDescription" id="attr-clubDescription-desktop" value="" disabled/>
+                    <input type="hidden" name="user.attributes.clubPrivacy" id="attr-clubPrivacy-desktop" value="" disabled/>
+
+                    <!-- Club section (hidden unless registering a community) -->
+                    <div id="club-section-desktop" class="hidden space-y-4 p-4 rounded-lg border border-blue-100 bg-blue-50">
+                        <div>
+                            <h3 class="text-base font-semibold text-gray-800">Your community</h3>
+                            <p class="text-xs text-gray-600 mt-1">You&rsquo;ll be set up as the administrator of this community.</p>
+                        </div>
+                        <div>
+                            <label for="clubName-desktop" class="block text-sm font-medium text-gray-700 mb-1">Community name</label>
+                            <input type="text" id="clubName-desktop"
+                                   class="input-focus px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                                   placeholder="e.g. Lagos Rotary Club"/>
+                            <p id="clubName-error-desktop" class="text-red-500 text-xs mt-1 general-error hidden">Please enter a community name.</p>
+                        </div>
+                        <div>
+                            <label for="clubDescription-desktop" class="block text-sm font-medium text-gray-700 mb-1">Short description</label>
+                            <textarea id="clubDescription-desktop" rows="2"
+                                      class="input-focus px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                                      placeholder="What is this community about?"></textarea>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <span class="block text-sm font-medium text-gray-700">Private community</span>
+                                <span class="block text-xs text-gray-500">Members can only join by invitation.</span>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="clubPrivacy-desktop" class="sr-only peer"/>
+                                <div class="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                            </label>
+                        </div>
+                    </div>
+
                     <!-- First & Last Name -->
                     <div class="flex gap-4">
                         <div class="w-1/2">
@@ -502,7 +539,7 @@
                     </button>
 
                     <p class="text-center text-sm text-gray-600 mt-4">
-                        Already have an account? <a href="${url.loginUrl}" class="text-blue-600 hover:underline">Login</a>
+                        Already have an account? <a href="${url.loginUrl}" class="text-blue-600 hover:underline" onclick="try{sessionStorage.removeItem('clubknit.registerClubIntent');}catch(e){}">Login</a>
                     </p>
                 </form>
             </div>
@@ -542,6 +579,43 @@
         <div class="mobile-form-container">
             <div class="mobile-glass-effect mobile-form-card mobile-fade-in" style="animation-delay: 0.2s">
                 <form id="kc-register-form-mobile" action="${url.registrationAction}" method="post" class="space-y-6">
+                    <!-- Hidden club-creation attributes (enabled by JS only when ?intent=create-club) -->
+                    <input type="hidden" name="user.attributes.pendingClubCreation" id="attr-pendingClubCreation-mobile" value="" disabled/>
+                    <input type="hidden" name="user.attributes.clubName" id="attr-clubName-mobile" value="" disabled/>
+                    <input type="hidden" name="user.attributes.clubDescription" id="attr-clubDescription-mobile" value="" disabled/>
+                    <input type="hidden" name="user.attributes.clubPrivacy" id="attr-clubPrivacy-mobile" value="" disabled/>
+
+                    <!-- Club section (hidden unless registering a community) -->
+                    <div id="club-section-mobile" class="hidden space-y-4 p-4 rounded-2xl border border-blue-100 bg-blue-50 mobile-slide-down">
+                        <div>
+                            <h3 class="text-base font-semibold text-gray-800">Your community</h3>
+                            <p class="text-xs text-gray-600 mt-1">You&rsquo;ll be set up as the administrator of this community.</p>
+                        </div>
+                        <div>
+                            <label for="clubName-mobile" class="block text-sm font-semibold text-gray-700 mb-2">Community name</label>
+                            <input type="text" id="clubName-mobile"
+                                   class="mobile-input-focus mobile-touch-target mobile-input border-gray-200 focus:outline-none w-full transition-all duration-200"
+                                   placeholder="e.g. Lagos Rotary Club"/>
+                            <p id="clubName-error-mobile" class="text-red-600 text-sm mt-2 font-medium general-error hidden">Please enter a community name.</p>
+                        </div>
+                        <div>
+                            <label for="clubDescription-mobile" class="block text-sm font-semibold text-gray-700 mb-2">Short description</label>
+                            <textarea id="clubDescription-mobile" rows="2"
+                                      class="mobile-input-focus mobile-touch-target mobile-input border-gray-200 focus:outline-none w-full transition-all duration-200"
+                                      placeholder="What is this community about?"></textarea>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="pr-3">
+                                <span class="block text-sm font-semibold text-gray-700">Private community</span>
+                                <span class="block text-xs text-gray-500">Members can only join by invitation.</span>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="clubPrivacy-mobile" class="sr-only peer"/>
+                                <div class="w-12 h-7 bg-gray-300 rounded-full peer peer-checked:after:translate-x-5 peer-checked:after:border-white after:content-[''] after:absolute after:top-[3px] after:left-[3px] after:bg-white after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                            </label>
+                        </div>
+                    </div>
+
                     <!-- First Name -->
                     <div class="mobile-slide-down" style="animation-delay: 0.3s">
                         <label for="firstName-mobile" class="block text-sm font-semibold text-gray-700 mb-3">${msg("firstName")}</label>
@@ -647,7 +721,7 @@
             <div class="text-center mt-8 mobile-slide-down" style="animation-delay: 0.9s">
                 <p class="text-gray-600">
                     Already have an account?
-                    <a href="${url.loginUrl}" class="text-blue-600 font-semibold">Sign in</a>
+                    <a href="${url.loginUrl}" class="text-blue-600 font-semibold" onclick="try{sessionStorage.removeItem('clubknit.registerClubIntent');}catch(e){}">Sign in</a>
                 </p>
             </div>
 
@@ -671,6 +745,71 @@
 </div>
 
 <script>
+    // -------------------------------------------------------------------
+    // Register-a-community flow
+    // Triggered by ?intent=create-club on the URL. Persisted in sessionStorage
+    // so a Keycloak-side validation re-render doesn't drop the flag.
+    // -------------------------------------------------------------------
+    const CLUB_INTENT_KEY = 'clubknit.registerClubIntent';
+
+    function isClubIntentActive() {
+        try {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('intent') === 'create-club') {
+                sessionStorage.setItem(CLUB_INTENT_KEY, '1');
+                return true;
+            }
+            return sessionStorage.getItem(CLUB_INTENT_KEY) === '1';
+        } catch (e) {
+            return false;
+        }
+    }
+
+    function initClubSection(suffix) {
+        const section = document.getElementById('club-section-' + suffix);
+        const nameField = document.getElementById('clubName-' + suffix);
+        const descField = document.getElementById('clubDescription-' + suffix);
+        const privField = document.getElementById('clubPrivacy-' + suffix);
+        const attrPending = document.getElementById('attr-pendingClubCreation-' + suffix);
+        const attrName = document.getElementById('attr-clubName-' + suffix);
+        const attrDesc = document.getElementById('attr-clubDescription-' + suffix);
+        const attrPriv = document.getElementById('attr-clubPrivacy-' + suffix);
+
+        if (!section || !nameField) return null;
+        section.classList.remove('hidden');
+        nameField.required = true;
+        [attrPending, attrName, attrDesc, attrPriv].forEach(el => el && el.removeAttribute('disabled'));
+        attrPending.value = 'true';
+
+        function sync() {
+            attrName.value = nameField.value.trim();
+            attrDesc.value = descField.value.trim();
+            attrPriv.value = privField.checked ? 'true' : 'false';
+        }
+        nameField.addEventListener('input', sync);
+        descField.addEventListener('input', sync);
+        privField.addEventListener('change', sync);
+        sync();
+
+        return {
+            isValid: () => nameField.value.trim().length > 0,
+            markError: () => {
+                const errEl = document.getElementById('clubName-error-' + suffix);
+                if (errEl) errEl.classList.remove('hidden');
+                if (suffix === 'mobile') {
+                    nameField.classList.add('mobile-input-error', 'mobile-shake');
+                    setTimeout(() => nameField.classList.remove('mobile-shake'), 300);
+                }
+            },
+            clearError: () => {
+                const errEl = document.getElementById('clubName-error-' + suffix);
+                if (errEl) errEl.classList.add('hidden');
+                nameField.classList.remove('mobile-input-error');
+            },
+            nameField,
+        };
+    }
+
     // Desktop form validation
     function setupDesktopValidation() {
         const emailInput = document.getElementById('email-desktop');
@@ -717,16 +856,22 @@
             togglePasswordConfirm.innerHTML = type === 'password' ? '<i class="fa-solid fa-eye"></i>' : '<i class="fa-solid fa-eye-slash"></i>';
         });
 
+        // Optional club section (only present when ?intent=create-club)
+        const clubDesktop = isClubIntentActive() ? initClubSection('desktop') : null;
+
         // Final Submit Validation
         document.getElementById('kc-register-form-desktop').addEventListener('submit', (e) => {
+            const clubValid = !clubDesktop || clubDesktop.isValid();
             if (!emailInput.value || !passwordInput.value || !confirmInput.value ||
                 !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value) ||
                 !/^(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}$/.test(passwordInput.value) ||
-                confirmInput.value !== passwordInput.value) {
+                confirmInput.value !== passwordInput.value ||
+                !clubValid) {
                 e.preventDefault();
                 emailInput.dispatchEvent(new Event('input'));
                 passwordInput.dispatchEvent(new Event('input'));
                 confirmInput.dispatchEvent(new Event('input'));
+                if (clubDesktop && !clubDesktop.isValid()) clubDesktop.markError();
             }
         });
 
@@ -736,8 +881,10 @@
             const confirmValid = confirmInput.value === passwordInput.value && passwordValid;
             const firstNameValid = document.getElementById('firstName-desktop').value.trim() !== '';
             const lastNameValid = document.getElementById('lastName-desktop').value.trim() !== '';
+            const clubValid = !clubDesktop || clubDesktop.isValid();
+            if (clubDesktop && clubValid) clubDesktop.clearError();
 
-            const formValid = emailValid && passwordValid && confirmValid && firstNameValid && lastNameValid;
+            const formValid = emailValid && passwordValid && confirmValid && firstNameValid && lastNameValid && clubValid;
 
             registerBtn.disabled = !formValid;
             registerBtn.classList.toggle('opacity-50', !formValid);
@@ -745,10 +892,11 @@
         }
 
         // Add event listeners to all fields
-        [emailInput, passwordInput, confirmInput,
+        const desktopValidatedInputs = [emailInput, passwordInput, confirmInput,
          document.getElementById('firstName-desktop'),
-         document.getElementById('lastName-desktop')]
-        .forEach(input => input.addEventListener('input', validateFormDesktop));
+         document.getElementById('lastName-desktop')];
+        if (clubDesktop) desktopValidatedInputs.push(clubDesktop.nameField);
+        desktopValidatedInputs.forEach(input => input.addEventListener('input', validateFormDesktop));
     }
 
     // Mobile form validation
@@ -881,14 +1029,19 @@
             strengthText.className = 'text-xs mt-1 ' + (strength >= 3 ? 'text-green-600' : strength >= 2 ? 'text-yellow-600' : 'text-red-600');
         }
 
+        // Optional club section (only present when ?intent=create-club)
+        const clubMobile = isClubIntentActive() ? initClubSection('mobile') : null;
+
         function validateForm() {
             const firstNameValid = validateFirstName();
             const lastNameValid = validateLastName();
             const emailValid = validateEmail();
             const passwordValid = validatePassword();
             const confirmValid = validateConfirmPassword();
+            const clubValid = !clubMobile || clubMobile.isValid();
+            if (clubMobile && clubValid) clubMobile.clearError();
 
-            const formValid = firstNameValid && lastNameValid && emailValid && passwordValid && confirmValid;
+            const formValid = firstNameValid && lastNameValid && emailValid && passwordValid && confirmValid && clubValid;
 
             registerBtn.disabled = !formValid;
             registerBtn.classList.toggle('opacity-50', !formValid);
@@ -903,11 +1056,13 @@
         emailInput.addEventListener('input', validateForm);
         passwordInput.addEventListener('input', validateForm);
         confirmInput.addEventListener('input', validateForm);
+        if (clubMobile) clubMobile.nameField.addEventListener('input', validateForm);
 
         // Form submission
         document.getElementById('kc-register-form-mobile').addEventListener('submit', function(e) {
             if (!validateForm()) {
                 e.preventDefault();
+                if (clubMobile && !clubMobile.isValid()) clubMobile.markError();
                 return;
             }
 
