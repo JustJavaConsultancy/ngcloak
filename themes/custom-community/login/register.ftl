@@ -746,9 +746,13 @@
 
 <script>
     // -------------------------------------------------------------------
-    // Register-a-community flow
-    // Triggered by ?intent=create-club on the URL. Persisted in sessionStorage
-    // so a Keycloak-side validation re-render doesn't drop the flag.
+    // Register-a-club flow
+    // Triggered by intent=create-club, passed either as a query parameter or,
+    // more reliably, as a URL fragment (Keycloak drops unknown query params
+    // during its internal /registrations -> /login-actions redirect, but
+    // browsers preserve fragments across HTTP redirects). Once detected we
+    // persist it in sessionStorage so a Keycloak-side validation re-render
+    // doesn't drop the flag.
     // -------------------------------------------------------------------
     const CLUB_INTENT_KEY = 'clubknit.registerClubIntent';
 
@@ -758,6 +762,15 @@
             if (params.get('intent') === 'create-club') {
                 sessionStorage.setItem(CLUB_INTENT_KEY, '1');
                 return true;
+            }
+            // Also check the URL fragment (e.g. "#intent=create-club" or "#foo=bar&intent=create-club")
+            const rawHash = (window.location.hash || '').replace(/^#/, '');
+            if (rawHash) {
+                const hashParams = new URLSearchParams(rawHash);
+                if (hashParams.get('intent') === 'create-club') {
+                    sessionStorage.setItem(CLUB_INTENT_KEY, '1');
+                    return true;
+                }
             }
             return sessionStorage.getItem(CLUB_INTENT_KEY) === '1';
         } catch (e) {
