@@ -755,6 +755,10 @@
     // doesn't drop the flag.
     // -------------------------------------------------------------------
     const CLUB_INTENT_KEY = 'clubknit.registerClubIntent';
+    console.log('[CLUB-FTL] href=', window.location.href);
+    console.log('[CLUB-FTL] search=', window.location.search, ' hash=', window.location.hash);
+    try { console.log('[CLUB-FTL] sessionStorage[intent]=', sessionStorage.getItem(CLUB_INTENT_KEY)); } catch(e){}
+
 
     function isClubIntentActive() {
         try {
@@ -803,6 +807,10 @@
         descField.addEventListener('input', sync);
         privField.addEventListener('change', sync);
         sync();
+        console.log('[CLUB-FTL] initClubSection(' + suffix + ') attached. attr-pending=', attrPending.value,
+                    ' attr-name=', attrName.value, ' attr-priv=', attrPriv.value,
+                    ' disabled?', attrPending.disabled);
+
 
         return {
             isValid: () => nameField.value.trim().length > 0,
@@ -874,6 +882,11 @@
 
         // Final Submit Validation
         document.getElementById('kc-register-form-desktop').addEventListener('submit', (e) => {
+        console.log('[CLUB-FTL] SUBMIT attr-pending=',
+            document.getElementById('attr-pendingClubCreation-' + (isDesktop ? 'desktop' : 'mobile')).value,
+            ' attr-name=', document.getElementById('attr-clubName-' + (isDesktop ? 'desktop' : 'mobile')).value,
+            ' attr-name-disabled?', document.getElementById('attr-clubName-' + (isDesktop ? 'desktop' : 'mobile')).disabled);
+
             const clubValid = !clubDesktop || clubDesktop.isValid();
             if (!emailInput.value || !passwordInput.value || !confirmInput.value ||
                 !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value) ||
@@ -1073,6 +1086,11 @@
 
         // Form submission
         document.getElementById('kc-register-form-mobile').addEventListener('submit', function(e) {
+        console.log('[CLUB-FTL] SUBMIT attr-pending=',
+            document.getElementById('attr-pendingClubCreation-' + (isDesktop ? 'desktop' : 'mobile')).value,
+            ' attr-name=', document.getElementById('attr-clubName-' + (isDesktop ? 'desktop' : 'mobile')).value,
+            ' attr-name-disabled?', document.getElementById('attr-clubName-' + (isDesktop ? 'desktop' : 'mobile')).disabled);
+
             if (!validateForm()) {
                 e.preventDefault();
                 if (clubMobile && !clubMobile.isValid()) clubMobile.markError();
