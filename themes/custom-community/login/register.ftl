@@ -2,7 +2,7 @@
 <#import "user-profile-commons.ftl" as userProfileCommons>
 <@layout.registrationLayout displayMessage=messagesPerField.exists('global') displayRequiredFields=true; section>
 <#if section = "header">
-    <title>Connect - Sign Up</title>
+    <title>Klubknit - Sign Up</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
     <link rel="stylesheet" as="style" onload="this.rel='stylesheet'"
@@ -427,7 +427,7 @@
                 </div>
             </div>
             <p class="text-sm opacity-80 comtext">
-                Join thousands of professionals who are already growing their careers with Connect
+                Join thousands of professionals who are already growing their careers with Klubknit
             </p>
         </div>
     </div>
@@ -559,7 +559,7 @@
                     </svg>
                 </div>
             </div>
-            <h1 class="text-4xl font-bold gradient-text mb-2">Connect</h1>
+            <h1 class="text-4xl font-bold gradient-text mb-2">Klubknit</h1>
             <p class="text-gray-600 text-lg">Create your account</p>
         </div>
     </div>
