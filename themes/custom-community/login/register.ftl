@@ -436,8 +436,8 @@
     <div class="responsive-right-panel w-1/2 flex items-center justify-center p-8">
         <div class="w-full max-w-md">
             <div class="glass-effect rounded-2xl shadow-xl p-8 animate-fade-in">
-                <h2 class="text-2xl font-bold text-gray-800 mb-2">Sign up</h2>
-                <p class="text-gray-600 mb-6 text-sm">Create an account to start connecting</p>
+                <h2 id="form-title-desktop" class="text-2xl font-bold text-gray-800 mb-2">Sign up</h2>
+                <p id="form-subtitle-desktop" class="text-gray-600 mb-6 text-sm">Create an account to start connecting</p>
 
                 <form id="kc-register-form-desktop" action="${url.registrationAction}" method="post" class="space-y-5">
                     <!-- Hidden club-creation attributes (enabled by JS only when ?intent=create-club) -->
@@ -560,7 +560,7 @@
                 </div>
             </div>
             <h1 class="text-4xl font-bold gradient-text mb-2">Klubknit</h1>
-            <p class="text-gray-600 text-lg">Create your account</p>
+            <p id="form-subtitle-mobile" class="text-gray-600 text-lg">Create your account</p>
         </div>
     </div>
 
@@ -781,6 +781,19 @@
             return false;
         }
     }
+
+    // Swap the "Sign up / Create your account" headings for club-intent copy
+    // as early as possible so the page never flashes the wrong title.
+    (function applyClubIntentCopy() {
+        if (!isClubIntentActive()) return;
+        function set(id, text) {
+            const el = document.getElementById(id);
+            if (el) el.textContent = text;
+        }
+        set('form-title-desktop', 'Register your club');
+        set('form-subtitle-desktop', 'Sign up and set up your club in one step.');
+        set('form-subtitle-mobile', 'Register your club');
+    })();
 
     function initClubSection(suffix) {
         const section = document.getElementById('club-section-' + suffix);
