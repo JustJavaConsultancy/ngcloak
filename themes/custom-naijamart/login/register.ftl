@@ -447,24 +447,92 @@
     <div class="responsive-right-panel w-1/2 flex items-center justify-center p-8">
         <div class="w-full max-w-md">
             <div class="glass-effect rounded-2xl shadow-xl p-8 animate-fade-in">
-                <h2 class="text-2xl font-bold text-gray-800 mb-2">Create Account</h2>
-                <p class="text-gray-600 mb-6 text-sm">Join Nigeria's marketplace today</p>
+                <h2 id="titleText-desktop" class="text-2xl font-bold text-gray-800 mb-2">Create Account</h2>
+                <p id="subtitleText-desktop" class="text-gray-600 mb-6 text-sm">Join Nigeria's marketplace today</p>
 
-                <form id="kc-register-form-desktop" action="${url.registrationAction}" method="post" class="space-y-5">
-                    <!-- First & Last Name -->
-                    <div class="flex gap-4">
-                        <div class="w-1/2">
-                            <label for="firstName-desktop" class="block text-sm font-medium text-gray-700 mb-1">${msg("firstName")}</label>
-                            <input type="text" id="firstName-desktop" name="firstName"
-                                   class="input-focus px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 w-full"
-                                   placeholder="First Name" required/>
+                <!-- Account type toggle -->
+                <div class="mode-toggle-desktop grid grid-cols-2 gap-0 bg-gray-100 p-1 rounded-lg mb-6" role="tablist" aria-label="Account type">
+                    <button type="button" id="modeCustomer-desktop"
+                            class="py-2.5 px-3 text-sm font-semibold rounded-md transition-all bg-white text-purple-600 shadow-sm"
+                            role="tab" aria-selected="true">Customer</button>
+                    <button type="button" id="modeVendor-desktop"
+                            class="py-2.5 px-3 text-sm font-semibold rounded-md transition-all text-gray-500"
+                            role="tab" aria-selected="false">Vendor</button>
+                </div>
+
+                <form id="kc-register-form-desktop" action="${url.registrationAction}" method="post" enctype="multipart/form-data" class="space-y-5">
+
+                    <!-- Account type marker (persisted as Keycloak user attribute) -->
+                    <input type="hidden" id="accountType-desktop" name="user.attributes.accountType" value="customer"/>
+
+                    <!-- ========= CUSTOMER FIELDS ========= -->
+                    <div id="customerFields-desktop">
+                        <!-- First & Last Name -->
+                        <div class="flex gap-4">
+                            <div class="w-1/2">
+                                <label for="firstName-desktop" class="block text-sm font-medium text-gray-700 mb-1">${msg("firstName")}</label>
+                                <input type="text" id="firstName-desktop" name="firstName"
+                                       class="input-focus px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 w-full"
+                                       placeholder="First Name"/>
+                            </div>
+                            <div class="w-1/2">
+                                <label for="lastName-desktop" class="block text-sm font-medium text-gray-700 mb-1">${msg("lastName")}</label>
+                                <input type="text" id="lastName-desktop" name="lastName"
+                                       class="input-focus px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 w-full"
+                                       placeholder="Last Name"/>
+                            </div>
                         </div>
-                        <div class="w-1/2">
-                            <label for="lastName-desktop" class="block text-sm font-medium text-gray-700 mb-1">${msg("lastName")}</label>
-                            <input type="text" id="lastName-desktop" name="lastName"
+                    </div>
+
+                    <!-- ========= VENDOR FIELDS ========= -->
+                    <div id="vendorFields-desktop" class="space-y-5" style="display:none">
+                        <!-- Company Name -->
+                        <div>
+                            <label for="companyName-desktop" class="block text-sm font-medium text-gray-700 mb-1">Company name</label>
+                            <input type="text" id="companyName-desktop" name="user.attributes.companyName"
                                    class="input-focus px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 w-full"
-                                   placeholder="Last Name" required/>
+                                   placeholder="e.g. Acme Trading Ltd"/>
+                            <p id="companyName-error-desktop" class="text-red-500 text-xs mt-1 general-error hidden">Enter your company name.</p>
                         </div>
+
+                        <!-- Company Logo -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Company logo</label>
+                            <label for="companyLogo-desktop" class="flex items-center gap-3 p-3 border-2 border-dashed border-gray-200 rounded-lg cursor-pointer hover:border-purple-500 hover:bg-purple-50/40 transition-all">
+                                <div id="logoPreview-desktop" class="w-14 h-14 rounded-lg bg-gray-100 flex items-center justify-center overflow-hidden flex-shrink-0">
+                                    <span class="material-symbols-outlined text-gray-400">image</span>
+                                </div>
+                                <div class="text-sm">
+                                    <span id="logoLabel-desktop" class="font-medium text-gray-700 block">Click to upload logo</span>
+                                    <span class="text-xs text-gray-500">PNG, JPG or WebP · square recommended · max 2 MB</span>
+                                </div>
+                            </label>
+                            <input type="file" id="companyLogo-desktop" name="companyLogo" accept="image/png,image/jpeg,image/webp" class="hidden"/>
+                            <p id="logo-error-desktop" class="text-red-500 text-xs mt-1 general-error hidden">File too large. Maximum size is 2 MB.</p>
+                        </div>
+
+                        <!-- Phone -->
+                        <div>
+                            <label for="phone-desktop" class="block text-sm font-medium text-gray-700 mb-1">Contact phone number</label>
+                            <input type="tel" id="phone-desktop" name="user.attributes.phoneNumber" inputmode="tel"
+                                   class="input-focus px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 w-full"
+                                   placeholder="+2348012345678 or 08012345678"/>
+                            <p id="phone-error-desktop" class="text-red-500 text-xs mt-1 general-error hidden">Enter a valid Nigerian phone number.</p>
+                        </div>
+
+                        <!-- Website -->
+                        <div>
+                            <label for="websiteUrl-desktop" class="block text-sm font-medium text-gray-700 mb-1">Website URL</label>
+                            <input type="url" id="websiteUrl-desktop" name="user.attributes.websiteUrl"
+                                   class="input-focus px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 w-full"
+                                   placeholder="https://your-company.com"/>
+                            <p id="website-error-desktop" class="text-red-500 text-xs mt-1 general-error hidden">Enter a valid URL (must start with http:// or https://).</p>
+                        </div>
+
+                        <!-- Hidden firstName/lastName so Keycloak's built-in validators still pass.
+                             We mirror companyName into firstName on submit. -->
+                        <input type="hidden" id="vendorFirstName-desktop" name="firstName" value=""/>
+                        <input type="hidden" name="lastName" value="."/>
                     </div>
 
                     <!-- Email -->
@@ -550,27 +618,103 @@
     <div class="mobile-content">
         <div class="mobile-form-container">
             <div class="mobile-glass-effect mobile-form-card mobile-fade-in" style="animation-delay: 0.2s">
-                <form id="kc-register-form-mobile" action="${url.registrationAction}" method="post" class="space-y-6">
-                    <!-- First Name -->
-                    <div class="mobile-slide-down" style="animation-delay: 0.3s">
-                        <label for="firstName-mobile" class="block text-sm font-semibold text-gray-700 mb-3">${msg("firstName")}</label>
-                        <input type="text" id="firstName-mobile" name="firstName"
-                               class="mobile-input-focus mobile-touch-target mobile-input border-gray-200 focus:outline-none w-full transition-all duration-200"
-                               placeholder="First name"
-                               autocomplete="given-name"
-                               required/>
-                        <p id="firstName-error-mobile" class="text-red-600 text-sm mt-2 font-medium general-error hidden">Please enter your first name.</p>
+
+                <!-- Account type toggle -->
+                <div class="mode-toggle-mobile grid grid-cols-2 gap-0 bg-gray-100 p-1 rounded-xl mb-6" role="tablist" aria-label="Account type">
+                    <button type="button" id="modeCustomer-mobile"
+                            class="py-3 px-3 text-sm font-semibold rounded-lg transition-all bg-white text-purple-600 shadow-sm"
+                            role="tab" aria-selected="true">Customer</button>
+                    <button type="button" id="modeVendor-mobile"
+                            class="py-3 px-3 text-sm font-semibold rounded-lg transition-all text-gray-500"
+                            role="tab" aria-selected="false">Vendor</button>
+                </div>
+
+                <form id="kc-register-form-mobile" action="${url.registrationAction}" method="post" enctype="multipart/form-data" class="space-y-6">
+
+                    <!-- Account type marker -->
+                    <input type="hidden" id="accountType-mobile" name="user.attributes.accountType" value="customer"/>
+
+                    <!-- ========= CUSTOMER FIELDS ========= -->
+                    <div id="customerFields-mobile" class="space-y-6">
+                        <!-- First Name -->
+                        <div class="mobile-slide-down" style="animation-delay: 0.3s">
+                            <label for="firstName-mobile" class="block text-sm font-semibold text-gray-700 mb-3">${msg("firstName")}</label>
+                            <input type="text" id="firstName-mobile" name="firstName"
+                                   class="mobile-input-focus mobile-touch-target mobile-input border-gray-200 focus:outline-none w-full transition-all duration-200"
+                                   placeholder="First name"
+                                   autocomplete="given-name"/>
+                            <p id="firstName-error-mobile" class="text-red-600 text-sm mt-2 font-medium general-error hidden">Please enter your first name.</p>
+                        </div>
+
+                        <!-- Last Name -->
+                        <div class="mobile-slide-down" style="animation-delay: 0.4s">
+                            <label for="lastName-mobile" class="block text-sm font-semibold text-gray-700 mb-3">${msg("lastName")}</label>
+                            <input type="text" id="lastName-mobile" name="lastName"
+                                   class="mobile-input-focus mobile-touch-target mobile-input border-gray-200 focus:outline-none w-full transition-all duration-200"
+                                   placeholder="Last name"
+                                   autocomplete="family-name"/>
+                            <p id="lastName-error-mobile" class="text-red-600 text-sm mt-2 font-medium general-error hidden">Please enter your last name.</p>
+                        </div>
                     </div>
 
-                    <!-- Last Name -->
-                    <div class="mobile-slide-down" style="animation-delay: 0.4s">
-                        <label for="lastName-mobile" class="block text-sm font-semibold text-gray-700 mb-3">${msg("lastName")}</label>
-                        <input type="text" id="lastName-mobile" name="lastName"
-                               class="mobile-input-focus mobile-touch-target mobile-input border-gray-200 focus:outline-none w-full transition-all duration-200"
-                               placeholder="Last name"
-                               autocomplete="family-name"
-                               required/>
-                        <p id="lastName-error-mobile" class="text-red-600 text-sm mt-2 font-medium general-error hidden">Please enter your last name.</p>
+                    <!-- ========= VENDOR FIELDS ========= -->
+                    <div id="vendorFields-mobile" class="space-y-6" style="display:none">
+                        <!-- Company Name -->
+                        <div class="mobile-slide-down" style="animation-delay: 0.3s">
+                            <label for="companyName-mobile" class="block text-sm font-semibold text-gray-700 mb-3">Company name</label>
+                            <input type="text" id="companyName-mobile" name="user.attributes.companyName"
+                                   class="mobile-input-focus mobile-touch-target mobile-input border-gray-200 focus:outline-none w-full transition-all duration-200"
+                                   placeholder="e.g. Acme Trading Ltd"/>
+                            <p id="companyName-error-mobile" class="text-red-600 text-sm mt-2 font-medium general-error hidden">Enter your company name.</p>
+                        </div>
+
+                        <!-- Company Logo -->
+                        <div class="mobile-slide-down" style="animation-delay: 0.35s">
+                            <label class="block text-sm font-semibold text-gray-700 mb-3">Company logo</label>
+                            <label for="companyLogo-mobile" class="flex items-center gap-3 p-4 border-2 border-dashed border-gray-200 rounded-xl cursor-pointer hover:border-purple-500 hover:bg-purple-50/40 transition-all">
+                                <div id="logoPreview-mobile" class="w-16 h-16 rounded-lg bg-gray-100 flex items-center justify-center overflow-hidden flex-shrink-0">
+                                    <span class="material-symbols-outlined text-gray-400">image</span>
+                                </div>
+                                <div class="text-sm">
+                                    <span id="logoLabel-mobile" class="font-medium text-gray-700 block">Tap to upload logo</span>
+                                    <span class="text-xs text-gray-500">PNG, JPG or WebP · max 2 MB</span>
+                                </div>
+                            </label>
+                            <input type="file" id="companyLogo-mobile" name="companyLogo" accept="image/png,image/jpeg,image/webp" class="hidden"/>
+                            <p id="logo-error-mobile" class="text-red-600 text-sm mt-2 font-medium general-error hidden">File too large. Maximum size is 2 MB.</p>
+                        </div>
+
+                        <!-- Phone -->
+                        <div class="mobile-slide-down" style="animation-delay: 0.4s">
+                            <label for="phone-mobile" class="block text-sm font-semibold text-gray-700 mb-3">Contact phone number</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 mobile-icon-container flex items-center pointer-events-none">
+                                    <span class="material-symbols-outlined text-gray-400 mobile-icon">call</span>
+                                </div>
+                                <input type="tel" id="phone-mobile" name="user.attributes.phoneNumber" inputmode="tel"
+                                       class="mobile-input-focus mobile-touch-target mobile-input mobile-input-with-icon border-gray-200 focus:outline-none w-full transition-all duration-200"
+                                       placeholder="+2348012345678"/>
+                            </div>
+                            <p id="phone-error-mobile" class="text-red-600 text-sm mt-2 font-medium general-error hidden">Enter a valid Nigerian phone number.</p>
+                        </div>
+
+                        <!-- Website -->
+                        <div class="mobile-slide-down" style="animation-delay: 0.45s">
+                            <label for="websiteUrl-mobile" class="block text-sm font-semibold text-gray-700 mb-3">Website URL</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 mobile-icon-container flex items-center pointer-events-none">
+                                    <span class="material-symbols-outlined text-gray-400 mobile-icon">language</span>
+                                </div>
+                                <input type="url" id="websiteUrl-mobile" name="user.attributes.websiteUrl"
+                                       class="mobile-input-focus mobile-touch-target mobile-input mobile-input-with-icon border-gray-200 focus:outline-none w-full transition-all duration-200"
+                                       placeholder="https://your-company.com"/>
+                            </div>
+                            <p id="website-error-mobile" class="text-red-600 text-sm mt-2 font-medium general-error hidden">Enter a valid URL (http:// or https://).</p>
+                        </div>
+
+                        <!-- Hidden firstName/lastName so Keycloak's built-in validators still pass -->
+                        <input type="hidden" id="vendorFirstName-mobile" name="firstName" value=""/>
+                        <input type="hidden" name="lastName" value="."/>
                     </div>
 
                     <!-- Email -->
@@ -680,103 +824,259 @@
 </div>
 
 <script>
-    // Desktop form validation
-    function setupDesktopValidation() {
-        const emailInput = document.getElementById('email-desktop');
-        const emailError = document.getElementById('email-error-desktop');
-        const passwordInput = document.getElementById('password-desktop');
-        const passwordError = document.getElementById('password-error-desktop');
-        const confirmInput = document.getElementById('password-confirm-desktop');
-        const confirmError = document.getElementById('password-confirm-error-desktop');
-        const togglePassword = document.getElementById('toggle-password-desktop');
-        const togglePasswordConfirm = document.getElementById('toggle-password-confirm-desktop');
-        const registerBtn = document.getElementById('register-btn-desktop');
+    // ================================================================
+    // Shared helpers
+    // ================================================================
+    const PHONE_REGEX   = /^(\+234\d{10}|0\d{10})$/;
+    const WEBSITE_REGEX = /^https?:\/\/[^\s.]+\.[^\s]{2,}$/;
+    const MAX_LOGO_BYTES = 2 * 1024 * 1024; // 2 MB
 
-        // Email Validation
+    function readInitialMode() {
+        const params = new URLSearchParams(window.location.search);
+        const fromUrl = (params.get('account_type') || '').toLowerCase();
+        if (fromUrl === 'vendor' || fromUrl === 'customer') return fromUrl;
+        return 'customer';
+    }
+
+    // ================================================================
+    // Desktop form
+    // ================================================================
+    function setupDesktopValidation() {
+        const form            = document.getElementById('kc-register-form-desktop');
+        const emailInput      = document.getElementById('email-desktop');
+        const emailError      = document.getElementById('email-error-desktop');
+        const passwordInput   = document.getElementById('password-desktop');
+        const passwordError   = document.getElementById('password-error-desktop');
+        const confirmInput    = document.getElementById('password-confirm-desktop');
+        const confirmError    = document.getElementById('password-confirm-error-desktop');
+        const togglePassword  = document.getElementById('toggle-password-desktop');
+        const togglePwConfirm = document.getElementById('toggle-password-confirm-desktop');
+        const registerBtn     = document.getElementById('register-btn-desktop');
+
+        const titleEl         = document.getElementById('titleText-desktop');
+        const subtitleEl      = document.getElementById('subtitleText-desktop');
+
+        // Mode toggle
+        const modeCustomerBtn = document.getElementById('modeCustomer-desktop');
+        const modeVendorBtn   = document.getElementById('modeVendor-desktop');
+        const accountTypeHid  = document.getElementById('accountType-desktop');
+        const customerFields  = document.getElementById('customerFields-desktop');
+        const vendorFields    = document.getElementById('vendorFields-desktop');
+
+        // Customer inputs
+        const firstNameInput  = document.getElementById('firstName-desktop');
+        const lastNameInput   = document.getElementById('lastName-desktop');
+
+        // Vendor inputs
+        const companyInput    = document.getElementById('companyName-desktop');
+        const companyError    = document.getElementById('companyName-error-desktop');
+        const phoneInput      = document.getElementById('phone-desktop');
+        const phoneError      = document.getElementById('phone-error-desktop');
+        const websiteInput    = document.getElementById('websiteUrl-desktop');
+        const websiteError    = document.getElementById('website-error-desktop');
+        const logoInput       = document.getElementById('companyLogo-desktop');
+        const logoError       = document.getElementById('logo-error-desktop');
+        const logoPreview     = document.getElementById('logoPreview-desktop');
+        const logoLabel       = document.getElementById('logoLabel-desktop');
+        const vendorFirstMirror = document.getElementById('vendorFirstName-desktop');
+
+        let mode = 'customer';
+
+        function applyMode(newMode) {
+            mode = newMode;
+            accountTypeHid.value = newMode;
+
+            const isVendor = newMode === 'vendor';
+            customerFields.style.display = isVendor ? 'none' : '';
+            vendorFields.style.display   = isVendor ? '' : 'none';
+
+            // Toggle button styling
+            modeCustomerBtn.classList.toggle('bg-white', !isVendor);
+            modeCustomerBtn.classList.toggle('text-purple-600', !isVendor);
+            modeCustomerBtn.classList.toggle('shadow-sm', !isVendor);
+            modeCustomerBtn.classList.toggle('text-gray-500', isVendor);
+            modeCustomerBtn.setAttribute('aria-selected', String(!isVendor));
+
+            modeVendorBtn.classList.toggle('bg-white', isVendor);
+            modeVendorBtn.classList.toggle('text-purple-600', isVendor);
+            modeVendorBtn.classList.toggle('shadow-sm', isVendor);
+            modeVendorBtn.classList.toggle('text-gray-500', !isVendor);
+            modeVendorBtn.setAttribute('aria-selected', String(isVendor));
+
+            if (titleEl)    titleEl.textContent    = isVendor ? 'Register your company' : 'Create Account';
+            if (subtitleEl) subtitleEl.textContent = isVendor ? 'Join NaijaMart as a vendor' : "Join Nigeria's marketplace today";
+
+            validateFormDesktop();
+        }
+
+        modeCustomerBtn.addEventListener('click', () => applyMode('customer'));
+        modeVendorBtn.addEventListener('click',   () => applyMode('vendor'));
+
+        // Email
         emailInput.addEventListener('input', () => {
             const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value);
             emailError.classList.toggle('hidden', valid || emailInput.value === '');
         });
 
-        // Password Validation
+        // Password
         passwordInput.addEventListener('input', () => {
             const valid = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}$/.test(passwordInput.value);
             passwordError.classList.toggle('hidden', valid || passwordInput.value === '');
             checkConfirmPasswordDesktop();
         });
 
-        // Confirm Password Validation
         confirmInput.addEventListener('input', checkConfirmPasswordDesktop);
-
         function checkConfirmPasswordDesktop() {
             const matches = confirmInput.value === passwordInput.value;
             confirmError.classList.toggle('hidden', matches || confirmInput.value === '');
         }
 
-        // Toggle Visibility
         togglePassword.addEventListener('click', () => {
             const type = passwordInput.type === 'password' ? 'text' : 'password';
             passwordInput.type = type;
-            togglePassword.innerHTML = type === 'password' ? '<span class="material-symbols-outlined">visibility</span>' : '<span class="material-symbols-outlined">visibility_off</span>';
+            togglePassword.innerHTML = type === 'password'
+                ? '<span class="material-symbols-outlined">visibility</span>'
+                : '<span class="material-symbols-outlined">visibility_off</span>';
         });
-
-        togglePasswordConfirm.addEventListener('click', () => {
+        togglePwConfirm.addEventListener('click', () => {
             const type = confirmInput.type === 'password' ? 'text' : 'password';
             confirmInput.type = type;
-            togglePasswordConfirm.innerHTML = type === 'password' ? '<span class="material-symbols-outlined">visibility</span>' : '<span class="material-symbols-outlined">visibility_off</span>';
+            togglePwConfirm.innerHTML = type === 'password'
+                ? '<span class="material-symbols-outlined">visibility</span>'
+                : '<span class="material-symbols-outlined">visibility_off</span>';
         });
 
-        // Final Submit Validation
-        document.getElementById('kc-register-form-desktop').addEventListener('submit', (e) => {
-            if (!emailInput.value || !passwordInput.value || !confirmInput.value ||
-                !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value) ||
-                !/^(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}$/.test(passwordInput.value) ||
-                confirmInput.value !== passwordInput.value) {
-                e.preventDefault();
-                emailInput.dispatchEvent(new Event('input'));
-                passwordInput.dispatchEvent(new Event('input'));
-                confirmInput.dispatchEvent(new Event('input'));
+        // Vendor field listeners
+        companyInput.addEventListener('input', () => {
+            const valid = companyInput.value.trim().length > 0;
+            companyError.classList.toggle('hidden', valid || companyInput.value === '');
+        });
+        phoneInput.addEventListener('input', () => {
+            const valid = PHONE_REGEX.test(phoneInput.value.trim());
+            phoneError.classList.toggle('hidden', valid || phoneInput.value === '');
+        });
+        websiteInput.addEventListener('input', () => {
+            const valid = WEBSITE_REGEX.test(websiteInput.value.trim());
+            websiteError.classList.toggle('hidden', valid || websiteInput.value === '');
+        });
+        logoInput.addEventListener('change', () => {
+            const file = logoInput.files && logoInput.files[0];
+            if (!file) return;
+            if (file.size > MAX_LOGO_BYTES) {
+                logoError.classList.remove('hidden');
+                logoInput.value = '';
+                return;
             }
+            logoError.classList.add('hidden');
+            const url = URL.createObjectURL(file);
+            logoPreview.innerHTML = '<img src="' + url + '" alt="Logo preview" class="w-full h-full object-cover"/>';
+            if (logoLabel) logoLabel.textContent = file.name;
         });
 
         function validateFormDesktop() {
-            const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value);
+            const emailValid    = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value);
             const passwordValid = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}$/.test(passwordInput.value);
-            const confirmValid = confirmInput.value === passwordInput.value && passwordValid;
-            const firstNameValid = document.getElementById('firstName-desktop').value.trim() !== '';
-            const lastNameValid = document.getElementById('lastName-desktop').value.trim() !== '';
+            const confirmValid  = confirmInput.value === passwordInput.value && passwordValid;
 
-            const formValid = emailValid && passwordValid && confirmValid && firstNameValid && lastNameValid;
+            let identityValid;
+            if (mode === 'vendor') {
+                const companyValid = companyInput.value.trim().length > 0;
+                const phoneValid   = PHONE_REGEX.test(phoneInput.value.trim());
+                const websiteValid = WEBSITE_REGEX.test(websiteInput.value.trim());
+                identityValid = companyValid && phoneValid && websiteValid;
+            } else {
+                identityValid = firstNameInput.value.trim() !== '' && lastNameInput.value.trim() !== '';
+            }
 
+            const formValid = emailValid && passwordValid && confirmValid && identityValid;
             registerBtn.disabled = !formValid;
             registerBtn.classList.toggle('opacity-50', !formValid);
             registerBtn.classList.toggle('cursor-not-allowed', !formValid);
         }
 
-        // Add event listeners to all fields
         [emailInput, passwordInput, confirmInput,
-         document.getElementById('firstName-desktop'),
-         document.getElementById('lastName-desktop')]
-        .forEach(input => input.addEventListener('input', validateFormDesktop));
+         firstNameInput, lastNameInput,
+         companyInput, phoneInput, websiteInput]
+        .forEach(input => input && input.addEventListener('input', validateFormDesktop));
+
+        // Submit
+        form.addEventListener('submit', (e) => {
+            const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value);
+            const pwOk    = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}$/.test(passwordInput.value);
+            const cfOk    = confirmInput.value === passwordInput.value;
+
+            let identityOk;
+            if (mode === 'vendor') {
+                const companyOk = companyInput.value.trim().length > 0;
+                const phoneOk   = PHONE_REGEX.test(phoneInput.value.trim());
+                const websiteOk = WEBSITE_REGEX.test(websiteInput.value.trim());
+                identityOk = companyOk && phoneOk && websiteOk;
+
+                // Mirror companyName into firstName so Keycloak's built-in validator passes
+                if (identityOk) vendorFirstMirror.value = companyInput.value.trim();
+            } else {
+                identityOk = firstNameInput.value.trim() !== '' && lastNameInput.value.trim() !== '';
+            }
+
+            if (!emailOk || !pwOk || !cfOk || !identityOk) {
+                e.preventDefault();
+                emailInput.dispatchEvent(new Event('input'));
+                passwordInput.dispatchEvent(new Event('input'));
+                confirmInput.dispatchEvent(new Event('input'));
+                if (mode === 'vendor') {
+                    companyInput.dispatchEvent(new Event('input'));
+                    phoneInput.dispatchEvent(new Event('input'));
+                    websiteInput.dispatchEvent(new Event('input'));
+                }
+            }
+        });
+
+        // Init mode from URL / repopulated form value
+        const repopulated = (accountTypeHid.value || '').toLowerCase();
+        const initial = (repopulated === 'vendor' || repopulated === 'customer')
+            ? repopulated
+            : readInitialMode();
+        applyMode(initial);
     }
 
-    // Mobile form validation
+    // ================================================================
+    // Mobile form
+    // ================================================================
     function setupMobileValidation() {
-        const firstNameInput = document.getElementById('firstName-mobile');
-        const lastNameInput = document.getElementById('lastName-mobile');
-        const emailInput = document.getElementById('email-mobile');
-        const passwordInput = document.getElementById('password-mobile');
-        const confirmInput = document.getElementById('password-confirm-mobile');
-        const registerBtn = document.getElementById('register-btn-mobile');
+        const form            = document.getElementById('kc-register-form-mobile');
+        const firstNameInput  = document.getElementById('firstName-mobile');
+        const lastNameInput   = document.getElementById('lastName-mobile');
+        const emailInput      = document.getElementById('email-mobile');
+        const passwordInput   = document.getElementById('password-mobile');
+        const confirmInput    = document.getElementById('password-confirm-mobile');
+        const registerBtn     = document.getElementById('register-btn-mobile');
 
-        // Error elements
-        const firstNameError = document.getElementById('firstName-error-mobile');
-        const lastNameError = document.getElementById('lastName-error-mobile');
-        const emailError = document.getElementById('email-error-mobile');
-        const passwordError = document.getElementById('password-error-mobile');
-        const confirmError = document.getElementById('password-confirm-error-mobile');
+        const firstNameError  = document.getElementById('firstName-error-mobile');
+        const lastNameError   = document.getElementById('lastName-error-mobile');
+        const emailError      = document.getElementById('email-error-mobile');
+        const passwordError   = document.getElementById('password-error-mobile');
+        const confirmError    = document.getElementById('password-confirm-error-mobile');
 
-        // Progress steps
+        // Mode toggle
+        const modeCustomerBtn = document.getElementById('modeCustomer-mobile');
+        const modeVendorBtn   = document.getElementById('modeVendor-mobile');
+        const accountTypeHid  = document.getElementById('accountType-mobile');
+        const customerFields  = document.getElementById('customerFields-mobile');
+        const vendorFields    = document.getElementById('vendorFields-mobile');
+
+        // Vendor inputs (mobile)
+        const companyInput    = document.getElementById('companyName-mobile');
+        const companyError    = document.getElementById('companyName-error-mobile');
+        const phoneInput      = document.getElementById('phone-mobile');
+        const phoneError      = document.getElementById('phone-error-mobile');
+        const websiteInput    = document.getElementById('websiteUrl-mobile');
+        const websiteError    = document.getElementById('website-error-mobile');
+        const logoInput       = document.getElementById('companyLogo-mobile');
+        const logoError       = document.getElementById('logo-error-mobile');
+        const logoPreview     = document.getElementById('logoPreview-mobile');
+        const logoLabel       = document.getElementById('logoLabel-mobile');
+        const vendorFirstMirror = document.getElementById('vendorFirstName-mobile');
+
         const steps = [
             document.getElementById('step-1'),
             document.getElementById('step-2'),
@@ -784,63 +1084,46 @@
             document.getElementById('step-4')
         ];
 
-        // Password toggle functionality
+        let mode = 'customer';
+
+        function applyMode(newMode) {
+            mode = newMode;
+            accountTypeHid.value = newMode;
+
+            const isVendor = newMode === 'vendor';
+            customerFields.style.display = isVendor ? 'none' : '';
+            vendorFields.style.display   = isVendor ? '' : 'none';
+
+            modeCustomerBtn.classList.toggle('bg-white', !isVendor);
+            modeCustomerBtn.classList.toggle('text-purple-600', !isVendor);
+            modeCustomerBtn.classList.toggle('shadow-sm', !isVendor);
+            modeCustomerBtn.classList.toggle('text-gray-500', isVendor);
+            modeCustomerBtn.setAttribute('aria-selected', String(!isVendor));
+
+            modeVendorBtn.classList.toggle('bg-white', isVendor);
+            modeVendorBtn.classList.toggle('text-purple-600', isVendor);
+            modeVendorBtn.classList.toggle('shadow-sm', isVendor);
+            modeVendorBtn.classList.toggle('text-gray-500', !isVendor);
+            modeVendorBtn.setAttribute('aria-selected', String(isVendor));
+
+            validateForm();
+        }
+
+        modeCustomerBtn.addEventListener('click', () => applyMode('customer'));
+        modeVendorBtn.addEventListener('click',   () => applyMode('vendor'));
+
+        // Password toggles
         document.getElementById('toggle-password-mobile').addEventListener('click', function() {
             togglePasswordVisibility('password-mobile', this);
         });
-
         document.getElementById('toggle-password-confirm-mobile').addEventListener('click', function() {
             togglePasswordVisibility('password-confirm-mobile', this);
         });
-
         function togglePasswordVisibility(inputId, button) {
             const input = document.getElementById(inputId);
             const icon = button.querySelector('span');
-
-            if (input.type === 'password') {
-                input.type = 'text';
-                icon.textContent = 'visibility_off';
-            } else {
-                input.type = 'password';
-                icon.textContent = 'visibility';
-            }
-        }
-
-        // Validation functions
-        function validateFirstName() {
-            const valid = firstNameInput.value.trim().length > 0;
-            toggleError(firstNameInput, firstNameError, valid);
-            updateProgress(0, valid);
-            return valid;
-        }
-
-        function validateLastName() {
-            const valid = lastNameInput.value.trim().length > 0;
-            toggleError(lastNameInput, lastNameError, valid);
-            updateProgress(1, valid);
-            return valid;
-        }
-
-        function validateEmail() {
-            const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value);
-            toggleError(emailInput, emailError, valid);
-            updateProgress(2, valid);
-            return valid;
-        }
-
-        function validatePassword() {
-            const password = passwordInput.value;
-            const valid = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}$/.test(password);
-            toggleError(passwordInput, passwordError, valid);
-            updatePasswordStrength(password);
-            return valid;
-        }
-
-        function validateConfirmPassword() {
-            const valid = confirmInput.value === passwordInput.value && passwordInput.value.length > 0;
-            toggleError(confirmInput, confirmError, valid);
-            updateProgress(3, valid);
-            return valid;
+            if (input.type === 'password') { input.type = 'text';  icon.textContent = 'visibility_off'; }
+            else                            { input.type = 'password'; icon.textContent = 'visibility'; }
         }
 
         function toggleError(input, errorElement, isValid) {
@@ -855,11 +1138,9 @@
         }
 
         function updateProgress(stepIndex, isValid) {
-            if (isValid) {
-                steps[stepIndex].classList.add('active');
-            } else {
-                steps[stepIndex].classList.remove('active');
-            }
+            if (!steps[stepIndex]) return;
+            if (isValid) steps[stepIndex].classList.add('active');
+            else         steps[stepIndex].classList.remove('active');
         }
 
         function updatePasswordStrength(password) {
@@ -878,7 +1159,7 @@
             if (/[^a-zA-Z0-9]/.test(password)) strength++;
 
             const colors = ['bg-red-400', 'bg-orange-400', 'bg-yellow-400', 'bg-green-400'];
-            const texts = ['Weak', 'Fair', 'Good', 'Strong'];
+            const texts  = ['Weak', 'Fair', 'Good', 'Strong'];
 
             strengthBars.forEach((bar, index) => {
                 bar.className = 'h-1 flex-1 rounded ' + (index < strength ? colors[strength - 1] : 'bg-gray-200');
@@ -888,39 +1169,128 @@
             strengthText.className = 'text-xs mt-1 ' + (strength >= 3 ? 'text-green-600' : strength >= 2 ? 'text-yellow-600' : 'text-red-600');
         }
 
+        // Customer validators
+        function validateFirstName() {
+            const valid = firstNameInput.value.trim().length > 0;
+            toggleError(firstNameInput, firstNameError, valid);
+            updateProgress(0, valid);
+            return valid;
+        }
+        function validateLastName() {
+            const valid = lastNameInput.value.trim().length > 0;
+            toggleError(lastNameInput, lastNameError, valid);
+            updateProgress(1, valid);
+            return valid;
+        }
+
+        // Vendor validators
+        function validateCompany() {
+            const valid = companyInput.value.trim().length > 0;
+            toggleError(companyInput, companyError, valid);
+            updateProgress(0, valid);
+            return valid;
+        }
+        function validatePhone() {
+            const valid = PHONE_REGEX.test(phoneInput.value.trim());
+            toggleError(phoneInput, phoneError, valid);
+            return valid;
+        }
+        function validateWebsite() {
+            const valid = WEBSITE_REGEX.test(websiteInput.value.trim());
+            toggleError(websiteInput, websiteError, valid);
+            updateProgress(1, valid);
+            return valid;
+        }
+
+        // Shared validators
+        function validateEmail() {
+            const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value);
+            toggleError(emailInput, emailError, valid);
+            updateProgress(2, valid);
+            return valid;
+        }
+        function validatePassword() {
+            const password = passwordInput.value;
+            const valid = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}$/.test(password);
+            toggleError(passwordInput, passwordError, valid);
+            updatePasswordStrength(password);
+            return valid;
+        }
+        function validateConfirmPassword() {
+            const valid = confirmInput.value === passwordInput.value && passwordInput.value.length > 0;
+            toggleError(confirmInput, confirmError, valid);
+            updateProgress(3, valid);
+            return valid;
+        }
+
         function validateForm() {
-            const firstNameValid = validateFirstName();
-            const lastNameValid = validateLastName();
-            const emailValid = validateEmail();
-            const passwordValid = validatePassword();
+            const emailValid   = validateEmail();
+            const passValid    = validatePassword();
             const confirmValid = validateConfirmPassword();
 
-            const formValid = firstNameValid && lastNameValid && emailValid && passwordValid && confirmValid;
+            let identityValid;
+            if (mode === 'vendor') {
+                const companyValid = validateCompany();
+                const phoneValid   = validatePhone();
+                const websiteValid = validateWebsite();
+                identityValid = companyValid && phoneValid && websiteValid;
+            } else {
+                const firstOk = validateFirstName();
+                const lastOk  = validateLastName();
+                identityValid = firstOk && lastOk;
+            }
 
+            const formValid = emailValid && passValid && confirmValid && identityValid;
             registerBtn.disabled = !formValid;
             registerBtn.classList.toggle('opacity-50', !formValid);
             registerBtn.classList.toggle('cursor-not-allowed', !formValid);
-
             return formValid;
         }
 
-        // Event listeners
-        firstNameInput.addEventListener('input', validateForm);
-        lastNameInput.addEventListener('input', validateForm);
-        emailInput.addEventListener('input', validateForm);
-        passwordInput.addEventListener('input', validateForm);
-        confirmInput.addEventListener('input', validateForm);
+        // Logo upload
+        if (logoInput) {
+            logoInput.addEventListener('change', () => {
+                const file = logoInput.files && logoInput.files[0];
+                if (!file) return;
+                if (file.size > MAX_LOGO_BYTES) {
+                    logoError.classList.remove('hidden');
+                    logoInput.value = '';
+                    return;
+                }
+                logoError.classList.add('hidden');
+                const url = URL.createObjectURL(file);
+                logoPreview.innerHTML = '<img src="' + url + '" alt="Logo preview" class="w-full h-full object-cover"/>';
+                if (logoLabel) logoLabel.textContent = file.name;
+            });
+        }
 
-        // Form submission
-        document.getElementById('kc-register-form-mobile').addEventListener('submit', function(e) {
+        // Listeners
+        [firstNameInput, lastNameInput, emailInput, passwordInput, confirmInput,
+         companyInput, phoneInput, websiteInput]
+        .forEach(input => input && input.addEventListener('input', validateForm));
+
+        // Submit
+        form.addEventListener('submit', function(e) {
+            if (mode === 'vendor') {
+                // Mirror companyName into firstName for Keycloak's built-in validator
+                if (companyInput.value.trim().length > 0) {
+                    vendorFirstMirror.value = companyInput.value.trim();
+                }
+            }
             if (!validateForm()) {
                 e.preventDefault();
                 return;
             }
-
             registerBtn.disabled = true;
             registerBtn.innerHTML = '<span class="material-symbols-outlined animate-spin mr-2">progress_activity</span>Creating account...';
         });
+
+        // Init mode
+        const repopulated = (accountTypeHid.value || '').toLowerCase();
+        const initial = (repopulated === 'vendor' || repopulated === 'customer')
+            ? repopulated
+            : readInitialMode();
+        applyMode(initial);
     }
 
     // Initialize appropriate validation based on screen size
@@ -929,10 +1299,20 @@
 
         if (isDesktop) {
             setupDesktopValidation();
-            document.getElementById('firstName-desktop').focus();
+            const firstDesk = document.getElementById('firstName-desktop');
+            if (firstDesk && firstDesk.offsetParent !== null) firstDesk.focus();
+            else {
+                const companyDesk = document.getElementById('companyName-desktop');
+                if (companyDesk) companyDesk.focus();
+            }
         } else {
             setupMobileValidation();
-            document.getElementById('firstName-mobile').focus();
+            const firstMob = document.getElementById('firstName-mobile');
+            if (firstMob && firstMob.offsetParent !== null) firstMob.focus();
+            else {
+                const companyMob = document.getElementById('companyName-mobile');
+                if (companyMob) companyMob.focus();
+            }
         }
     });
 </script>
