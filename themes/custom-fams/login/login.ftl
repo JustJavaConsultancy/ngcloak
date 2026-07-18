@@ -2,6 +2,7 @@
 <@layout.registrationLayout displayMessage=!messagesPerField.existsError('username','password') displayInfo=realm.password && realm.registrationAllowed && !registrationDisabled??; section>
 <#if section = "header">
     <title>JustJava FAMS | Fixed Asset Management System</title>
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Google Fonts + Material Symbols -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
