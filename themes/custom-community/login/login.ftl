@@ -1,7 +1,7 @@
 <#import "template.ftl" as layout>
 <@layout.registrationLayout displayMessage=!messagesPerField.existsError('username','password') displayInfo=realm.password && realm.registrationAllowed && !registrationDisabled??; section>
 <#if section = "header">
-    <title>Zam Connect - Login</title>
+    <title>Klubknit - Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
     <link rel="stylesheet" as="style" onload="this.rel='stylesheet'"
@@ -361,10 +361,10 @@
                     <path d="M36.7273 44C33.9891 44 31.6043 39.8386 30.3636 33.69C29.123 39.8386 26.7382 44 24 44C21.2618 44 18.877 39.8386 17.6364 33.69C16.3957 39.8386 14.0109 44 11.2727 44C7.25611 44 4 35.0457 4 24C4 12.9543 7.25611 4 11.2727 4C14.0109 4 16.3957 8.16144 17.6364 14.31C18.877 8.16144 21.2618 4 24 4C26.7382 4 29.123 8.16144 30.3636 14.31C31.6043 8.16144 33.9891 4 36.7273 4C40.7439 4 44 12.9543 44 24C44 35.0457 40.7439 44 36.7273 44Z" fill="white"/>
                 </svg>
             </div>
-            <h1 class="text-2xl font-bold">Zam Connect</h1>
+            <h1 class="text-2xl font-bold">Clubknit</h1>
         </div>
         <div class="max-w-md animate-fade-in" style="animation-delay: 0.3s">
-            <h2 class="text-4xl font-bold mb-6">Join our community of professionals</h2>
+            <h2 class="text-4xl font-bold mb-6">Join our club of professionals</h2>
             <p class="text-lg opacity-90 mb-8 comtext">Connect with coaches, expand your network, and accelerate your career growth with our platform.</p>
             <div class="space-y-6">
                 <div class="flex items-center">
@@ -403,7 +403,7 @@
                 </div>
             </div>
             <p class="text-sm opacity-80 comtext">
-                Join thousands of professionals who are already growing their careers with Zam Connect
+                Join thousands of professionals who are already growing their careers with Klubknit
             </p>
         </div>
     </div>
@@ -505,7 +505,7 @@
                     </svg>
                 </div>
             </div>
-            <h1 class="text-4xl font-bold gradient-text mb-2">Zam Connect</h1>
+            <h1 class="text-4xl font-bold gradient-text mb-2">Klubknit</h1>
             <p class="text-gray-600 text-lg">Welcome back</p>
         </div>
     </div>
