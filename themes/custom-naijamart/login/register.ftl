@@ -2,7 +2,7 @@
 <#import "user-profile-commons.ftl" as userProfileCommons>
 <@layout.registrationLayout displayMessage=messagesPerField.exists('global') displayRequiredFields=true; section>
 <#if section = "header">
-    <title>NaijaMart - Sign Up</title>
+    <title>Pinepetosan Marketplace - Sign Up</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
     <link rel="stylesheet" as="style" onload="this.rel='stylesheet'"
@@ -396,7 +396,7 @@
             <div class="w-10 h-10 animate-pulse-slow">
                 <span class="material-symbols-outlined text-4xl text-white">shopping_bag</span>
             </div>
-            <h1 class="text-2xl font-bold">NaijaMart</h1>
+            <h1 class="text-2xl font-bold">Pinepetosan Marketplace</h1>
         </div>
         <div class="max-w-md animate-fade-in" style="animation-delay: 0.3s">
             <h2 class="text-4xl font-bold mb-6">Join Nigeria's Marketplace</h2>
@@ -438,7 +438,7 @@
                 </div>
             </div>
             <p class="text-sm opacity-80 comtext">
-                Join thousands of successful Nigerian entrepreneurs on NaijaMart
+                Join thousands of successful Nigerian entrepreneurs on Pinepetosan Marketplace
             </p>
         </div>
     </div>
@@ -592,7 +592,7 @@
                     <span class="material-symbols-outlined text-6xl text-purple-600">shopping_bag</span>
                 </div>
             </div>
-            <h1 class="text-4xl font-bold gradient-text mb-2">NaijaMart</h1>
+            <h1 class="text-4xl font-bold gradient-text mb-2">Pinepetosan Marketplace</h1>
             <p class="text-gray-600 text-lg">Create your account</p>
         </div>
     </div>
@@ -917,7 +917,7 @@
             modeVendorBtn.setAttribute('aria-selected', String(isVendor));
 
             if (titleEl)    titleEl.textContent    = isVendor ? 'Register your company' : 'Create Account';
-            if (subtitleEl) subtitleEl.textContent = isVendor ? 'Join NaijaMart as a vendor' : "Join Nigeria's marketplace today";
+            if (subtitleEl) subtitleEl.textContent = isVendor ? 'List your business on Pinepetosan Marketplace' : "Join Pinepetosan Marketplace today";
 
             validateFormDesktop();
         }
