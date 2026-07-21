@@ -1,7 +1,7 @@
 <#import "template.ftl" as layout>
 <@layout.registrationLayout displayMessage=!messagesPerField.existsError('username','password') displayInfo=realm.password && realm.registrationAllowed && !registrationDisabled??; section>
 <#if section = "header">
-    <title>NaijaMart - Login</title>
+    <title>Pinepetosan Marketplace - Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
     <link rel="stylesheet" as="style" onload="this.rel='stylesheet'"
@@ -361,7 +361,7 @@
             <div class="w-10 h-10 animate-pulse-slow">
                 <span class="material-symbols-outlined text-4xl text-white">shopping_bag</span>
             </div>
-            <h1 class="text-2xl font-bold">NaijaMart</h1>
+            <h1 class="text-2xl font-bold">Pinepetosan Marketplace</h1>
         </div>
         <div class="max-w-md animate-fade-in" style="animation-delay: 0.3s">
             <h2 class="text-4xl font-bold mb-6">Shop Everything. Sell Anything.</h2>
@@ -403,7 +403,7 @@
                 </div>
             </div>
             <p class="text-sm opacity-80 comtext">
-                Join thousands of Nigerians who trust NaijaMart for their shopping needs
+                Join thousands of Nigerians who trust Pinepetosan Marketplace for their shopping needs
             </p>
         </div>
     </div>
@@ -413,7 +413,7 @@
         <div class="w-full max-w-md">
             <div class="glass-effect rounded-2xl shadow-xl p-8 animate-fade-in" style="animation-delay: 0.2s">
                 <h2 class="text-2xl font-bold text-gray-800 mb-2">Welcome back</h2>
-                <p class="text-gray-600 mb-6 text-sm">Sign in to your NaijaMart account</p>
+                <p class="text-gray-600 mb-6 text-sm">Sign in to your Pinepetosan Marketplace account</p>
 
                 <form id="kc-form-login-desktop" class="space-y-5" action="${url.loginAction}" method="post">
                     <!-- Username/Email -->
@@ -503,7 +503,7 @@
                     <span class="material-symbols-outlined text-6xl text-purple-600">shopping_bag</span>
                 </div>
             </div>
-            <h1 class="text-4xl font-bold gradient-text mb-2">NaijaMart</h1>
+            <h1 class="text-4xl font-bold gradient-text mb-2">Pinepetosan Marketplace</h1>
             <p class="text-gray-600 text-lg">Welcome back</p>
         </div>
     </div>
