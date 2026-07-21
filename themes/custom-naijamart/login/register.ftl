@@ -460,7 +460,7 @@
                             role="tab" aria-selected="false">Vendor</button>
                 </div>
 
-                <form id="kc-register-form-desktop" action="${url.registrationAction}" method="post" enctype="multipart/form-data" class="space-y-5">
+                <form id="kc-register-form-desktop" action="${url.registrationAction}" method="post" class="space-y-5">
 
                     <!-- Account type marker (persisted as Keycloak user attribute) -->
                     <input type="hidden" id="accountType-desktop" name="user.attributes.accountType" value="customer"/>
@@ -495,20 +495,13 @@
                             <p id="companyName-error-desktop" class="text-red-500 text-xs mt-1 general-error hidden">Enter your company name.</p>
                         </div>
 
-                        <!-- Company Logo -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Company logo</label>
-                            <label for="companyLogo-desktop" class="flex items-center gap-3 p-3 border-2 border-dashed border-gray-200 rounded-lg cursor-pointer hover:border-purple-500 hover:bg-purple-50/40 transition-all">
-                                <div id="logoPreview-desktop" class="w-14 h-14 rounded-lg bg-gray-100 flex items-center justify-center overflow-hidden flex-shrink-0">
-                                    <span class="material-symbols-outlined text-gray-400">image</span>
-                                </div>
-                                <div class="text-sm">
-                                    <span id="logoLabel-desktop" class="font-medium text-gray-700 block">Click to upload logo</span>
-                                    <span class="text-xs text-gray-500">PNG, JPG or WebP · square recommended · max 2 MB</span>
-                                </div>
-                            </label>
-                            <input type="file" id="companyLogo-desktop" name="companyLogo" accept="image/png,image/jpeg,image/webp" class="hidden"/>
-                            <p id="logo-error-desktop" class="text-red-500 text-xs mt-1 general-error hidden">File too large. Maximum size is 2 MB.</p>
+                        <!-- Company Logo notice (upload happens after signup) -->
+                        <div class="flex items-start gap-3 p-3 rounded-lg bg-purple-50/60 border border-purple-100">
+                            <span class="material-symbols-outlined text-purple-600 mt-0.5">image</span>
+                            <div class="text-sm text-gray-700">
+                                <span class="font-medium block">Company logo</span>
+                                <span class="text-xs text-gray-500">You'll upload your logo right after creating your account.</span>
+                            </div>
                         </div>
 
                         <!-- Phone -->
@@ -629,7 +622,7 @@
                             role="tab" aria-selected="false">Vendor</button>
                 </div>
 
-                <form id="kc-register-form-mobile" action="${url.registrationAction}" method="post" enctype="multipart/form-data" class="space-y-6">
+                <form id="kc-register-form-mobile" action="${url.registrationAction}" method="post" class="space-y-6">
 
                     <!-- Account type marker -->
                     <input type="hidden" id="accountType-mobile" name="user.attributes.accountType" value="customer"/>
@@ -668,20 +661,13 @@
                             <p id="companyName-error-mobile" class="text-red-600 text-sm mt-2 font-medium general-error hidden">Enter your company name.</p>
                         </div>
 
-                        <!-- Company Logo -->
-                        <div class="mobile-slide-down" style="animation-delay: 0.35s">
-                            <label class="block text-sm font-semibold text-gray-700 mb-3">Company logo</label>
-                            <label for="companyLogo-mobile" class="flex items-center gap-3 p-4 border-2 border-dashed border-gray-200 rounded-xl cursor-pointer hover:border-purple-500 hover:bg-purple-50/40 transition-all">
-                                <div id="logoPreview-mobile" class="w-16 h-16 rounded-lg bg-gray-100 flex items-center justify-center overflow-hidden flex-shrink-0">
-                                    <span class="material-symbols-outlined text-gray-400">image</span>
-                                </div>
-                                <div class="text-sm">
-                                    <span id="logoLabel-mobile" class="font-medium text-gray-700 block">Tap to upload logo</span>
-                                    <span class="text-xs text-gray-500">PNG, JPG or WebP · max 2 MB</span>
-                                </div>
-                            </label>
-                            <input type="file" id="companyLogo-mobile" name="companyLogo" accept="image/png,image/jpeg,image/webp" class="hidden"/>
-                            <p id="logo-error-mobile" class="text-red-600 text-sm mt-2 font-medium general-error hidden">File too large. Maximum size is 2 MB.</p>
+                        <!-- Company Logo notice (upload happens after signup) -->
+                        <div class="mobile-slide-down flex items-start gap-3 p-4 rounded-xl bg-purple-50/60 border border-purple-100" style="animation-delay: 0.35s">
+                            <span class="material-symbols-outlined text-purple-600 mt-0.5">image</span>
+                            <div class="text-sm text-gray-700">
+                                <span class="font-semibold block">Company logo</span>
+                                <span class="text-xs text-gray-500">You'll upload your logo right after creating your account.</span>
+                            </div>
                         </div>
 
                         <!-- Phone -->
@@ -829,12 +815,32 @@
     // ================================================================
     const PHONE_REGEX   = /^(\+234\d{10}|0\d{10})$/;
     const WEBSITE_REGEX = /^https?:\/\/[^\s.]+\.[^\s]{2,}$/;
-    const MAX_LOGO_BYTES = 2 * 1024 * 1024; // 2 MB
 
     function readInitialMode() {
         const params = new URLSearchParams(window.location.search);
-        const fromUrl = (params.get('account_type') || '').toLowerCase();
-        if (fromUrl === 'vendor' || fromUrl === 'customer') return fromUrl;
+        const fromQuery = (params.get('account_type') || '').toLowerCase();
+        if (fromQuery === 'vendor' || fromQuery === 'customer') {
+            try { sessionStorage.setItem('nm_account_type', fromQuery); } catch (e) {}
+            return fromQuery;
+        }
+
+        // Keycloak strips unknown query params on internal redirects,
+        // but the browser preserves the URL fragment across 30x redirects.
+        const rawHash = (window.location.hash || '').replace(/^#/, '');
+        const hashParams = new URLSearchParams(rawHash);
+        const fromHash = (hashParams.get('account_type') || '').toLowerCase();
+        if (fromHash === 'vendor' || fromHash === 'customer') {
+            try { sessionStorage.setItem('nm_account_type', fromHash); } catch (e) {}
+            return fromHash;
+        }
+
+        // Keycloak may 302 again (e.g. after form re-post) and drop the hash too.
+        // Fall back to a value we stashed earlier in this browser session.
+        try {
+            const cached = (sessionStorage.getItem('nm_account_type') || '').toLowerCase();
+            if (cached === 'vendor' || cached === 'customer') return cached;
+        } catch (e) {}
+
         return 'customer';
     }
 
@@ -874,13 +880,16 @@
         const phoneError      = document.getElementById('phone-error-desktop');
         const websiteInput    = document.getElementById('websiteUrl-desktop');
         const websiteError    = document.getElementById('website-error-desktop');
-        const logoInput       = document.getElementById('companyLogo-desktop');
-        const logoError       = document.getElementById('logo-error-desktop');
-        const logoPreview     = document.getElementById('logoPreview-desktop');
-        const logoLabel       = document.getElementById('logoLabel-desktop');
         const vendorFirstMirror = document.getElementById('vendorFirstName-desktop');
 
         let mode = 'customer';
+
+        function setDisabled(container, disabled) {
+            if (!container) return;
+            container.querySelectorAll('input, select, textarea').forEach(el => {
+                el.disabled = disabled;
+            });
+        }
 
         function applyMode(newMode) {
             mode = newMode;
@@ -889,6 +898,10 @@
             const isVendor = newMode === 'vendor';
             customerFields.style.display = isVendor ? 'none' : '';
             vendorFields.style.display   = isVendor ? '' : 'none';
+
+            // Disabled inputs are NOT submitted with the form — prevents duplicate firstName/lastName
+            setDisabled(customerFields, isVendor);
+            setDisabled(vendorFields, !isVendor);
 
             // Toggle button styling
             modeCustomerBtn.classList.toggle('bg-white', !isVendor);
@@ -959,20 +972,6 @@
             const valid = WEBSITE_REGEX.test(websiteInput.value.trim());
             websiteError.classList.toggle('hidden', valid || websiteInput.value === '');
         });
-        logoInput.addEventListener('change', () => {
-            const file = logoInput.files && logoInput.files[0];
-            if (!file) return;
-            if (file.size > MAX_LOGO_BYTES) {
-                logoError.classList.remove('hidden');
-                logoInput.value = '';
-                return;
-            }
-            logoError.classList.add('hidden');
-            const url = URL.createObjectURL(file);
-            logoPreview.innerHTML = '<img src="' + url + '" alt="Logo preview" class="w-full h-full object-cover"/>';
-            if (logoLabel) logoLabel.textContent = file.name;
-        });
-
         function validateFormDesktop() {
             const emailValid    = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value);
             const passwordValid = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}$/.test(passwordInput.value);
@@ -1071,10 +1070,6 @@
         const phoneError      = document.getElementById('phone-error-mobile');
         const websiteInput    = document.getElementById('websiteUrl-mobile');
         const websiteError    = document.getElementById('website-error-mobile');
-        const logoInput       = document.getElementById('companyLogo-mobile');
-        const logoError       = document.getElementById('logo-error-mobile');
-        const logoPreview     = document.getElementById('logoPreview-mobile');
-        const logoLabel       = document.getElementById('logoLabel-mobile');
         const vendorFirstMirror = document.getElementById('vendorFirstName-mobile');
 
         const steps = [
@@ -1086,6 +1081,13 @@
 
         let mode = 'customer';
 
+        function setDisabled(container, disabled) {
+            if (!container) return;
+            container.querySelectorAll('input, select, textarea').forEach(el => {
+                el.disabled = disabled;
+            });
+        }
+
         function applyMode(newMode) {
             mode = newMode;
             accountTypeHid.value = newMode;
@@ -1093,6 +1095,9 @@
             const isVendor = newMode === 'vendor';
             customerFields.style.display = isVendor ? 'none' : '';
             vendorFields.style.display   = isVendor ? '' : 'none';
+
+            setDisabled(customerFields, isVendor);
+            setDisabled(vendorFields, !isVendor);
 
             modeCustomerBtn.classList.toggle('bg-white', !isVendor);
             modeCustomerBtn.classList.toggle('text-purple-600', !isVendor);
@@ -1245,23 +1250,6 @@
             registerBtn.classList.toggle('opacity-50', !formValid);
             registerBtn.classList.toggle('cursor-not-allowed', !formValid);
             return formValid;
-        }
-
-        // Logo upload
-        if (logoInput) {
-            logoInput.addEventListener('change', () => {
-                const file = logoInput.files && logoInput.files[0];
-                if (!file) return;
-                if (file.size > MAX_LOGO_BYTES) {
-                    logoError.classList.remove('hidden');
-                    logoInput.value = '';
-                    return;
-                }
-                logoError.classList.add('hidden');
-                const url = URL.createObjectURL(file);
-                logoPreview.innerHTML = '<img src="' + url + '" alt="Logo preview" class="w-full h-full object-cover"/>';
-                if (logoLabel) logoLabel.textContent = file.name;
-            });
         }
 
         // Listeners
