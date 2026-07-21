@@ -818,8 +818,29 @@
 
     function readInitialMode() {
         const params = new URLSearchParams(window.location.search);
-        const fromUrl = (params.get('account_type') || '').toLowerCase();
-        if (fromUrl === 'vendor' || fromUrl === 'customer') return fromUrl;
+        const fromQuery = (params.get('account_type') || '').toLowerCase();
+        if (fromQuery === 'vendor' || fromQuery === 'customer') {
+            try { sessionStorage.setItem('nm_account_type', fromQuery); } catch (e) {}
+            return fromQuery;
+        }
+
+        // Keycloak strips unknown query params on internal redirects,
+        // but the browser preserves the URL fragment across 30x redirects.
+        const rawHash = (window.location.hash || '').replace(/^#/, '');
+        const hashParams = new URLSearchParams(rawHash);
+        const fromHash = (hashParams.get('account_type') || '').toLowerCase();
+        if (fromHash === 'vendor' || fromHash === 'customer') {
+            try { sessionStorage.setItem('nm_account_type', fromHash); } catch (e) {}
+            return fromHash;
+        }
+
+        // Keycloak may 302 again (e.g. after form re-post) and drop the hash too.
+        // Fall back to a value we stashed earlier in this browser session.
+        try {
+            const cached = (sessionStorage.getItem('nm_account_type') || '').toLowerCase();
+            if (cached === 'vendor' || cached === 'customer') return cached;
+        } catch (e) {}
+
         return 'customer';
     }
 
