@@ -69,6 +69,14 @@
         .strength-good   { background: #3b82f6; }
         .strength-strong { background: #10b981; }
 
+        .field-error { border-color: #ef4444 !important; box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important; }
+        .field-ok    { border-color: #10b981 !important; box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15) !important; }
+        .pmk-match-hint { display: none; align-items: center; gap: 0.35rem; font-size: 0.8125rem; margin-top: 0.5rem; }
+        .pmk-match-hint.show { display: inline-flex; }
+        .pmk-match-hint.err { color: #dc2626; }
+        .pmk-match-hint.ok  { color: #059669; }
+        .pmk-btn-disabled { opacity: 0.55; pointer-events: none; filter: grayscale(0.3); }
+
         .mobile-touch-target { min-height: 48px; min-width: 48px; }
 
         @media (max-width: 1023px) {
@@ -212,6 +220,10 @@
                                 <span class="material-symbols-outlined text-gray-400 hover:text-gray-600">visibility</span>
                             </button>
                         </div>
+                        <div id="match-hint-desktop" class="pmk-match-hint">
+                            <span class="material-symbols-outlined" style="font-size: 1rem;"></span>
+                            <span class="match-text"></span>
+                        </div>
                         <#if messagesPerField.existsError('password-confirm')>
                             <p class="text-red-600 text-sm mt-1">${kcSanitize(messagesPerField.getFirstError('password-confirm'))?no_esc}</p>
                         </#if>
@@ -309,6 +321,10 @@
                                 <span class="material-symbols-outlined text-gray-400 mobile-icon">visibility</span>
                             </button>
                         </div>
+                        <div id="match-hint-mobile" class="pmk-match-hint">
+                            <span class="material-symbols-outlined" style="font-size: 1rem;"></span>
+                            <span class="match-text"></span>
+                        </div>
                         <#if messagesPerField.existsError('password-confirm')>
                             <p class="text-red-600 text-sm mt-2 font-medium">${kcSanitize(messagesPerField.getFirstError('password-confirm'))?no_esc}</p>
                         </#if>
@@ -385,16 +401,61 @@
         var lbl = scope.querySelector("[id^='strength-label-']");
         if (lbl) lbl.textContent = labels[score];
     }
+    function checkMatch(variant) {
+        var pwd     = document.getElementById("password-new-" + variant);
+        var confirm = document.getElementById("password-confirm-" + variant);
+        var hint    = document.getElementById("match-hint-" + variant);
+        var submit  = document.getElementById("kc-submit-" + variant);
+        if (!pwd || !confirm || !hint || !submit) return;
+        var icon = hint.querySelector(".material-symbols-outlined");
+        var text = hint.querySelector(".match-text");
+
+        confirm.classList.remove("field-error", "field-ok");
+        hint.classList.remove("show", "err", "ok");
+        submit.classList.remove("pmk-btn-disabled");
+        submit.removeAttribute("aria-disabled");
+
+        if (confirm.value.length === 0) return;
+
+        if (pwd.value === confirm.value) {
+            confirm.classList.add("field-ok");
+            hint.classList.add("show", "ok");
+            icon.textContent = "check_circle";
+            text.textContent = "Passwords match";
+        } else {
+            confirm.classList.add("field-error");
+            hint.classList.add("show", "err");
+            icon.textContent = "error";
+            text.textContent = "Passwords don't match";
+            submit.classList.add("pmk-btn-disabled");
+            submit.setAttribute("aria-disabled", "true");
+        }
+    }
+
     ["desktop", "mobile"].forEach(function (variant) {
-        var input = document.getElementById("password-new-" + variant);
-        var form  = document.getElementById("kc-passwd-update-form-" + variant);
+        var input   = document.getElementById("password-new-" + variant);
+        var confirm = document.getElementById("password-confirm-" + variant);
+        var form    = document.getElementById("kc-passwd-update-form-" + variant);
         if (input && form) {
-            input.addEventListener("input", function () { paintStrength(form, scorePassword(input.value)); });
+            input.addEventListener("input", function () {
+                paintStrength(form, scorePassword(input.value));
+                checkMatch(variant);
+            });
+        }
+        if (confirm) {
+            confirm.addEventListener("input", function () { checkMatch(variant); });
+            confirm.addEventListener("blur",  function () { checkMatch(variant); });
         }
         var submitBtn = document.getElementById("kc-submit-" + variant);
         if (form && submitBtn) {
             form.addEventListener("submit", function (e) {
                 if (e.submitter && e.submitter.name === "cancel-aia") return;
+                if (input && confirm && input.value !== confirm.value) {
+                    e.preventDefault();
+                    checkMatch(variant);
+                    confirm.focus();
+                    return;
+                }
                 submitBtn.disabled = true;
                 submitBtn.innerHTML = '<span class="material-symbols-outlined animate-spin mr-2">progress_activity</span>Setting password...';
             });
