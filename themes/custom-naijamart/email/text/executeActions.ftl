@@ -1,5 +1,5 @@
-<#assign inviterName = (user.attributes.invitedBy?first)!"" />
-<#assign inviterCompany = (user.attributes.invitedByCompany?first)!"" />
+<#assign inviterName = (user.attributes.invitedBy)!"" />
+<#assign inviterCompany = (user.attributes.invitedByCompany)!"" />
 Hi ${user.firstName!"there"},
 
 <#if inviterName?has_content && inviterCompany?has_content>
