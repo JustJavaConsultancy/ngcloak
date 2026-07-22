@@ -1,7 +1,7 @@
 <#outputformat "plainText">
 <#assign requiredActionsText><#if requiredActions??><#list requiredActions><#items as reqActionItem>${msg("requiredAction.${reqActionItem}")}<#sep>, </#items></#list><#else>${msg("executeActions")}</#if></#assign>
-<#assign inviterName = (user.attributes.invitedBy)!"" />
-<#assign inviterCompany = (user.attributes.invitedByCompany)!"" />
+<#assign inviterName = (user.attributes.invitedBy?first)!"" />
+<#assign inviterCompany = (user.attributes.invitedByCompany?first)!"" />
 </#outputformat>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
