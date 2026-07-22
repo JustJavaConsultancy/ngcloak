@@ -18,122 +18,229 @@
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <style>
+        html, body { margin: 0; padding: 0; background: transparent; }
+
+        /* Break out of Keycloak's constraining card and cover the viewport. */
         .login-pf-page-header,
         .login-pf-header,
         h1#kc-page-title,
         .login-pf-signup { display: none !important; }
-        .login-pf-page { padding-top: 0; border: none; }
-        .login-pf-page .card-pf { padding: 0; margin-bottom: 0; border: none; max-width: none; }
-        #kc-content-wrapper { margin-top: 0; }
+        .login-pf, .login-pf-page, .login-pf-body {
+            background: transparent !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            border: none !important;
+            min-height: 0 !important;
+        }
+        .login-pf-page .card-pf,
+        #kc-content, #kc-content-wrapper {
+            padding: 0 !important;
+            margin: 0 !important;
+            border: none !important;
+            max-width: none !important;
+            width: 100% !important;
+            background: transparent !important;
+            box-shadow: none !important;
+        }
+
         .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-5px); } 100% { transform: translateY(0px); } }
-        @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-        @keyframes pop { 0% { transform: scale(0.6); opacity: 0; } 60% { transform: scale(1.15); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
-        @keyframes checkmark { 0% { stroke-dashoffset: 48; } 100% { stroke-dashoffset: 0; } }
+        .pmk-info-shell {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #faf5ff 0%, #eef2ff 100%);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow: hidden;
+        }
+        .pmk-orb {
+            position: absolute;
+            border-radius: 9999px;
+            opacity: 0.25;
+            filter: blur(4px);
+            pointer-events: none;
+        }
+        .pmk-orb-1 { top: -80px; left: -80px; width: 260px; height: 260px; background: #e9d5ff; animation: pmk-float 6s ease-in-out infinite; }
+        .pmk-orb-2 { top: 25%; right: -80px; width: 220px; height: 220px; background: #c7d2fe; animation: pmk-float 7s ease-in-out infinite 1s; }
+        .pmk-orb-3 { bottom: 40px; left: 15%; width: 180px; height: 180px; background: #ddd6fe; animation: pmk-float 8s ease-in-out infinite 2s; }
+        .pmk-orb-4 { bottom: 0; right: 20%; width: 140px; height: 140px; background: #d8b4fe; animation: pmk-float 9s ease-in-out infinite 3s; }
+        @keyframes pmk-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
 
-        .animate-fade-in { animation: fadeIn 0.6s ease-out forwards; }
-        .animate-float { animation: float 4s infinite ease-in-out; }
-        .animate-pop { animation: pop 0.5s cubic-bezier(.34,1.56,.64,1) forwards; }
-        .animate-gradient {
-            background: linear-gradient(-45deg, #630ed4, #7c3aed, #630ed4);
+        .pmk-card {
+            position: relative;
+            width: 100%;
+            max-width: 28rem;
+            padding: 2.25rem;
+            border-radius: 1.25rem;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 20px 60px -20px rgba(76, 29, 149, 0.25);
+            text-align: center;
+            animation: pmk-fade 0.5s ease-out forwards;
+        }
+        @keyframes pmk-fade { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+        .pmk-icon-wrap {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 5rem;
+            height: 5rem;
+            border-radius: 9999px;
+            background: linear-gradient(135deg, #f3e8ff, #e0e7ff);
+            margin-bottom: 1.5rem;
+            animation: pmk-pop 0.55s cubic-bezier(.34,1.56,.64,1) forwards;
+        }
+        @keyframes pmk-pop { 0% { transform: scale(0.6); opacity: 0; } 60% { transform: scale(1.15); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
+        .pmk-check-path { stroke-dasharray: 48; stroke-dashoffset: 48; animation: pmk-check 0.5s ease-out 0.3s forwards; }
+        @keyframes pmk-check { to { stroke-dashoffset: 0; } }
+
+        .pmk-title { font-size: 1.5rem; font-weight: 700; color: #1f2937; margin: 0 0 0.5rem 0; letter-spacing: -0.01em; }
+        .pmk-sub { color: #6b7280; font-size: 0.9375rem; margin: 0 0 1.5rem 0; line-height: 1.5; }
+        .pmk-hint { color: #6b7280; font-size: 0.875rem; margin: 0 0 1rem 0; }
+
+        .pmk-progress-track {
+            height: 4px;
+            background: rgba(124, 58, 237, 0.15);
+            border-radius: 9999px;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+        .pmk-progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #7c3aed, #a855f7);
+            border-radius: 9999px;
+            animation: pmk-fill 1.8s ease-out forwards;
+        }
+        @keyframes pmk-fill { to { width: 100%; } }
+
+        .pmk-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border-radius: 0.75rem;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9375rem;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            background: linear-gradient(-45deg, #7c3aed, #a855f7, #7c3aed);
             background-size: 400% 400%;
-            animation: gradientShift 8s ease infinite;
+            animation: pmk-gradient 6s ease infinite;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
         }
-        .check-path {
-            stroke-dasharray: 48;
-            stroke-dashoffset: 48;
-            animation: checkmark 0.5s ease-out 0.3s forwards;
-        }
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-        }
-        .gradient-text {
-            background: linear-gradient(90deg, #630ed4, #7c3aed);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .btn-transition { transition: all 0.2s ease; }
-        .btn-transition:hover { transform: translateY(-2px); box-shadow: 0 4px 6px -1px rgba(0,0,0,.1), 0 2px 4px -1px rgba(0,0,0,.06); }
+        .pmk-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px -6px rgba(124, 58, 237, 0.5); }
+        .pmk-btn:active { transform: translateY(0); }
+        @keyframes pmk-gradient { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
 
-        .progress-track { height: 3px; background: rgba(99, 14, 212, 0.15); border-radius: 9999px; overflow: hidden; }
-        .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #630ed4, #7c3aed); border-radius: 9999px; animation: fillBar 1.8s ease-out forwards; }
-        @keyframes fillBar { from { width: 0%; } to { width: 100%; } }
+        .pmk-footer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            margin-top: 1.75rem;
+            color: #9ca3af;
+            font-size: 0.75rem;
+        }
+
+        .pmk-actions-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin: 0 0 1.5rem 0;
+            padding: 0.875rem;
+            background: rgba(124, 58, 237, 0.06);
+            border-radius: 0.75rem;
+            border: 1px solid rgba(124, 58, 237, 0.12);
+        }
+        .pmk-action-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8125rem;
+            color: #4b5563;
+        }
+        .pmk-action-item .material-symbols-outlined { font-size: 1rem; color: #7c3aed; }
+
+        @media (max-width: 480px) {
+            .pmk-card { padding: 1.75rem 1.5rem; }
+            .pmk-title { font-size: 1.25rem; }
+        }
     </style>
 <#elseif section = "form">
-<body class="bg-gradient-to-br from-purple-50 to-indigo-50 min-h-screen flex items-center justify-center p-6"
-      style="font-family: 'Plus Jakarta Sans', sans-serif">
 
-<div class="fixed inset-0 overflow-hidden z-0 pointer-events-none">
-    <div class="absolute -top-20 -left-20 w-72 h-72 bg-purple-200 rounded-full opacity-20 animate-float"></div>
-    <div class="absolute top-1/4 -right-20 w-64 h-64 bg-indigo-200 rounded-full opacity-20 animate-float" style="animation-delay: 1s"></div>
-    <div class="absolute bottom-20 left-1/4 w-56 h-56 bg-violet-200 rounded-full opacity-20 animate-float" style="animation-delay: 2s"></div>
-</div>
+<div class="pmk-info-shell">
+    <div class="pmk-orb pmk-orb-1"></div>
+    <div class="pmk-orb pmk-orb-2"></div>
+    <div class="pmk-orb pmk-orb-3"></div>
+    <div class="pmk-orb pmk-orb-4"></div>
 
-<div class="relative z-10 w-full max-w-md">
-    <div class="glass-effect rounded-2xl shadow-xl p-8 text-center animate-fade-in">
-        <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-purple-100 to-indigo-100 mb-6 animate-pop">
+    <div class="pmk-card">
+        <div class="pmk-icon-wrap">
             <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 24 24" fill="none"
                  stroke="#7c3aed" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                <path class="check-path" d="M4 12.5l5 5L20 6"/>
+                <path class="pmk-check-path" d="M4 12.5l5 5L20 6"/>
             </svg>
         </div>
 
-        <h1 class="text-2xl font-bold text-gray-800 mb-2">
-            <#if messageHeader??>
-                ${messageHeader}
-            <#else>
-                ${message.summary?no_esc}
-            </#if>
+        <h1 class="pmk-title">
+            <#if messageHeader??>${messageHeader}<#else>${message.summary?no_esc}</#if>
         </h1>
 
         <#if messageHeader?? && message?? && message.summary??>
-            <p class="text-gray-600 mb-6 text-sm">${message.summary?no_esc}</p>
-        <#elseif !messageHeader?? && message?has_content>
-            <p class="sr-only">${message.summary?no_esc}</p>
+            <p class="pmk-sub">${message.summary?no_esc}</p>
         </#if>
 
         <#if requiredActions??>
-            <p class="text-gray-600 mb-6 text-sm">
-                <#list requiredActions>Next: <#items as reqActionItem>${msg("requiredAction.${reqActionItem}")}<#sep>, </#items></#list>
-            </p>
+            <div class="pmk-actions-list">
+                <#list requiredActions as reqActionItem>
+                    <div class="pmk-action-item">
+                        <span class="material-symbols-outlined">
+                            <#if reqActionItem == "UPDATE_PASSWORD">lock_reset<#elseif reqActionItem == "VERIFY_EMAIL">mark_email_read<#elseif reqActionItem == "UPDATE_PROFILE">person<#elseif reqActionItem == "CONFIGURE_TOTP">phonelink_lock<#else>task_alt</#if>
+                        </span>
+                        <span>${msg("requiredAction.${reqActionItem}")}</span>
+                    </div>
+                </#list>
+            </div>
         </#if>
 
         <#if pageRedirectUri?has_content>
-            <p class="text-gray-500 text-sm mb-4">Signing you in and redirecting to your account…</p>
-            <div class="progress-track mb-6"><div class="progress-fill"></div></div>
-            <a href="${pageRedirectUri}" id="continue-link"
-               class="animate-gradient inline-flex items-center justify-center gap-2 w-full py-3 px-4 rounded-lg text-white font-medium btn-transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+            <p class="pmk-hint">Signing you in and redirecting to your account…</p>
+            <div class="pmk-progress-track"><div class="pmk-progress-fill"></div></div>
+            <a href="${pageRedirectUri}" id="pmk-continue" class="pmk-btn">
                 <span class="material-symbols-outlined">arrow_forward</span>
                 Continue now
             </a>
         <#elseif skipLink??>
-            <#-- No auto-redirect (linked-to page unknown) — keep message visible. -->
         <#elseif actionUri?has_content>
-            <p class="text-gray-500 text-sm mb-4">Taking you to the next step…</p>
-            <div class="progress-track mb-6"><div class="progress-fill"></div></div>
-            <a href="${actionUri}" id="continue-link"
-               class="animate-gradient inline-flex items-center justify-center gap-2 w-full py-3 px-4 rounded-lg text-white font-medium btn-transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+            <p class="pmk-hint">Taking you to the next step…</p>
+            <div class="pmk-progress-track"><div class="pmk-progress-fill"></div></div>
+            <a href="${actionUri}" id="pmk-continue" class="pmk-btn">
                 <span class="material-symbols-outlined">arrow_forward</span>
                 Continue
             </a>
         <#elseif (client.baseUrl)?has_content>
-            <p class="text-gray-500 text-sm mb-4">Redirecting you to Pinepetosan Marketplace…</p>
-            <div class="progress-track mb-6"><div class="progress-fill"></div></div>
-            <a href="${client.baseUrl}" id="continue-link"
-               class="animate-gradient inline-flex items-center justify-center gap-2 w-full py-3 px-4 rounded-lg text-white font-medium btn-transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+            <p class="pmk-hint">Redirecting you to Pinepetosan Marketplace…</p>
+            <div class="pmk-progress-track"><div class="pmk-progress-fill"></div></div>
+            <a href="${client.baseUrl}" id="pmk-continue" class="pmk-btn">
                 <span class="material-symbols-outlined">storefront</span>
                 Continue to marketplace
             </a>
         </#if>
 
-        <div class="flex items-center justify-center gap-2 mt-8 text-xs text-gray-500">
-            <span class="material-symbols-outlined text-sm">shield_lock</span>
+        <div class="pmk-footer">
+            <span class="material-symbols-outlined" style="font-size: 0.875rem;">shield_lock</span>
             <span>Pinepetosan Marketplace &middot; Secure authentication</span>
         </div>
     </div>
@@ -141,11 +248,9 @@
 
 <script>
     (function () {
-        var link = document.getElementById("continue-link");
+        var link = document.getElementById("pmk-continue");
         if (!link) return;
-        setTimeout(function () {
-            window.location.href = link.getAttribute("href");
-        }, 1200);
+        setTimeout(function () { window.location.href = link.getAttribute("href"); }, 1200);
     })();
 </script>
 
