@@ -3,13 +3,6 @@
 <#if section = "header">
     <title>Pinepetosan Marketplace</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <#if pageRedirectUri?has_content>
-        <meta http-equiv="refresh" content="1;url=${pageRedirectUri}">
-    <#elseif actionUri?has_content>
-        <meta http-equiv="refresh" content="1;url=${actionUri}">
-    <#elseif (client.baseUrl)?has_content>
-        <meta http-equiv="refresh" content="2;url=${client.baseUrl}">
-    </#if>
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
     <link rel="stylesheet" as="style" onload="this.rel='stylesheet'"
           href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"/>
@@ -20,7 +13,6 @@
     <style>
         html, body { margin: 0; padding: 0; background: transparent; }
 
-        /* Break out of Keycloak's constraining card and cover the viewport. */
         .login-pf-page-header,
         .login-pf-header,
         h1#kc-page-title,
@@ -55,7 +47,7 @@
             padding: 1.5rem;
             background: linear-gradient(135deg, #faf5ff 0%, #eef2ff 100%);
             font-family: 'Plus Jakarta Sans', sans-serif;
-            overflow: hidden;
+            overflow: auto;
         }
         .pmk-orb {
             position: absolute;
@@ -73,10 +65,10 @@
         .pmk-card {
             position: relative;
             width: 100%;
-            max-width: 28rem;
+            max-width: 30rem;
             padding: 2.25rem;
             border-radius: 1.25rem;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.92);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.6);
@@ -102,24 +94,40 @@
         @keyframes pmk-check { to { stroke-dashoffset: 0; } }
 
         .pmk-title { font-size: 1.5rem; font-weight: 700; color: #1f2937; margin: 0 0 0.5rem 0; letter-spacing: -0.01em; }
-        .pmk-sub { color: #6b7280; font-size: 0.9375rem; margin: 0 0 1.5rem 0; line-height: 1.5; }
-        .pmk-hint { color: #6b7280; font-size: 0.875rem; margin: 0 0 1rem 0; }
+        .pmk-sub   { color: #6b7280; font-size: 0.9375rem; margin: 0 0 1.5rem 0; line-height: 1.55; }
+        .pmk-hint  { color: #6b7280; font-size: 0.875rem; margin: 0 0 1rem 0; }
 
-        .pmk-progress-track {
-            height: 4px;
-            background: rgba(124, 58, 237, 0.15);
-            border-radius: 9999px;
-            overflow: hidden;
-            margin-bottom: 1.5rem;
+        .pmk-creds-box {
+            text-align: left;
+            padding: 1rem 1.125rem;
+            border-radius: 0.875rem;
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.06), rgba(99, 102, 241, 0.05));
+            border: 1px solid rgba(124, 58, 237, 0.15);
+            margin: 0 0 1.5rem 0;
         }
-        .pmk-progress-fill {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, #7c3aed, #a855f7);
-            border-radius: 9999px;
-            animation: pmk-fill 1.8s ease-out forwards;
+        .pmk-creds-heading {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            font-size: 0.8125rem;
+            color: #7c3aed;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.75rem;
         }
-        @keyframes pmk-fill { to { width: 100%; } }
+        .pmk-creds-heading .material-symbols-outlined { font-size: 1rem; }
+        .pmk-creds-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.625rem;
+            padding: 0.375rem 0;
+            color: #374151;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+        .pmk-creds-row .material-symbols-outlined { font-size: 1.125rem; color: #7c3aed; margin-top: 0.0625rem; }
+        .pmk-creds-row strong { color: #111827; font-weight: 600; }
 
         .pmk-btn {
             display: inline-flex;
@@ -127,11 +135,11 @@
             justify-content: center;
             gap: 0.5rem;
             width: 100%;
-            padding: 0.875rem 1rem;
+            padding: 0.9375rem 1rem;
             border-radius: 0.75rem;
             color: white;
             font-weight: 600;
-            font-size: 0.9375rem;
+            font-size: 1rem;
             text-decoration: none;
             border: none;
             cursor: pointer;
@@ -180,6 +188,12 @@
     </style>
 <#elseif section = "form">
 
+<#-- Detect the "password/account updated" completion state.
+     Keycloak sets pageRedirectUri (client's URL) and has no pending requiredActions
+     when the required-actions flow has finished successfully. -->
+<#assign hasPendingActions = requiredActions?? && requiredActions?is_sequence && requiredActions?size gt 0 />
+<#assign isCompletion = pageRedirectUri?has_content && !hasPendingActions />
+
 <div class="pmk-info-shell">
     <div class="pmk-orb pmk-orb-1"></div>
     <div class="pmk-orb pmk-orb-2"></div>
@@ -194,49 +208,67 @@
             </svg>
         </div>
 
-        <h1 class="pmk-title">
-            <#if messageHeader??>${messageHeader}<#else>${message.summary?no_esc}</#if>
-        </h1>
+        <#if isCompletion>
+            <h1 class="pmk-title">You're all set!</h1>
+            <p class="pmk-sub">Your password has been saved. You can now log in to Pinepetosan Marketplace.</p>
 
-        <#if messageHeader?? && message?? && message.summary??>
-            <p class="pmk-sub">${message.summary?no_esc}</p>
-        </#if>
-
-        <#if requiredActions??>
-            <div class="pmk-actions-list">
-                <#list requiredActions as reqActionItem>
-                    <div class="pmk-action-item">
-                        <span class="material-symbols-outlined">
-                            <#if reqActionItem == "UPDATE_PASSWORD">lock_reset<#elseif reqActionItem == "VERIFY_EMAIL">mark_email_read<#elseif reqActionItem == "UPDATE_PROFILE">person<#elseif reqActionItem == "CONFIGURE_TOTP">phonelink_lock<#else>task_alt</#if>
-                        </span>
-                        <span>${msg("requiredAction.${reqActionItem}")}</span>
-                    </div>
-                </#list>
+            <div class="pmk-creds-box">
+                <div class="pmk-creds-heading">
+                    <span class="material-symbols-outlined">key</span>
+                    Your login credentials
+                </div>
+                <div class="pmk-creds-row">
+                    <span class="material-symbols-outlined">mail</span>
+                    <span><strong>Email:</strong> the email address your invitation was sent to</span>
+                </div>
+                <div class="pmk-creds-row">
+                    <span class="material-symbols-outlined">lock</span>
+                    <span><strong>Password:</strong> the password you just created</span>
+                </div>
             </div>
-        </#if>
 
-        <#if pageRedirectUri?has_content>
-            <p class="pmk-hint">Signing you in and redirecting to your account…</p>
-            <div class="pmk-progress-track"><div class="pmk-progress-fill"></div></div>
-            <a href="${pageRedirectUri}" id="pmk-continue" class="pmk-btn">
-                <span class="material-symbols-outlined">arrow_forward</span>
-                Continue now
+            <a href="${pageRedirectUri}" class="pmk-btn">
+                <span class="material-symbols-outlined">login</span>
+                Log in to your account
             </a>
-        <#elseif skipLink??>
-        <#elseif actionUri?has_content>
-            <p class="pmk-hint">Taking you to the next step…</p>
-            <div class="pmk-progress-track"><div class="pmk-progress-fill"></div></div>
-            <a href="${actionUri}" id="pmk-continue" class="pmk-btn">
-                <span class="material-symbols-outlined">arrow_forward</span>
-                Continue
-            </a>
-        <#elseif (client.baseUrl)?has_content>
-            <p class="pmk-hint">Redirecting you to Pinepetosan Marketplace…</p>
-            <div class="pmk-progress-track"><div class="pmk-progress-fill"></div></div>
-            <a href="${client.baseUrl}" id="pmk-continue" class="pmk-btn">
-                <span class="material-symbols-outlined">storefront</span>
-                Continue to marketplace
-            </a>
+        <#else>
+            <h1 class="pmk-title">
+                <#if messageHeader??>${messageHeader}<#else>${message.summary?no_esc}</#if>
+            </h1>
+
+            <#if messageHeader?? && message?? && message.summary??>
+                <p class="pmk-sub">${message.summary?no_esc}</p>
+            </#if>
+
+            <#if hasPendingActions>
+                <div class="pmk-actions-list">
+                    <#list requiredActions as reqActionItem>
+                        <div class="pmk-action-item">
+                            <span class="material-symbols-outlined">
+                                <#if reqActionItem == "UPDATE_PASSWORD">lock_reset<#elseif reqActionItem == "VERIFY_EMAIL">mark_email_read<#elseif reqActionItem == "UPDATE_PROFILE">person<#elseif reqActionItem == "CONFIGURE_TOTP">phonelink_lock<#else>task_alt</#if>
+                            </span>
+                            <span>${msg("requiredAction.${reqActionItem}")}</span>
+                        </div>
+                    </#list>
+                </div>
+            </#if>
+
+            <#if actionUri?has_content>
+                <a href="${actionUri}" class="pmk-btn">
+                    <span class="material-symbols-outlined">arrow_forward</span>
+                    Continue
+                </a>
+            <#elseif pageRedirectUri?has_content>
+                <a href="${pageRedirectUri}" class="pmk-btn">
+                    <span class="material-symbols-outlined">arrow_forward</span>
+                    Continue
+                </a>
+            <#elseif (client.baseUrl)?has_content>
+                <a href="${client.baseUrl}" class="pmk-btn">
+                    <span class="material-symbols-outlined">storefront</span>
+                    Back to Pinepetosan Marketplace
+                </a>
+            </#if>
         </#if>
 
         <div class="pmk-footer">
@@ -245,14 +277,6 @@
         </div>
     </div>
 </div>
-
-<script>
-    (function () {
-        var link = document.getElementById("pmk-continue");
-        if (!link) return;
-        setTimeout(function () { window.location.href = link.getAttribute("href"); }, 1200);
-    })();
-</script>
 
 </#if>
 </@layout.registrationLayout>
