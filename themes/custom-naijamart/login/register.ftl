@@ -495,15 +495,6 @@
                             <p id="companyName-error-desktop" class="text-red-500 text-xs mt-1 general-error hidden">Enter your company name.</p>
                         </div>
 
-                        <!-- Company Logo notice (upload happens after signup) -->
-                        <div class="flex items-start gap-3 p-3 rounded-lg bg-purple-50/60 border border-purple-100">
-                            <span class="material-symbols-outlined text-purple-600 mt-0.5">image</span>
-                            <div class="text-sm text-gray-700">
-                                <span class="font-medium block">Company logo</span>
-                                <span class="text-xs text-gray-500">You'll upload your logo right after creating your account.</span>
-                            </div>
-                        </div>
-
                         <!-- Phone -->
                         <div>
                             <label for="phone-desktop" class="block text-sm font-medium text-gray-700 mb-1">Contact phone number</label>
@@ -659,15 +650,6 @@
                                    class="mobile-input-focus mobile-touch-target mobile-input border-gray-200 focus:outline-none w-full transition-all duration-200"
                                    placeholder="e.g. Acme Trading Ltd"/>
                             <p id="companyName-error-mobile" class="text-red-600 text-sm mt-2 font-medium general-error hidden">Enter your company name.</p>
-                        </div>
-
-                        <!-- Company Logo notice (upload happens after signup) -->
-                        <div class="mobile-slide-down flex items-start gap-3 p-4 rounded-xl bg-purple-50/60 border border-purple-100" style="animation-delay: 0.35s">
-                            <span class="material-symbols-outlined text-purple-600 mt-0.5">image</span>
-                            <div class="text-sm text-gray-700">
-                                <span class="font-semibold block">Company logo</span>
-                                <span class="text-xs text-gray-500">You'll upload your logo right after creating your account.</span>
-                            </div>
                         </div>
 
                         <!-- Phone -->
