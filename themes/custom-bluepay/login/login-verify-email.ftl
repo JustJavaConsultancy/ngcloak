@@ -205,7 +205,7 @@ body {
           style="gap: 2.125rem"
         >
           <a
-            href="${url.loginUrl}"
+            href="${properties.backToAppUrl!'https://bluepay-v0.onrender.com'}"
             class="d-flex align-items-center gap-3 gap-sm-2 text-decoration-none"
           >
               <img src="${url.resourcesPath}/img/back-arrow.png" alt="Back" width="24" height="24" class="me-2"/>
