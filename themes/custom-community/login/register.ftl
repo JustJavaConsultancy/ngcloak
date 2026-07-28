@@ -2,7 +2,7 @@
 <#import "user-profile-commons.ftl" as userProfileCommons>
 <@layout.registrationLayout displayMessage=messagesPerField.exists('global') displayRequiredFields=true; section>
 <#if section = "header">
-    <title>Connect - Sign Up</title>
+    <title>Klubknit - Sign Up</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
     <link rel="stylesheet" as="style" onload="this.rel='stylesheet'"
@@ -427,7 +427,7 @@
                 </div>
             </div>
             <p class="text-sm opacity-80 comtext">
-                Join thousands of professionals who are already growing their careers with Connect
+                Join thousands of professionals who are already growing their careers with Klubknit
             </p>
         </div>
     </div>
@@ -436,8 +436,8 @@
     <div class="responsive-right-panel w-1/2 flex items-center justify-center p-8">
         <div class="w-full max-w-md">
             <div class="glass-effect rounded-2xl shadow-xl p-8 animate-fade-in">
-                <h2 class="text-2xl font-bold text-gray-800 mb-2">Sign up</h2>
-                <p class="text-gray-600 mb-6 text-sm">Create an account to start connecting</p>
+                <h2 id="form-title-desktop" class="text-2xl font-bold text-gray-800 mb-2">Sign up</h2>
+                <p id="form-subtitle-desktop" class="text-gray-600 mb-6 text-sm">Create an account to start connecting</p>
 
                 <form id="kc-register-form-desktop" action="${url.registrationAction}" method="post" class="space-y-5">
                     <!-- Hidden club-creation attributes (enabled by JS only when ?intent=create-club) -->
@@ -559,8 +559,8 @@
                     </svg>
                 </div>
             </div>
-            <h1 class="text-4xl font-bold gradient-text mb-2">Connect</h1>
-            <p class="text-gray-600 text-lg">Create your account</p>
+            <h1 class="text-4xl font-bold gradient-text mb-2">Klubknit</h1>
+            <p id="form-subtitle-mobile" class="text-gray-600 text-lg">Create your account</p>
         </div>
     </div>
 
@@ -746,11 +746,19 @@
 
 <script>
     // -------------------------------------------------------------------
-    // Register-a-community flow
-    // Triggered by ?intent=create-club on the URL. Persisted in sessionStorage
-    // so a Keycloak-side validation re-render doesn't drop the flag.
+    // Register-a-club flow
+    // Triggered by intent=create-club, passed either as a query parameter or,
+    // more reliably, as a URL fragment (Keycloak drops unknown query params
+    // during its internal /registrations -> /login-actions redirect, but
+    // browsers preserve fragments across HTTP redirects). Once detected we
+    // persist it in sessionStorage so a Keycloak-side validation re-render
+    // doesn't drop the flag.
     // -------------------------------------------------------------------
     const CLUB_INTENT_KEY = 'clubknit.registerClubIntent';
+    console.log('[CLUB-FTL] href=', window.location.href);
+    console.log('[CLUB-FTL] search=', window.location.search, ' hash=', window.location.hash);
+    try { console.log('[CLUB-FTL] sessionStorage[intent]=', sessionStorage.getItem(CLUB_INTENT_KEY)); } catch(e){}
+
 
     function isClubIntentActive() {
         try {
@@ -759,11 +767,33 @@
                 sessionStorage.setItem(CLUB_INTENT_KEY, '1');
                 return true;
             }
+            // Also check the URL fragment (e.g. "#intent=create-club" or "#foo=bar&intent=create-club")
+            const rawHash = (window.location.hash || '').replace(/^#/, '');
+            if (rawHash) {
+                const hashParams = new URLSearchParams(rawHash);
+                if (hashParams.get('intent') === 'create-club') {
+                    sessionStorage.setItem(CLUB_INTENT_KEY, '1');
+                    return true;
+                }
+            }
             return sessionStorage.getItem(CLUB_INTENT_KEY) === '1';
         } catch (e) {
             return false;
         }
     }
+
+    // Swap the "Sign up / Create your account" headings for club-intent copy
+    // as early as possible so the page never flashes the wrong title.
+    (function applyClubIntentCopy() {
+        if (!isClubIntentActive()) return;
+        function set(id, text) {
+            const el = document.getElementById(id);
+            if (el) el.textContent = text;
+        }
+        set('form-title-desktop', 'Register your club');
+        set('form-subtitle-desktop', 'Sign up and set up your club in one step.');
+        set('form-subtitle-mobile', 'Register your club');
+    })();
 
     function initClubSection(suffix) {
         const section = document.getElementById('club-section-' + suffix);
@@ -790,6 +820,10 @@
         descField.addEventListener('input', sync);
         privField.addEventListener('change', sync);
         sync();
+        console.log('[CLUB-FTL] initClubSection(' + suffix + ') attached. attr-pending=', attrPending.value,
+                    ' attr-name=', attrName.value, ' attr-priv=', attrPriv.value,
+                    ' disabled?', attrPending.disabled);
+
 
         return {
             isValid: () => nameField.value.trim().length > 0,
@@ -861,6 +895,11 @@
 
         // Final Submit Validation
         document.getElementById('kc-register-form-desktop').addEventListener('submit', (e) => {
+        console.log('[CLUB-FTL] SUBMIT attr-pending=',
+            document.getElementById('attr-pendingClubCreation-' + (isDesktop ? 'desktop' : 'mobile')).value,
+            ' attr-name=', document.getElementById('attr-clubName-' + (isDesktop ? 'desktop' : 'mobile')).value,
+            ' attr-name-disabled?', document.getElementById('attr-clubName-' + (isDesktop ? 'desktop' : 'mobile')).disabled);
+
             const clubValid = !clubDesktop || clubDesktop.isValid();
             if (!emailInput.value || !passwordInput.value || !confirmInput.value ||
                 !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value) ||
@@ -1060,6 +1099,11 @@
 
         // Form submission
         document.getElementById('kc-register-form-mobile').addEventListener('submit', function(e) {
+        console.log('[CLUB-FTL] SUBMIT attr-pending=',
+            document.getElementById('attr-pendingClubCreation-' + (isDesktop ? 'desktop' : 'mobile')).value,
+            ' attr-name=', document.getElementById('attr-clubName-' + (isDesktop ? 'desktop' : 'mobile')).value,
+            ' attr-name-disabled?', document.getElementById('attr-clubName-' + (isDesktop ? 'desktop' : 'mobile')).disabled);
+
             if (!validateForm()) {
                 e.preventDefault();
                 if (clubMobile && !clubMobile.isValid()) clubMobile.markError();
