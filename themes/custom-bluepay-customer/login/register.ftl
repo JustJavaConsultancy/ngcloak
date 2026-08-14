@@ -177,25 +177,17 @@
             }
 
             .mobile-logo {
-                font-size: 28px;
-                font-weight: 700;
                 margin-bottom: 8px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                gap: 10px;
-                color: #0c74b1;
             }
 
-            .mobile-logo-icon {
-                background: #0c74b1;
-                color: white;
-                width: 40px;
-                height: 40px;
-                border-radius: 10px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
+            .mobile-logo-img {
+                height: 44px;
+                width: auto;
+                max-width: 220px;
+                display: block;
             }
 
             .mobile-tagline {
@@ -616,10 +608,7 @@
             <!-- Mobile Header -->
             <div class="mobile-header">
                 <div class="mobile-logo">
-                    <div class="mobile-logo-icon">
-                        <i class="fas fa-shopping-cart"></i>
-                    </div>
-                    BluePay Marketplace
+                    <img src="${url.resourcesPath}/img/blue-logo.svg" alt="BluePay Marketplace" class="mobile-logo-img">
                 </div>
                 <div class="mobile-tagline">Your trusted shopping destination</div>
             </div>
