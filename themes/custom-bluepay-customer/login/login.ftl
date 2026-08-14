@@ -39,10 +39,7 @@
                         <!-- Mobile Header -->
                         <header class="mobile-header">
                             <div class="mobile-logo">
-                                <div class="mobile-logo-icon">
-                                    <i class="fas fa-shopping-cart"></i>
-                                </div>
-                                BluePay Marketplace
+                                <img src="${url.resourcesPath}/img/blue-logo.svg" alt="BluePay Marketplace" class="mobile-logo-img">
                             </div>
                             <div class="mobile-tagline">Your trusted shopping destination</div>
                         </header>
