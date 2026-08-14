@@ -129,17 +129,20 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
 
+    function setButtonState(enabled) {
+      registerButton.disabled = !enabled;
+      registerButton.classList.toggle("active", enabled);
+      registerButton.classList.toggle("disabled", !enabled);
+    }
+
     // Comprehensive form validation
     function validateForm() {
-      let isValid = true;
-
-      // Password validation
       const password = passwordInput.value;
       const confirmPassword = confirmPasswordInput.value;
-      let validCount = 0;
 
-      // Check password requirements
-      Object.entries(requirements).forEach(([key, requirement]) => {
+      // Update password requirement indicators (visual feedback)
+      let validCount = 0;
+      Object.entries(requirements).forEach(([, requirement]) => {
         if (requirement.element) {
           const isRequirementValid = requirement.regex.test(password);
           requirement.element.classList.toggle("valid", isRequirementValid);
@@ -154,48 +157,39 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       });
 
-      // Check if passwords match
       const passwordsMatch =
         password === confirmPassword && confirmPassword !== "";
 
-      // Show/hide password error message
       if (passwordError) {
-        if (confirmPassword && !passwordsMatch) {
-          passwordError.classList.add("visible");
-        } else {
-          passwordError.classList.remove("visible");
-        }
+        passwordError.classList.toggle(
+          "visible",
+          confirmPassword.length > 0 && !passwordsMatch,
+        );
       }
 
-      // Password requirements check
-      const passwordValid = validCount === 5 && passwordsMatch;
-      if (!passwordValid) isValid = false;
-
-      // Email validation
-      if (emailInput) {
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        const emailValid =
-          emailInput.value.trim() === "" || emailPattern.test(emailInput.value);
-        if (!emailValid) isValid = false;
-      }
-
-      // Check all required fields
+      // Every required field must be non-empty
       const requiredFields = registerForm.querySelectorAll("[required]");
+      let allRequiredFilled = true;
       requiredFields.forEach((field) => {
         if (!field.value.trim()) {
-          isValid = false;
+          allRequiredFilled = false;
         }
       });
 
-      // Update button state
-      registerButton.disabled = !isValid;
-      if (isValid) {
-        registerButton.classList.add("active");
-        registerButton.classList.remove("disabled");
-      } else {
-        registerButton.classList.remove("active");
-        registerButton.classList.add("disabled");
+      // Email must be a valid format (required field, so also must be present)
+      let emailValid = true;
+      if (emailInput) {
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        emailValid = emailPattern.test(emailInput.value.trim());
       }
+
+      const isValid =
+        allRequiredFilled &&
+        emailValid &&
+        validCount === 5 &&
+        passwordsMatch;
+
+      setButtonState(isValid);
     }
 
     // Add event listeners to all required fields for real-time validation
@@ -203,9 +197,11 @@ document.addEventListener("DOMContentLoaded", function () {
     allInputs.forEach((input) => {
       input.addEventListener("input", validateForm);
       input.addEventListener("change", validateForm);
+      input.addEventListener("blur", validateForm);
     });
 
-    // Initial validation
+    // Ensure the button starts disabled, then run the first validation pass
+    setButtonState(false);
     validateForm();
 
     // Form submission
