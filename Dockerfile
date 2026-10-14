@@ -1,6 +1,10 @@
 # docker build -t kazeemakinrinde/ngcloak:latest .
 
-FROM quay.io/keycloak/keycloak:latest
+
+FROM quay.io/keycloak/keycloak:latest 
+USER root 
+RUN microdnf install -y curl \ 
+    && microdnf clean all
 
 # Set Keycloak to run in "quarkus" mode
 ENV KEYCLOAK_ADMIN=admin
@@ -17,4 +21,5 @@ COPY themes /opt/keycloak/themes
 COPY providers /opt/keycloak/providers
 
 # Start Keycloak
+# ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start", "--hostname-strict=false", "--proxy-headers=xforwarded"]
 ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start", "--hostname-strict=false", "--proxy-headers=xforwarded"]
