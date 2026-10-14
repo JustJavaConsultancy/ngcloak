@@ -2,9 +2,6 @@
 
 
 FROM quay.io/keycloak/keycloak:latest 
-USER root 
-RUN microdnf install -y curl \ 
-    && microdnf clean all
 
 # Set Keycloak to run in "quarkus" mode
 ENV KEYCLOAK_ADMIN=admin
